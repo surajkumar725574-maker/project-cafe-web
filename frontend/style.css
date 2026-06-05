@@ -167,7 +167,10 @@ main {
   max-width: 1180px;
   margin: auto;
   padding: 24px 18px 50px;
-  padding-top: 90px;
+  
+}
+#menu-items {
+  margin-top: 24px;
 }
 
 section h2 {
@@ -532,4 +535,8 @@ header .sidebar-toggle {
     left: 0;
     width: 100%;
     z-index: 999;
+}
+.category-bar {
+  position: sticky;
+  top: 0;
 }
