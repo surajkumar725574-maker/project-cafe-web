@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Payment</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- ======================================
+         PAGE HEADER
+    ======================================= -->
+
+    <header>
+
+        <h1>Cafe Checkout</h1>
+
+        <p>
+            Review your order and complete payment
+        </p>
+
+    </header>
+
+
+    <!-- ======================================
+         MAIN PAYMENT CONTENT
+    ======================================= -->
+
+    <main>
+
+
+        <!-- ==================================
+             ORDER SUMMARY SECTION
+        =================================== -->
+
+        <section id="order-summary-section">
+
+            <h2>Order Summary</h2>
+
+            <div id="order-summary">
+
+                <!--
+                    renderOrderSummary()
+                    will render items here
+
+                    Example:
+
+                    Burger x 2
+                    Coffee x 1
+                -->
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================
+             TOTAL AMOUNT SECTION
+        =================================== -->
+
+        <section id="total-section">
+
+            <h2>Total Amount</h2>
+
+            <div id="total-amount">
+
+                <!--
+                    calculateTotal()
+                    will render final amount here
+                -->
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================
+             PAYMENT SECTION
+        =================================== -->
+
+        <section id="payment-section">
+
+            <h2>Payment</h2>
+
+            <!--
+                Later:
+                Razorpay button starts here
+
+                For now:
+                startPayment()
+            -->
+
+            <button id="pay-now-btn"
+                    onclick="startPayment()">
+
+                Pay Now
+
+            </button>
+
+        </section>
+
+
+        <!-- ==================================
+             PAYMENT STATUS SECTION
+        =================================== -->
+
+        <section id="payment-status-section">
+
+            <div id="payment-message">
+
+                <!--
+                    Success Message
+
+                    Payment Successful
+
+                    or
+
+                    Payment Failed
+                -->
+
+            </div>
+
+        </section>
+
+
+        <button onclick="paymentSuccessHandler()"></button>
+    </main>
+
+
+    <!-- ======================================
+         PAYMENT.JS
+    ======================================= -->
+
+
+    <script src="payment.js"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+
+</html>

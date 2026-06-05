@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Page</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <section id="login-section">
+        <div class="items">
+        <h2>Admin Authentication</h2>
+        </div>
+        <div class="login-blocks">
+            <label for="admin-id">Admin Id</label>
+         <input id="admin-id"
+      placeholder="enter id"
+       >
+       <label for="password">Passkey</label>
+       <input id="password"
+       placeholder=" Please enter the password">
+        <button id="login-button"
+        onclick="pageLoader()">Log in</button>
+        </div>
+        <div id="items">
+        <p id="message"></p>
+        </div>
+    </section>
+    
+    <section id="admin-panel">
+     <aside id="sidebar">
+         <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <nav>
+    <button onclick="showOrdersSection()">Orders</button>
+<button onclick="showMenuSection()">Manage Menu</button>
+<button onclick="showAddItemSection()">Add Item</button>
+    </nav>
+
+</aside>
+
+    <header>
+        
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <h1>Admin Page</h1>
+
+    
+        
+    
+    </header>
+   
+    
+
+
+
+    <main>
+
+        
+
+        <!-- ===============================
+             ORDERS SECTION
+        ================================ -->
+
+        <section id="orders-section">
+            <h2>Orders</h2>
+
+            <div id="ordered-items"></div>
+        </section>
+
+
+        <!-- ===============================
+             MENU MANAGEMENT SECTION
+        ================================ -->
+
+        <section id="menu-section">
+            <h2>Menu Management</h2>
+
+            <button onclick="showMenuManager()">
+                Manage Menu
+            </button>
+
+            <div id="menu-management">
+                <div id="admin-menu-items"></div>
+            </div>
+        </section>
+
+
+        <!-- ===============================
+             ADD MENU ITEM SECTION
+        ================================ -->
+
+        <section  id="add-item-section"class="form-group">
+
+            <h2>Add Menu Item</h2>
+
+            <label for="item-name">Item Name</label>
+            <input
+                id="item-name"
+                placeholder="Enter item name"
+            >
+
+            <label for="item-price">Price</label>
+            <input
+                id="item-price"
+                type="number"
+                placeholder="Enter price"
+            >
+
+            <label for="item-category">Category</label>
+            <input
+                id="item-category"
+                placeholder="Enter category"
+            >
+
+            <button onclick="addItems()">
+                Add Item
+            </button>
+
+        </section>
+        </section>
+
+    </main>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

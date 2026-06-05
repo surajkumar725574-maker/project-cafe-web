@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food & Beverages</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Lorem ipsum dolor sit amet.</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <a href="cart.html">Cart</a>
+
+    </header>
+<input id="search-bar"
+placeholder="search here"
+oninput="searchMenu()"
+>
+
+    <section class="category-bar">
+        <button onclick="renderMenu('All')">All</button>
+  <button onclick="renderMenu('Breakfast')">Breakfast</button>
+  <button onclick="renderMenu('Lunch')">Lunch</button>
+  <button onclick="renderMenu('Beverages')">Beverages</button>
+  <button onclick="renderMenu('Burgers')">Burgers</button>
+  <button onclick="renderMenu('Chinese')">Chinese</button>
+  <button onclick="renderMenu('Rolls')">Rolls</button>
+  <button onclick="renderMenu('Juices')">Juices</button>
+  <button onclick="renderMenu('Shakes')">Shakes</button>
+
+</section>
+    <main>
+        <div id="menu-items" class="menu-grid"></div>
+            
+        <!-- <section id="breakfast">
+            <h2>Breakfast</h2>
+            <ul>
+                <li>bread-omelete</li>
+                <li>half-fry</li>
+                <li>sandwich</li>
+            </ul> -->
+            <!-- <div class="menu-grid">
+            <div class="food-card">
+                <h3>Bread-Omelete</h3>
+                <p>₹60</p>
+                <button onclick="addToCart('Bread Omelette',50)">Add</button>
+            </div>
+            <div class="food-card">
+                <h3>Sandwich</h3>
+                <p>₹75</p>
+                <button onclick="addToCart('Sandwich',75)">Add</button>
+            </div>
+            <div class="food-card">
+                <h3>Half-fry</h3>
+                <p>₹50</p>
+                <button onclick="addToCart('Half-fry',50)">Add</button>
+            </div>
+            </div>
+        </section>
+        <section id="lunch">
+            <h2>Lunch</h2>
+            < <ul>
+                <li>roti-sabji</li>
+                <li>chicken-Thali</li>
+            </ul> -->
+            <!-- <div class="menu-grid">
+                <div class="food-card">
+                    <h3>Roti-Sabji</h3>
+                     <p>₹120</p> 
+                     <button onclick="addToCart('Roti sabji',120)">Add</button>
+            </div>
+            <div class="food-card">
+                <h3>Chicken-Chawal</h3>
+                <p>₹150</p>
+                   <button onclick="addToCart('Chicken Chawal',150)">Add</button>
+            </div>
+            </div>
+        </section>
+        <section id="beverages">
+            <h2>Bevarages</h2> -->
+            <!-- <ul>
+                <li>coke</li>
+                <li>limca</li>
+            </ul> -->
+            <!-- <div class="menu-grid">
+            <div class="food-card">
+            <h3>Coke</h3>
+            <p>₹40</p>
+            <button onclick="addToCart('coke',40)">Add</button>
+            </div>
+            <div class="food-card">
+    <h3>Limca</h3>
+    <p>₹40</p>
+    <button onclick="addToCart('limca',40)">Add</button>
+</div>
+
+<div class="food-card">
+    <h3>Sprite</h3>
+    <p>₹40</p>
+    <button onclick="addToCart('sprite',40)">Add</button>
+</div>
+        </div>
+        </section>
+        <section id="burger">
+    <h2>Burgers</h2>
+
+    <div class="menu-grid">
+
+        <div class="food-card">
+            <h3>Veg Burger</h3>
+            <p>₹60</p>
+            <button onclick="addToCart('veg burger',60)">Add</button>
+        </div>
+
+        <div class="food-card">
+            <h3>Cheese Burger</h3>
+            <p>₹90</p>
+            <button onclick="addToCart('cheese Burger',90)">Add</button>
+        </div>
+
+        <div class="food-card">
+            <h3>Paneer Burger</h3>
+            <p>₹110</p>
+            <button onclick="addToCart('paneer burger',110)">Add</button>
+        </div>
+
+        <div class="food-card">
+            <h3>Chicken Burger</h3>
+            <p>₹130</p>
+            <button onclick="addToCart('chicken burger',130)">Add</button>
+        </div>
+
+        <div class="food-card">
+            <h3>Double Patty Burger</h3>
+            <p>₹160</p>
+            <button onclick="addToCart('double patty burger',160)">Add</button>
+        </div>
+
+    </div>
+</section> --> 
+
+        <!-- <section id="burger">
+            <h2>Burgers</h2>
+            <ul>
+                <li>Maharaja</li>
+                <li>cheese-loaded</li>
+                <li>chicken-burger</li>
+            </ul>
+        </section>
+        <section id="chinese">
+            <h2>Chinese</h2>
+            <ul>
+                <li>momos</li>
+            </ul>
+        </section> 
+        <section id="rolls">
+            <h2>Rolls</h2>
+            <ul>
+                <li>veg-kaathi roll</li>
+            </ul>
+        </section>
+        <section id="juice">
+            <h2>Juices</h2>
+            <ul>
+                <li>banana juice</li>
+            </ul>
+        </section>
+        <section id="shakes">
+            <h2>Shakes</h2>
+            <ul>
+                <li>chocalate shake</li>
+            </ul>
+        </section> -->
+    </main>
+    <script src="food.js"></script>
+
+</body>
+</html>
