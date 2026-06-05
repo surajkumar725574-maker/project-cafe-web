@@ -430,12 +430,7 @@ function paymentSuccessHandler() {
 // Runs if payment fails or user cancels.
 //
 
-function paymentFailureHandler() {
-
-    // show failure message
-    
-
-    
+function paymentFailureHandler(error) {
     if (error && error.description) {
         paymentMessage.innerText = error.description;
         return;
@@ -443,8 +438,6 @@ function paymentFailureHandler() {
 
     paymentMessage.innerText = "Payment failed. Please try again.";
 }
-
-
 
 
 
