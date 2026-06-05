@@ -898,3 +898,25 @@ header .sidebar-toggle {
         padding: 22px;
     }
 }
+/* =====================================================
+   HEADER NAV CLICK FIX
+===================================================== */
+
+header {
+    position: relative;
+}
+
+.customer-nav {
+    position: relative;
+    z-index: 20;
+}
+
+.customer-nav a {
+    position: relative;
+    z-index: 21;
+    pointer-events: auto;
+}
+
+.category-bar {
+    z-index: 10;
+}
