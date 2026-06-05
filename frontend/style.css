@@ -122,41 +122,60 @@ header a:hover {
 /* ===============================
    CATEGORY BAR
 ================================ */
+/* =====================================
+   FINAL CATEGORY BAR BEHAVIOUR
+===================================== */
 
-.category-bar {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding: 14px 18px;
-  background: rgba(255, 250, 244, 0.72);
-  backdrop-filter: blur(16px);
-  position: sticky;
-  top: 52px;
-  z-index: 50;
-  box-shadow: 0 10px 28px rgba(80, 45, 20, 0.08);
+.category-bar{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+
+    padding:14px 18px;
+
+    background:rgba(255,247,239,.96);
+    backdrop-filter:blur(12px);
+
+    transition:
+      transform .25s ease,
+      opacity .25s ease;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
 
-.category-bar::-webkit-scrollbar {
-  height: 0;
+.category-bar.hide-category{
+    transform:translateY(-120%);
+    opacity:0;
 }
 
-.category-bar a {
-  white-space: nowrap;
-  text-decoration: none;
-  color: var(--coffee);
-  background: white;
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-weight: 800;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 18px rgba(70, 35, 15, 0.08);
-  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+.category-bar::-webkit-scrollbar{
+    display:none;
 }
 
-.category-bar a:hover {
-  background: var(--coffee);
-  color: white;
-  transform: translateY(-2px);
+.category-bar button{
+    white-space:nowrap;
+
+    border:none;
+
+    background:linear-gradient(
+      135deg,
+      var(--primary),
+      #ffb347
+    );
+
+    color:white;
+
+    padding:11px 18px;
+
+    border-radius:999px;
+
+    font-weight:800;
+
+    cursor:pointer;
 }
 
 /* ===============================
@@ -488,55 +507,178 @@ header .sidebar-toggle {
 
 
 
-.category-bar.hide-category {
-  transform: translateY(-120%);
-  opacity: 0;
+
+/* ===============================
+   FOOD HEADER
+================================ */
+
+.food-header {
+  min-height: 260px;
+  padding: 40px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  background:
+    linear-gradient(135deg, rgba(47, 22, 8, 0.88), rgba(255, 138, 31, 0.75)),
+    url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80");
+
+  background-size: cover;
+  background-position: center;
+
+  color: white;
 }
 
-.category-bar::-webkit-scrollbar {
-  display: none;
+.hero-text h1 {
+  margin: 0;
+  max-width: 520px;
+
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 0.95;
+  font-weight: 900;
 }
 
-.category-bar {
-  scrollbar-width: none;
+.hero-text p {
+  max-width: 420px;
+  margin-top: 18px;
+
+  font-size: 18px;
+  color: #fff1dd;
 }
 
-.category-bar a {
-  white-space: nowrap;
+
+/* ===============================
+   CUSTOMER NAV
+================================ */
+
+.customer-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  background: rgba(255, 255, 255, 0.88);
+  padding: 14px;
+  border-radius: 22px;
+
+  backdrop-filter: blur(12px);
+}
+
+.customer-nav a {
   text-decoration: none;
-
   color: var(--coffee);
-  background: white;
 
-  padding: 10px 18px;
-
+  background: #ffe04f;
+  padding: 12px 22px;
   border-radius: 999px;
 
-  font-weight: 800;
+  font-weight: 900;
+}
+
+
+/* ===============================
+   SEARCH SECTION
+================================ */
+
+.search-section {
+  background: rgba(255, 250, 244, 0.95);
+  padding: 12px 18px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+#search-bar {
+  width: min(420px, 100%);
+
+  padding: 12px 16px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(139, 74, 32, 0.22);
+
+  font-size: 15px;
+  outline: none;
+}
+
+#search-bar:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255, 138, 31, 0.14);
+}
+
+
+/* ===============================
+   CATEGORY BAR - YOUTUBE STYLE
+================================ */
+
+
+
+/* ===============================
+   MAIN LAYOUT FIX
+================================ */
+
+main {
+  max-width: 1180px;
+  margin: auto;
+  padding: 28px 18px 50px;
+}
+
+#menu-items {
+  margin-top: 10px;
+}
+
+
+/* ===============================
+   MENU GRID
+================================ */
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+}
+
+.food-card {
+  min-height: 210px;
+
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 26px;
+
+  padding: 24px;
 
   border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 
-  box-shadow: 0 8px 18px rgba(70, 35, 15, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   transition:
     transform 0.25s ease,
-    background 0.25s ease,
-    color 0.25s ease;
+    box-shadow 0.25s ease;
 }
 
-.category-bar a:hover {
-  background: var(--coffee);
-  color: white;
-  transform: translateY(-2px);
+.food-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
 }
-.search-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
+
+.food-card h3 {
+  margin: 0;
+
+  font-size: 22px;
+  color: var(--coffee);
 }
-.category-bar {
-  position: sticky;
-  top: 0;
+
+.food-card .price {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--coffee-soft);
+}
+
+.food-card .category-name {
+  color: var(--muted);
+}
+
+.food-card button {
+  width: fit-content;
 }
