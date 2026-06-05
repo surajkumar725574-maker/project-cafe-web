@@ -332,3 +332,20 @@ header .sidebar-toggle {
   position: absolute;
   left: 20px;
 }
+.customer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 14px;
+    background: #8b4513;
+}
+
+.customer-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.customer-nav a:hover {
+    text-decoration: underline;
+}
