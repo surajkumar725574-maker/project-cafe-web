@@ -920,3 +920,26 @@ header {
 .category-bar {
     z-index: 10;
 }
+
+
+#sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.25s ease;
+}
+
+#sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#sidebar {
+    z-index: 1200;
+}

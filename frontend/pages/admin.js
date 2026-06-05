@@ -553,33 +553,38 @@ function toggleSidebar() {
 // =====================================================
 
 function showOrdersSection() {
-
     ordersSection.style.display = "block";
     menuSection.style.display = "none";
     addItemSection.style.display = "none";
 
-    sidebar.classList.remove("open");
-
+    closeSidebar();
 }
 
 function showMenuSection() {
-
     ordersSection.style.display = "none";
     menuSection.style.display = "block";
     addItemSection.style.display = "none";
 
-    sidebar.classList.remove("open");
-
+    closeSidebar();
 }
 
 function showAddItemSection() {
-
     ordersSection.style.display = "none";
     menuSection.style.display = "none";
     addItemSection.style.display = "block";
 
-    sidebar.classList.remove("open");
+    closeSidebar();
+}
+let sidebarOverlay = document.getElementById("sidebar-overlay");
 
+function toggleSidebar() {
+    sidebar.classList.toggle("open");
+    sidebarOverlay.classList.toggle("show");
+}
+
+function closeSidebar() {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("show");
 }
 
 
