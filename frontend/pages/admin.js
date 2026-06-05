@@ -46,7 +46,7 @@ let addItemSection = document.getElementById("add-item-section");
 // FETCH ORDERS FROM BACKEND
 // =====================================================
 
-fetch("http://localhost:3000/orders")
+fetch("https://project-cafe-web.onrender.com/orders")
 .then(function(response) {
     return response.json();
 })
@@ -232,7 +232,7 @@ function renderItems(order) {
 // }
 // separate function , now all in one below
 function updateOrderStatus(index, status) {
-    fetch(`http://localhost:3000/order/status/${index}`, {
+    fetch(`https://project-cafe-web.onrender.com/order/status/${index}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
