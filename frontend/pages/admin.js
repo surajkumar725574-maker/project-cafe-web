@@ -387,22 +387,33 @@ function addItems() {
 // SIDEBAR TOGGLE
 // =====================================================
 
-let sidebarVisible = false;
+// =====================================================
+// SIDEBAR TOGGLE
+// =====================================================
+//
+// Old method:
+//
+// sidebar.style.left = "0";
+// sidebar.style.left = "-260px";
+//
+// Problem:
+//
+// left changes layout position.
+// It can feel slightly laggy.
+//
+// New method:
+//
+// sidebar.classList.toggle("open");
+//
+// Why better:
+//
+// CSS handles movement using transform.
+// transform is smoother and more performance-friendly.
+//
 
 function toggleSidebar() {
-
-    if (sidebarVisible) {
-
-        sidebar.style.left = "-260px";
-        sidebarVisible = false;
-
-        return;
-    }
-
-    sidebar.style.left = "0";
-    sidebarVisible = true;
+    sidebar.classList.toggle("open");
 }
-
 
 // =====================================================
 // ADMIN SECTION NAVIGATION
