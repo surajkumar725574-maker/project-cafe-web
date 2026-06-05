@@ -210,6 +210,23 @@ function searchMenu(){
 
 
 }
+const categoryBar = document.querySelector(".category-bar");
 
+if (categoryBar) {
+  let lastScroll = window.scrollY;
+
+  window.addEventListener("scroll", () => {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > lastScroll + 5) {
+      categoryBar.classList.add("hide-category");
+    }
+    else if (currentScroll < lastScroll - 5) {
+      categoryBar.classList.remove("hide-category");
+    }
+
+    lastScroll = currentScroll;
+  });
+}
 
 console.log("food.js connected");
