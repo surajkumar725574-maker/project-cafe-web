@@ -274,7 +274,7 @@ function renderOrderSummary() {
       `;
     }
     totalAmount.innerHTML=`<div id="total-amount-card">
-        <p>₹:${total}</p>
+        <p>Total amount : ₹${total}</p>
     </div>`;
 
     // orderSummary.innerHTML = ""
