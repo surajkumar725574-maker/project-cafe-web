@@ -272,7 +272,7 @@ function showMenuManager() {
         return;
     }
 
-    fetch("http://localhost:3000/menu")
+    fetch("https://project-cafe-web.onrender.com/menu")
     .then(function(response) {
         return response.json();
     })
@@ -323,7 +323,7 @@ function renderMenu() {
 
 function removeItems(name) {
 
-    fetch(`http://localhost:3000/menu/${name}`, {
+    fetch(`https://project-cafe-web.onrender.com/menu/${name}`, {
         method: "DELETE"
     })
     .then(function(response) {
@@ -349,7 +349,7 @@ function addItems() {
     let price = document.getElementById("item-price").value;
     let category = document.getElementById("item-category").value;
 
-    fetch("http://localhost:3000/menu", {
+    fetch("https://project-cafe-web.onrender.com/menu", {
 
         method: "POST",
 

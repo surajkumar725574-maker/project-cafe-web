@@ -79,7 +79,7 @@ let menuContainer = document.getElementById("menu-items");
 // =====================================================
 
 function menuGenerator() {
-    fetch("http://localhost:3000/menu")
+    fetch("https://project-cafe-web.onrender.com/menu")
     .then(function(response) {
         return response.json();
     })
@@ -147,7 +147,7 @@ function renderMenu(category) {
 // }
 
  function addToCart(name,price){
-fetch("http://localhost:3000/cart", {
+fetch("https://project-cafe-web.onrender.com/cart", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

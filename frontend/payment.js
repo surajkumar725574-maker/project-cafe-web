@@ -205,7 +205,7 @@ let paymentMessage = document.getElementById("payment-message");
 
 function cartLoader() {
 
-    fetch("http://localhost:3000/cart")
+    fetch("https://project-cafe-web.onrender.com/cart")
     .then(function (response){
         return response.json();
     })
@@ -304,7 +304,7 @@ function startPayment() {
         return;
     }
 
-    fetch("http://localhost:3000/create-razorpay-order",{
+    fetch("https://project-cafe-web.onrender.com/create-razorpay-order",{
         method:"POST"
     }
 )
@@ -384,7 +384,7 @@ paymentObject.open();
 
 function paymentSuccessHandler() {
 
-    fetch("http://localhost:3000/payment/verify",{
+    fetch("https://project-cafe-web.onrender.com/payment/verify",{
 
         method:"POST",
         headers:{
@@ -461,7 +461,7 @@ function paymentFailureHandler() {
 
 function placeOrder() {
 
-    fetch("http://localhost:3000/order",{
+    fetch("https://project-cafe-web.onrender.com/order",{
         method:"POST",
         body:JSON.stringify(cart),
         headers:{
@@ -499,7 +499,7 @@ function placeOrder() {
 
 function clearCart() {
 
-    fetch("http://localhost:3000/cart/clear",{
+    fetch("https://project-cafe-web.onrender.com/cart/clear",{
         method:"POST"
     })
     .then(function(response){

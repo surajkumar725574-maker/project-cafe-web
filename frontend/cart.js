@@ -165,7 +165,7 @@ function renderCart(){
 
 // 
 function cartLoader(){
-    fetch("http://localhost:3000/cart")
+    fetch("https://project-cafe-web.onrender.com/cart")
     .then(function (response){
         return response.json();
     })
@@ -177,7 +177,7 @@ function cartLoader(){
 }
 
 function additems(name){
-    fetch("http://localhost:3000/cart/name",{
+    fetch("https://project-cafe-web.onrender.com/cart/name",{
         method:"POST",
 
         headers:{
@@ -198,7 +198,7 @@ function additems(name){
 }
 
  function deleteitems(name){
-    fetch("http://localhost:3000/cart/decrease", {
+    fetch("https://project-cafe-web.onrender.com/cart/decrease", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
