@@ -212,21 +212,25 @@ function renderOrders() {
                     ${renderItems(orderItems)}
                 </div>
 
-<button onclick="updateOrderStatus('${orders[i]._id}', 'accepted')">Accept</button>
+<div class="order-actions">
 
-                <button onclick="updateOrderStatus('${orders[i]._id}', 'preparing')">
-                    Prepare
-                </button>
+    <button onclick="updateOrderStatus('${orders[i]._id}', 'accepted')">
+        Accept
+    </button>
 
-                <button onclick="updateOrderStatus(${orders[i]._id}, 'completed')">
-                    Complete
-                </button>
+    <button onclick="updateOrderStatus('${orders[i]._id}', 'preparing')">
+        Preparing
+    </button>
 
-                <button onclick="updateOrderStatus(${orders[i]._id}, 'cancelled')">
-                    Cancel
-                </button>
+    <button onclick="updateOrderStatus('${orders[i]._id}', 'completed')">
+        Completed
+    </button>
 
-            </div>
+    <button onclick="updateOrderStatus('${orders[i]._id}', 'cancelled')">
+        Cancelled
+    </button>
+
+</div>
         `;
 
     }
@@ -280,20 +284,35 @@ function renderItems(order) {
 // - cancelled
 //
 function updateOrderStatus(id, status) {
+
     fetch(`${API_URL}/order/status/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ status: status })
+        body: JSON.stringify({
+            status: status
+        })
     })
     .then(function(response) {
         return response.json();
     })
     .then(function(data) {
+
+        if (!data.orders) {
+            alert(data.message || "Status update failed");
+            return;
+        }
+
         orders = data.orders;
         renderOrders();
+
+    })
+    .catch(function(error) {
+        console.log("Failed to update order status:", error);
+        alert("Unable to update order status");
     });
+
 }
 
 

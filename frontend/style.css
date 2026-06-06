@@ -943,3 +943,6 @@ header {
 #sidebar {
     z-index: 1200;
 }
+body {
+    font-family: "Inter", Arial, sans-serif;
+}
