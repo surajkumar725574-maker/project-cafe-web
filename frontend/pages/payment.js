@@ -456,26 +456,26 @@ function paymentFailureHandler(error) {
 
 function placeOrder() {
 
-    fetch("https://project-cafe-web.onrender.com/order",{
-        method:"POST",
-        body:JSON.stringify(cart),
-        headers:{
-            "Content-Type":"application/json"
+    fetch("https://project-cafe-web.onrender.com/order", {
+        method: "POST",
+        body: JSON.stringify(cart),
+        headers: {
+            "Content-Type": "application/json"
         }
     })
-    .then(function(response){
+    .then(function(response) {
         return response.json();
     })
-    .then(function(data){
-       console.log("FULL RESPONSE:");
-console.dir(data);
-alert(JSON.stringify(data));
-    })
-    .then(function(data){
+    .then(function(data) {
 
-        console.log("Order saved:", data);
+        console.log("FULL RESPONSE:");
+        console.dir(data);
 
-        // Save order id in browser
+        if (!data.order || !data.order._id) {
+            alert("Order was not saved properly");
+            console.log("Invalid order response:", data);
+            return;
+        }
 
         localStorage.setItem(
             "currentOrderId",
@@ -484,16 +484,19 @@ alert(JSON.stringify(data));
 
         clearCart();
 
-        // Redirect after small delay
-
-        setTimeout(function(){
+        setTimeout(function() {
 
             window.location.href =
-            `order-status.html?id=${data.order._id}`;
+                `order-status.html?id=${data.order._id}`;
 
-        },1000);
+        }, 1000);
 
+    })
+    .catch(function(error) {
+        console.log("Place order failed:", error);
+        alert("Failed to place order");
     });
+
 }
 
 
