@@ -54,8 +54,8 @@ const Razorpay = require("razorpay");
 
 require("dotenv").config();
 
-const Menu = require("./models/menu");
-const Cart = require("./models/cart");
+const Menu = require("./models/Menu");
+const Cart = require("./models/Cart");
 const Order = require("./models/Order");
 
 
