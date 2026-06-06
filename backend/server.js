@@ -102,7 +102,7 @@
 // ===============================
 // IMPORTS
 // ===============================
-
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 const express = require("express");
@@ -115,8 +115,17 @@ const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
-
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => {
+    console.log("MongoDB Connected");
+})
+.catch((error) => {
+    console.log(error);
+});
 console.log(process.env.RAZORPAY_KEY_ID);
+const Menu = require("./models/menu");
+const Cart = require("./models/cart");
+const Order = require("./models/Order");
 // ===============================
 // APP SETUP
 // ===============================
@@ -343,23 +352,23 @@ app.get("/menu", (req, res) => {
 // });
 
 
-app.post("/order",(req,res)=>{
+// app.post("/order",(req,res)=>{
 
-    console.log("New Order Received:");
-    console.log(req.body);
+//     console.log("New Order Received:");
+//     console.log(req.body);
 
-    orders.push({
-    items: req.body,
-    status: "new"
-});
+//     orders.push({
+//     items: req.body,
+//     status: "new"
+// });
 
-    res.send({
-        message:"Order Saved",
+//     res.send({
+//         message:"Order Saved",
 
-        orders:orders
-    });
+//         orders:orders
+//     });
 
-});
+// });
 
 // app.post("/order/status/:index",(req,res)=>{
 //     console.log("status fetched from beckend");
@@ -406,15 +415,27 @@ app.post("/order",(req,res)=>{
 //     });
 
 
-app.post("/order/status/:index", (req, res) => {
-    let index = Number(req.params.index);
+app.post("/order/status/:id", async (req, res) => {
+    try {
+        const order = await Order.findByIdAndUpdate(
+            req.params.id,
+            { status: req.body.status },
+            { new: true }
+        );
 
-    orders[index].status = req.body.status;
+        const orders = await Order.find().sort({ createdAt: -1 });
 
-    res.send({
-        message: "Order status updated",
-        orders: orders
-    });
+        res.send({
+            message: "Order status updated",
+            order: order,
+            orders: orders
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            message: error.message
+        });
+    }
 });
 
 app.post("/cart/clear",(req,res)=>{
@@ -500,9 +521,16 @@ menu.push(NewItem);
 
 })
 
-app.get("/orders", (req, res) => {
-    console.log("order is fetched on admins'page");
-    res.send(orders);
+app.get("/orders", async (req, res) => {
+    try {
+        const orders = await Order.find().sort({ createdAt: -1 });
+        res.send(orders);
+    }
+    catch (error) {
+        res.status(500).send({
+            message: error.message
+        });
+    }
 });
 
 app.delete("/menu/:name",(req,res)=>{
@@ -648,6 +676,41 @@ res.send({
     verified:true
 });
 });
+
+
+
+
+app.post("/order", async (req, res) => {
+
+    try {
+
+        let total = 0;
+
+        for (let i = 0; i < req.body.length; i++) {
+            total += req.body[i].price * req.body[i].quantity;
+        }
+
+        const order = await Order.create({
+            items: req.body,
+            total: total
+        });
+
+        res.send({
+            message: "Order Saved",
+            order: order
+        });
+
+    }
+    catch(error){
+
+        res.status(500).send({
+            message: error.message
+        });
+
+    }
+
+});
+
 // ===============================
 // SERVER START
 // ===============================
