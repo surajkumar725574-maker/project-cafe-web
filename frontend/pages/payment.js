@@ -452,6 +452,8 @@ function paymentFailureHandler(error) {
 // This should happen only after successful payment.
 //
 
+
+
 function placeOrder() {
 
     fetch("https://project-cafe-web.onrender.com/order",{
@@ -461,20 +463,32 @@ function placeOrder() {
             "Content-Type":"application/json"
         }
     })
-    .then(function (response){
+    .then(function(response){
         return response.json();
     })
     .then(function(data){
-        // orders=data.orders,
-        // console.log(orders);
-        console.log(data.message);
-        clearCart();
-    })
-    // POST /order
-    // body: cart
-    // after success:
-    // clearCart()
 
+        console.log("Order saved:", data);
+
+        // Save order id in browser
+
+        localStorage.setItem(
+            "currentOrderId",
+            data.order._id
+        );
+
+        clearCart();
+
+        // Redirect after small delay
+
+        setTimeout(function(){
+
+            window.location.href =
+            `order-status.html?id=${data.order._id}`;
+
+        },1000);
+
+    });
 }
 
 

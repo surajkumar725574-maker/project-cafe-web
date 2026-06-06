@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Order Status</title>
+
+    <!-- Main project stylesheet -->
+    <link rel="stylesheet" href="../style.css">
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         ORDER STATUS PAGE
+    ======================================================
+
+    Purpose:
+
+    1. Show customer's current order
+    2. Show order status like Zomato / Swiggy
+    3. Show timeline like Flipkart order tracker
+    4. Keep checking backend for latest admin updates
+
+    Flow:
+
+    User places order
+        ↓
+    Backend returns order._id
+        ↓
+    User redirects to:
+    order-status.html?id=ORDER_ID
+        ↓
+    This page reads ORDER_ID from URL
+        ↓
+    This page fetches latest order from backend
+
+    ====================================================== -->
+
+
+    <main class="order-status-page">
+
+        <section class="order-status-card">
+
+            <h1>Your Order</h1>
+
+            <p id="status-text">
+                Loading order status...
+            </p>
+
+
+            <!-- =====================================================
+                 OLD SIMPLE TIMELINE STRUCTURE
+            ======================================================
+
+            Earlier idea:
+
+            <div class="timeline">
+                <div class="step" id="step-new">● Order Placed</div>
+                <div class="step" id="step-accepted">● Accepted</div>
+                <div class="step" id="step-preparing">● Preparing</div>
+                <div class="step" id="step-completed">● Completed</div>
+                <div class="step" id="step-cancelled">● Cancelled</div>
+            </div>
+
+            Why we improved it:
+
+            1. It only showed dots as text.
+            2. It was harder to style like Flipkart.
+            3. It did not clearly separate dot, line, title, and time.
+            4. Real tracking UI needs structured parts.
+
+            New method:
+
+            Each step has:
+            - dot
+            - line
+            - content
+            - time text
+
+            ====================================================== -->
+
+
+            <div class="timeline">
+
+                <div class="timeline-step" id="step-new">
+
+                    <div class="timeline-marker">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-line"></span>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>Order Placed</h3>
+                        <p id="time-new">Waiting...</p>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step" id="step-accepted">
+
+                    <div class="timeline-marker">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-line"></span>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>Accepted</h3>
+                        <p id="time-accepted">Pending</p>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step" id="step-preparing">
+
+                    <div class="timeline-marker">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-line"></span>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>Preparing</h3>
+                        <p id="time-preparing">Pending</p>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step" id="step-completed">
+
+                    <div class="timeline-marker">
+                        <span class="timeline-dot"></span>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>Completed</h3>
+                        <p id="time-completed">Pending</p>
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step cancelled-step" id="step-cancelled">
+
+                    <div class="timeline-marker">
+                        <span class="timeline-dot"></span>
+                    </div>
+
+                    <div class="timeline-content">
+                        <h3>Cancelled</h3>
+                        <p id="time-cancelled">Only shown if order is cancelled</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER ITEMS -->
+
+            <h2>Order Items</h2>
+
+            <div id="order-items">
+                Loading items...
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="../order-status.js"></script>
+
+</body>
+
+</html>
