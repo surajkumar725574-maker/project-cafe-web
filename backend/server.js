@@ -53,6 +53,8 @@ const crypto = require("crypto");
 const Razorpay = require("razorpay");
 
 require("dotenv").config();
+console.log("KEY ID:", process.env.RAZORPAY_KEY_ID);
+console.log("KEY SECRET:", process.env.RAZORPAY_KEY_SECRET);
 
 const Menu = require("./models/Menu");
 const Cart = require("./models/Cart");
