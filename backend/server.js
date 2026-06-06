@@ -645,6 +645,35 @@ app.get("/orders", async function (req, res) {
 });
 
 
+app.get("/order/:id", async function(req, res) {
+
+    try {
+
+        const order = await Order.findById(
+            req.params.id
+        );
+
+        if (!order) {
+
+            return res.status(404).send({
+                message: "Order not found"
+            });
+
+        }
+
+        res.send(order);
+
+    }
+    catch(error) {
+
+        res.status(500).send({
+            message: error.message
+        });
+
+    }
+
+});
+
 // ORDER STATUS
 //
 // Your older admin frontend used index:
