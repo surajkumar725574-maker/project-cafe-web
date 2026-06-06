@@ -467,6 +467,11 @@ function placeOrder() {
         return response.json();
     })
     .then(function(data){
+       console.log("FULL RESPONSE:");
+console.dir(data);
+alert(JSON.stringify(data));
+    })
+    .then(function(data){
 
         console.log("Order saved:", data);
 
