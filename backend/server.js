@@ -53,8 +53,7 @@ const crypto = require("crypto");
 const Razorpay = require("razorpay");
 
 require("dotenv").config();
-console.log("KEY ID:", process.env.RAZORPAY_KEY_ID);
-console.log("KEY SECRET:", process.env.RAZORPAY_KEY_SECRET);
+
 
 const Menu = require("./models/Menu");
 const Cart = require("./models/Cart");
@@ -192,8 +191,6 @@ app.get("/menu", async function (req, res) {
     try {
         const menu = await Menu.find();
 
-        console.log("MENU COUNT:", menu.length);
-
         res.send(menu);
     }
     catch (error) {
@@ -202,8 +199,6 @@ app.get("/menu", async function (req, res) {
         });
     }
 });
-
-
 // OLD:
 // menu.push(NewItem)
 //
@@ -621,26 +616,7 @@ app.post("/order", async function (req, res) {
 // GET ONE ORDER BY ID
 // User page can use this route to check live order status.
 
-app.get("/order/:id", async function (req, res) {
-    try {
-        const order = await Order.findById(req.params.id);
 
-        if (!order) {
-            res.status(404).send({
-                message: "Order not found"
-            });
-
-            return;
-        }
-
-        res.send(order);
-    }
-    catch (error) {
-        res.status(500).send({
-            message: error.message
-        });
-    }
-});
 
 
 // Admin panel gets all orders.
@@ -660,34 +636,39 @@ app.get("/orders", async function (req, res) {
     }
 });
 
+// =====================================================
+// GET ONE ORDER BY ID
+// =====================================================
+//
+// Used by order-status.html.
+//
+// Customer page calls:
+//
+// GET /order/:id
+//
+// This returns only that customer's order,
+// not all orders.
+//
 
-app.get("/order/:id", async function(req, res) {
-
+app.get("/order/:id", async function (req, res) {
     try {
-
-        const order = await Order.findById(
-            req.params.id
-        );
+        const order = await Order.findById(req.params.id);
 
         if (!order) {
-
-            return res.status(404).send({
+            res.status(404).send({
                 message: "Order not found"
             });
 
+            return;
         }
 
         res.send(order);
-
     }
-    catch(error) {
-
+    catch (error) {
         res.status(500).send({
             message: error.message
         });
-
     }
-
 });
 
 // ORDER STATUS
@@ -797,12 +778,80 @@ app.get("/order/:id", async function(req, res) {
 //         });
 //     }
 // });
+// app.post("/order/status/:id", async function (req, res) {
+//     try {
+//         const id = req.params.id;
+//         const newStatus = req.body.status;
+
+//         console.log("Status update request:", id, newStatus);
+
+//         if (!newStatus) {
+//             return res.status(400).json({
+//                 message: "Status is required"
+//             });
+//         }
+
+//         if (!mongoose.Types.ObjectId.isValid(id)) {
+//             return res.status(400).json({
+//                 message: "Invalid MongoDB order id"
+//             });
+//         }
+
+//         const updatedOrder = await Order.findByIdAndUpdate(
+//             id,
+//             { status: newStatus },
+//             { new: true }
+//         );
+
+//         if (!updatedOrder) {
+//             return res.status(404).json({
+//                 message: "Order not found"
+//             });
+//         }
+
+//         const refreshedOrders = await Order.find().sort({
+//             createdAt: -1
+//         });
+
+//         res.json({
+//             message: "Order status updated",
+//             order: updatedOrder,
+//             orders: refreshedOrders
+//         });
+
+//     } catch (error) {
+//         console.log("Order status update error:", error);
+
+//         res.status(500).json({
+//             message: error.message
+//         });
+//     }
+// });
+// =====================================================
+// UPDATE ORDER STATUS
+// =====================================================
+//
+// Admin panel calls this route.
+//
+// Example:
+//
+// POST /order/status/6860abcd...
+//
+// body:
+// {
+//     status: "accepted"
+// }
+//
+// This updates:
+// 1. status
+// 2. acceptedAt / preparingAt / completedAt / cancelledAt
+//
+// =====================================================
+
 app.post("/order/status/:id", async function (req, res) {
     try {
         const id = req.params.id;
         const newStatus = req.body.status;
-
-        console.log("Status update request:", id, newStatus);
 
         if (!newStatus) {
             return res.status(400).json({
@@ -816,10 +865,32 @@ app.post("/order/status/:id", async function (req, res) {
             });
         }
 
+        let updateData = {
+            status: newStatus
+        };
+
+        if (newStatus === "accepted") {
+            updateData.acceptedAt = new Date();
+        }
+
+        if (newStatus === "preparing") {
+            updateData.preparingAt = new Date();
+        }
+
+        if (newStatus === "completed") {
+            updateData.completedAt = new Date();
+        }
+
+        if (newStatus === "cancelled") {
+            updateData.cancelledAt = new Date();
+        }
+
         const updatedOrder = await Order.findByIdAndUpdate(
             id,
-            { status: newStatus },
-            { new: true }
+            updateData,
+            {
+                new: true
+            }
         );
 
         if (!updatedOrder) {
@@ -838,15 +909,15 @@ app.post("/order/status/:id", async function (req, res) {
             orders: refreshedOrders
         });
 
-    } catch (error) {
-        console.log("Order status update error:", error);
+    }
+    catch (error) {
 
         res.status(500).json({
             message: error.message
         });
+
     }
 });
-
 
 
 // =====================================================
