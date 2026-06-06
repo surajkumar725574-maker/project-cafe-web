@@ -12,7 +12,6 @@
 
     <title>Order Status</title>
 
-    <!-- Main project stylesheet -->
     <link rel="stylesheet" href="../style.css">
 
 </head>
@@ -26,22 +25,25 @@
     Purpose:
 
     1. Show customer's current order
-    2. Show order status like Zomato / Swiggy
-    3. Show timeline like Flipkart order tracker
-    4. Keep checking backend for latest admin updates
+    2. Show current admin-controlled status
+    3. Show Flipkart-style timeline
+    4. Keep checking backend for status updates
 
     Flow:
 
-    User places order
+    payment.js saves order
         ↓
-    Backend returns order._id
+    backend returns order._id
         ↓
-    User redirects to:
+    user redirects to:
     order-status.html?id=ORDER_ID
         ↓
-    This page reads ORDER_ID from URL
+    this page reads ORDER_ID from URL
         ↓
-    This page fetches latest order from backend
+    this page calls:
+    GET /order/:id
+        ↓
+    timeline updates every 5 seconds
 
     ====================================================== -->
 
@@ -63,28 +65,25 @@
 
             Earlier idea:
 
-            <div class="timeline">
-                <div class="step" id="step-new">● Order Placed</div>
-                <div class="step" id="step-accepted">● Accepted</div>
-                <div class="step" id="step-preparing">● Preparing</div>
-                <div class="step" id="step-completed">● Completed</div>
-                <div class="step" id="step-cancelled">● Cancelled</div>
-            </div>
+            <div class="step">● Order Placed</div>
+            <div class="step">● Accepted</div>
 
             Why we improved it:
 
-            1. It only showed dots as text.
-            2. It was harder to style like Flipkart.
-            3. It did not clearly separate dot, line, title, and time.
-            4. Real tracking UI needs structured parts.
+            1. Dot and line were mixed with text.
+            2. Styling was limited.
+            3. We could not show timestamps cleanly.
+            4. Real order tracking needs marker + line + content.
 
-            New method:
+            Current method:
 
-            Each step has:
-            - dot
-            - line
-            - content
-            - time text
+            timeline-step
+                timeline-marker
+                    timeline-dot
+                    timeline-line
+                timeline-content
+                    heading
+                    timestamp
 
             ====================================================== -->
 
@@ -158,15 +157,13 @@
 
                     <div class="timeline-content">
                         <h3>Cancelled</h3>
-                        <p id="time-cancelled">Only shown if order is cancelled</p>
+                        <p id="time-cancelled">Only shown if cancelled</p>
                     </div>
 
                 </div>
 
             </div>
 
-
-            <!-- ORDER ITEMS -->
 
             <h2>Order Items</h2>
 

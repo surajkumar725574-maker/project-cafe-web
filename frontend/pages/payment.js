@@ -2,173 +2,25 @@
 // PAYMENT PAGE
 // =====================================================
 //
-// This page is only responsible for:
+// Responsibilities:
 //
-// 1. Loading cart from backend
-// 2. Showing final order summary
-// 3. Calculating total payable amount
-// 4. Starting payment
-// 5. After successful payment, placing order
-// 6. Clearing cart
-//
-// It should NOT handle:
-// - increasing quantity
-// - decreasing quantity
-// - menu rendering
-//
-// Those belong to cart.js and food.js.
+// 1. Load cart from backend
+// 2. Show order summary
+// 3. Calculate payable total
+// 4. Start Razorpay payment
+// 5. Verify payment
+// 6. Save order in MongoDB
+// 7. Clear cart
+// 8. Redirect customer to order-status page
 //
 // =====================================================
 
 
 // =====================================================
-// OLD PAYMENT CODE / LEARNING NOTES
-// =====================================================
-//
-// Earlier code:
-//
-// let cart = [];
-//
-// let ordersummary = document.getElementsByClassName("payment-summary");
-// let totalamount = document.getElementsByClassName("payment-summary");
-//
-// Problem 1:
-//
-// getElementsByClassName() returns a collection,
-// not one exact element.
-//
-// So this is unsafe:
-//
-// ordersummary.innerHTML = "";
-//
-// Better:
-//
-// document.getElementById("order-summary")
-//
-// -----------------------------------------------------
-//
-// Problem 2:
-//
-// showOrderSummary();
-// cartLoader();
-//
-// This order is wrong.
-//
-// Why?
-//
-// showOrderSummary() runs immediately.
-// At that time cart is still:
-//
-// []
-//
-// Then cartLoader() fetches cart later.
-//
-// Correct flow:
-//
-// cartLoader()
-// ↓
-// cart = backend data
-// ↓
-// calculateTotal()
-// ↓
-// renderOrderSummary()
-//
-// -----------------------------------------------------
-//
-// Problem 3:
-//
-// localStorage.removeItem("cart")
-//
-// Earlier cart was stored in localStorage.
-// Now cart is stored on backend.
-//
-// So clearing cart should happen through backend:
-//
-// POST /cart/clear
-// or
-// DELETE /cart
-//
+// API BASE URL
 // =====================================================
 
-
-// =====================================================
-// OLD showOrderSummary() IDEA
-// =====================================================
-//
-// function showOrderSummary() {
-//
-//     ordersummary.innerHTML = "";
-//
-//     let total = 0;
-//
-//     for (let i = 0; i < cart.length; i++) {
-//
-//         total += cart[i].price * cart[i].quantity;
-//
-//         ordersummary.innerHTML += `
-//             <div class="ordered-item">
-//                 <p>${cart[i].name} x ${cart[i].quantity}</p>
-//                 = ₹${cart[i].price * cart[i].quantity}
-//             </div>
-//         `;
-//     }
-//
-//     totalamount.innerHTML = `
-//         <div>Total : ₹${total}</div>
-//     `;
-// }
-//
-// Why we are not directly using this now:
-//
-// 1. total should be stored globally for payment.
-// 2. cart should be loaded before rendering.
-// 3. order summary and total should ideally have separate DOM elements.
-//
-// =====================================================
-
-
-// =====================================================
-// OLD placeOrder() IDEA
-// =====================================================
-//
-// function placeOrder() {
-//
-//     fetch("http://localhost:3000/order", {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(cart)
-//     })
-//     .then(function(response) {
-//         return response.json();
-//     })
-//     .then(function(data) {
-//         console.log(data);
-//         localStorage.removeItem("cart");
-//         alert("Order Placed Successfully");
-//     });
-// }
-//
-// Why this must change:
-//
-// Earlier:
-//
-// Place Order
-// ↓
-// order saved immediately
-//
-// But with payment gateway:
-//
-// Pay Now
-// ↓
-// payment success
-// ↓
-// then placeOrder()
-//
-// Because unpaid orders should not reach admin.
-//
-// =====================================================
+const API_URL = "https://project-cafe-web.onrender.com";
 
 
 // =====================================================
@@ -176,17 +28,12 @@
 // =====================================================
 
 let cart = [];
+let total = 0;
 
 
 // =====================================================
 // DOM REFERENCES
 // =====================================================
-//
-// Use ids because payment page has one exact:
-// - order summary box
-// - total amount box
-// - message box
-//
 
 let orderSummary = document.getElementById("order-summary");
 let totalAmount = document.getElementById("total-amount");
@@ -197,56 +44,51 @@ let paymentMessage = document.getElementById("payment-message");
 // CART LOADER
 // =====================================================
 //
-// Purpose:
+// Old issue:
 //
-// Fetch current cart from backend.
-// After cart is received, calculate total and render summary.
+// Earlier cart was localStorage based.
+// Now cart is stored in MongoDB through backend.
+//
+// So payment page fetches cart from backend.
 //
 
 function cartLoader() {
 
-    fetch("https://project-cafe-web.onrender.com/cart")
-    .then(function (response){
+    fetch(`${API_URL}/cart`)
+    .then(function(response) {
         return response.json();
     })
-    .then(function(data){
-        cart=data;
-        console.log(cart);
+    .then(function(data) {
+
+        cart = data;
+
         calculateTotal();
-renderOrderSummary();
+        renderOrderSummary();
+
     })
+    .catch(function(error) {
+
+        console.log("Failed to load cart:", error);
+        paymentMessage.innerText = "Unable to load cart";
+
+    });
+
 }
-    // fetch GET /cart
-    // cart = data
-    // calculateTotal()
-    // renderOrderSummary()
-
-
 
 
 // =====================================================
 // TOTAL CALCULATOR
 // =====================================================
-//
-// Purpose:
-//
-// Loop through cart and calculate final payable amount.
-//
-// total should be reset to 0 each time,
-// otherwise repeated calculations will keep increasing total.
-//
 
-let total=0;
 function calculateTotal() {
-     total=0;
-    for(let i=0;i<cart.length;i++){
-      total+=cart[i].price*cart[i].quantity;
-    }
-    return total;
 
-    // total = 0
-    // loop cart
-    // total += price * quantity
+    total = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+        total += cart[i].price * cart[i].quantity;
+    }
+
+    return total;
 
 }
 
@@ -254,33 +96,49 @@ function calculateTotal() {
 // =====================================================
 // ORDER SUMMARY RENDERER
 // =====================================================
-//
-// Purpose:
-//
-// Render cart items and final total.
-//
-// This function should not fetch.
-// It only uses existing cart and total.
-//
 
 function renderOrderSummary() {
 
-    orderSummary.innerHTML="";
-    for(let i=0;i<cart.length;i++){
-      orderSummary.innerHTML+=`
-      <div id="cart-items">
-   <p>${cart[i].name}:   ${cart[i].price} x ${cart[i].quantity}</p><hr>
+    orderSummary.innerHTML = "";
 
-      `;
+    if (cart.length === 0) {
+
+        orderSummary.innerHTML = `
+            <p>Your cart is empty.</p>
+        `;
+
+        totalAmount.innerHTML = `
+            <div id="total-amount-card">
+                <p>Total amount : ₹0</p>
+            </div>
+        `;
+
+        return;
+
     }
-    totalAmount.innerHTML=`<div id="total-amount-card">
-        <p>Total amount : ₹${total}</p>
-    </div>`;
 
-    // orderSummary.innerHTML = ""
-    // loop cart
-    // show name, quantity, item total
-    // totalAmount.innerHTML = total
+    for (let i = 0; i < cart.length; i++) {
+
+        orderSummary.innerHTML += `
+            <div class="payment-cart-item">
+
+                <p>
+                    <strong>${cart[i].name}</strong>:
+                    ₹${cart[i].price} × ${cart[i].quantity}
+                </p>
+
+                <hr>
+
+            </div>
+        `;
+
+    }
+
+    totalAmount.innerHTML = `
+        <div id="total-amount-card">
+            <p>Total amount : ₹${total}</p>
+        </div>
+    `;
 
 }
 
@@ -289,134 +147,147 @@ function renderOrderSummary() {
 // START PAYMENT
 // =====================================================
 //
-// Purpose:
+// Real flow:
 //
-// Runs when customer clicks Pay Now.
-//
-// For now, this can call fake payment success.
-// Later, Razorpay popup starts here.
+// Customer clicks Pay Now
+// ↓
+// Backend creates Razorpay order
+// ↓
+// Razorpay popup opens
+// ↓
+// On success, paymentSuccessHandler() runs
 //
 
 function startPayment() {
 
-    if(cart.length === 0){
+    if (cart.length === 0) {
+
         paymentMessage.innerText = "Cart is empty";
+
         return;
+
     }
 
-    fetch("https://project-cafe-web.onrender.com/create-razorpay-order",{
-        method:"POST"
-    }
-)
-.then((response)=>response.json())
-.then(function (data)
-{
-    
-let options = {
-    key: "rzp_test_SxrR7Km1WeaFiV",
-    amount: data.amount,
-    currency: data.currency,
-    order_id: data.orderId,
-    name: "Suraj Cafe",
+    fetch(`${API_URL}/create-razorpay-order`, {
+        method: "POST"
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
 
-   handler: function(response){
-    console.log("Payment success response:", response);
-    paymentSuccessHandler();
-}
+        if (!data.orderId) {
+            paymentMessage.innerText = data.message || "Unable to start payment";
+            return;
+        }
 
-};
- let paymentObject=new Razorpay(options);
- paymentObject.on("payment.failed", function(response){
-    console.log("Payment failed:", response.error);
-    paymentFailureHandler(response.error);
-});
-paymentObject.open();
+        let options = {
 
-//  let window_update=paymentObject.open();
+            key: "rzp_test_SxrR7Km1WeaFiV",
 
-// if(window_object){
-//     paymentSuccessHandler();
-//     return;
-// }
-// else{
-//     paymentFailureHandler();
-//     return;
+            amount: data.amount,
 
+            currency: data.currency,
 
-// }
-});
+            order_id: data.orderId,
 
+            name: "Suraj Cafe",
 
+            handler: function(response) {
 
+                paymentSuccessHandler(response);
 
-    // paymentSuccessHandler();
+            }
 
-    // if cart empty:
-    //     show message
-    //     return
+        };
 
-    // fake payment success for now:
-    // paymentSuccessHandler()
+        let paymentObject = new Razorpay(options);
 
+        paymentObject.on("payment.failed", function(response) {
+
+            paymentFailureHandler(response.error);
+
+        });
+
+        paymentObject.open();
+
+    })
+    .catch(function(error) {
+
+        console.log("Payment start failed:", error);
+        paymentMessage.innerText = "Unable to start payment";
+
+    });
 
 }
+
 
 // =====================================================
 // PAYMENT SUCCESS HANDLER
 // =====================================================
 //
-// Purpose:
+// Current learning mode:
 //
-// Only runs after payment succeeds.
-//
-// Real flow:
-//
-// payment success
-// ↓
-// placeOrder()
-// ↓
-// clearCart()
-// ↓
-// show success message
-// ↓
-// redirect
+// Backend still accepts test_payment values.
+// Later, when using real Razorpay response,
+// pass actual response.razorpay_payment_id,
+// response.razorpay_order_id,
+// response.razorpay_signature.
 //
 
-function paymentSuccessHandler() {
+function paymentSuccessHandler(razorpayResponse) {
 
-    fetch("https://project-cafe-web.onrender.com/payment/verify",{
+    fetch(`${API_URL}/payment/verify`, {
 
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
-   razorpay_payment_id: "test_payment",
-    razorpay_order_id: "test_order",
-    razorpay_signature: "test_signature"
 
+            // Temporary test values.
+            // Keep this while backend test verification is active.
 
-        }),
+            razorpay_payment_id: "test_payment",
+            razorpay_order_id: "test_order",
+            razorpay_signature: "test_signature"
+
+            /*
+            Real Razorpay version later:
+
+            razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+            razorpay_order_id: razorpayResponse.razorpay_order_id,
+            razorpay_signature: razorpayResponse.razorpay_signature
+            */
+
+        })
 
     })
-    .then(function(response){
+    .then(function(response) {
         return response.json();
+    })
+    .then(function(data) {
+
+        if (data.verified) {
+
+            placeOrder();
+
+        }
+        else {
+
+            paymentFailureHandler();
+
+        }
 
     })
-    .then(function(data){
+    .catch(function(error) {
 
-    if(data.verified){
-        placeOrder();
-    }
-    else{
-        paymentFailureHandler();
-    }
+        console.log("Payment verification failed:", error);
+        paymentMessage.innerText = "Payment verification failed";
 
-
-
-        
-    })
-
+    });
 
 }
 
@@ -424,57 +295,66 @@ function paymentSuccessHandler() {
 // =====================================================
 // PAYMENT FAILURE HANDLER
 // =====================================================
-//
-// Purpose:
-//
-// Runs if payment fails or user cancels.
-//
 
 function paymentFailureHandler(error) {
+
     if (error && error.description) {
+
         paymentMessage.innerText = error.description;
+
         return;
+
     }
 
     paymentMessage.innerText = "Payment failed. Please try again.";
-}
 
+}
 
 
 // =====================================================
 // PLACE ORDER
 // =====================================================
 //
-// Purpose:
+// Old issue:
 //
-// Send paid cart to backend order system.
+// Earlier order was saved, but redirect failed because
+// data was lost between two .then() blocks.
 //
-// This should happen only after successful payment.
+// Current method:
 //
-
-
+// One clean .then() receives data,
+// checks data.order._id,
+// stores it,
+// clears cart,
+// redirects user to tracking page.
+//
 
 function placeOrder() {
 
-    fetch("https://project-cafe-web.onrender.com/order", {
+    fetch(`${API_URL}/order`, {
+
         method: "POST",
+
         body: JSON.stringify(cart),
+
         headers: {
             "Content-Type": "application/json"
         }
+
     })
     .then(function(response) {
         return response.json();
     })
     .then(function(data) {
 
-        console.log("FULL RESPONSE:");
-        console.dir(data);
-
         if (!data.order || !data.order._id) {
-            alert("Order was not saved properly");
+
             console.log("Invalid order response:", data);
+
+            paymentMessage.innerText = "Order was not saved properly";
+
             return;
+
         }
 
         localStorage.setItem(
@@ -482,19 +362,14 @@ function placeOrder() {
             data.order._id
         );
 
-        clearCart();
-
-        setTimeout(function() {
-
-            window.location.href =
-                `order-status.html?id=${data.order._id}`;
-
-        }, 1000);
+        clearCart(data.order._id);
 
     })
     .catch(function(error) {
+
         console.log("Place order failed:", error);
-        alert("Failed to place order");
+        paymentMessage.innerText = "Failed to place order";
+
     });
 
 }
@@ -504,49 +379,45 @@ function placeOrder() {
 // CLEAR CART
 // =====================================================
 //
-// Purpose:
+// Better flow:
 //
-// Clear backend cart after successful order.
-//
-// Since cart now lives on backend,
-// do not use localStorage.removeItem("cart").
+// Save order first
+// ↓
+// Clear cart
+// ↓
+// Redirect to order-status.html?id=...
 //
 
-function clearCart() {
+function clearCart(orderId) {
 
-    fetch("https://project-cafe-web.onrender.com/cart/clear",{
-        method:"POST"
+    fetch(`${API_URL}/cart/clear`, {
+        method: "POST"
     })
-    .then(function(response){
+    .then(function(response) {
         return response.json();
     })
-    .then(function(data){
-        cart=data.cart;
+    .then(function(data) {
+
+        cart = data.cart;
+
         calculateTotal();
         renderOrderSummary();
 
+        paymentMessage.innerText = "Order placed successfully";
 
-paymentMessage.innerText = "Order placed successfully";
+        window.location.href =
+            `order-status.html?id=${orderId}`;
+
     })
+    .catch(function(error) {
 
-    // POST /cart/clear
-    // or DELETE /cart
+        console.log("Failed to clear cart:", error);
 
-}
+        // Even if cart clear fails, user can still track order.
+        window.location.href =
+            `order-status.html?id=${orderId}`;
 
-
-// =====================================================
-// REDIRECT AFTER SUCCESS
-// =====================================================
-//
-// Purpose:
-//
-// After successful payment + order,
-// move customer to success page or menu page.
-//
-
-function redirectAfterSuccess() {
-    // window.location.href = "success.html"
+    });
 
 }
 
@@ -554,9 +425,6 @@ function redirectAfterSuccess() {
 // =====================================================
 // INITIALIZATION
 // =====================================================
-//
-// Payment page starts by loading backend cart.
-//
 
 cartLoader();
 

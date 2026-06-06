@@ -5,19 +5,11 @@
 // Responsibilities:
 //
 // 1. Read order id from URL
-// 2. Fetch that exact order from backend
-// 3. Show current order status
-// 4. Render ordered items
-// 5. Update timeline according to admin status
-// 6. Keep checking backend repeatedly for live updates
-//
-// Backend route used:
-//
-// GET /order/:id
-//
-// Example:
-//
-// /order/6860abcd123
+// 2. Fetch exact order from backend
+// 3. Show current status
+// 4. Render order items
+// 5. Render timeline
+// 6. Poll backend every 5 seconds
 //
 // =====================================================
 
@@ -33,15 +25,13 @@ const API_URL = "https://project-cafe-web.onrender.com";
 // READ ORDER ID FROM URL
 // =====================================================
 //
-// URL example:
+// URL:
 //
-// order-status.html?id=6860abcd123
+// order-status.html?id=ORDER_ID
 //
 // window.location.search gives:
 //
-// ?id=6860abcd123
-//
-// URLSearchParams helps extract only the id value.
+// ?id=ORDER_ID
 //
 
 const params = new URLSearchParams(window.location.search);
@@ -50,47 +40,41 @@ let orderId = params.get("id");
 
 
 // =====================================================
+// FALLBACK ORDER ID
+// =====================================================
+//
+// If user opens order-status.html directly,
+// URL may not contain id.
+//
+// In that case we try localStorage.
+// payment.js stores currentOrderId after order save.
+//
+
+if (!orderId) {
+
+    orderId = localStorage.getItem("currentOrderId");
+
+}
+
+
+// =====================================================
 // DOM REFERENCES
 // =====================================================
 
 let statusText = document.getElementById("status-text");
-
 let orderItems = document.getElementById("order-items");
 
 
 // =====================================================
-// OLD BASIC FETCH IDEA
+// FETCH ORDER STATUS
 // =====================================================
 //
-// Earlier:
+// This asks backend:
 //
-// function fetchOrderStatus() {
-//     fetch(`${API_URL}/order/${orderId}`)
-//     .then(function(response) {
-//         return response.json();
-//     })
-//     .then(function(order) {
-//         renderOrder(order);
-//     })
-//     .catch(function(error) {
-//         console.log("Failed to fetch order:", error);
-//         statusText.innerText = "Unable to load order status";
-//     });
-// }
+// GET /order/:id
 //
-// Why we improved it:
+// Backend returns one order object.
 //
-// 1. It assumed backend always returns valid JSON.
-// 2. It did not check if orderId exists.
-// 3. If backend returned 404 or 500, user saw unclear error.
-// 4. Better frontend should handle failed response properly.
-//
-// =====================================================
-
-
-// =====================================================
-// FETCH ORDER STATUS FROM BACKEND
-// =====================================================
 
 function fetchOrderStatus() {
 
@@ -100,7 +84,8 @@ function fetchOrderStatus() {
 
         orderItems.innerHTML = `
             <p>
-                This page needs a valid order id.
+                No recent order found.
+                Please place an order first.
             </p>
         `;
 
@@ -137,23 +122,6 @@ function fetchOrderStatus() {
 // =====================================================
 // RENDER ORDER
 // =====================================================
-//
-// This function receives one order object from backend.
-//
-// Example order:
-//
-// {
-//     _id: "...",
-//     items: [...],
-//     total: 250,
-//     status: "accepted",
-//     createdAt: "...",
-//     acceptedAt: "...",
-//     preparingAt: null,
-//     completedAt: null,
-//     cancelledAt: null
-// }
-//
 
 function renderOrder(order) {
 
@@ -168,55 +136,16 @@ function renderOrder(order) {
 
 
 // =====================================================
-// OLD TIMELINE METHOD
-// =====================================================
-//
-// Earlier:
-//
-// function renderTimeline(status) {
-//     let steps = ["new", "accepted", "preparing", "completed"];
-//
-//     document.querySelectorAll(".step").forEach(function(step) {
-//         step.classList.remove("active");
-//     });
-//
-//     if (status === "cancelled") {
-//         document.getElementById("step-cancelled").classList.add("active");
-//         return;
-//     }
-//
-//     let currentIndex = steps.indexOf(status);
-//
-//     for (let i = 0; i <= currentIndex; i++) {
-//         document.getElementById("step-" + steps[i]).classList.add("active");
-//     }
-// }
-//
-// Why we dropped this:
-//
-// 1. It only received status.
-// 2. It could not show timestamps.
-// 3. It could not access createdAt, acceptedAt, preparingAt.
-// 4. Real tracker needs full order data, not just status.
-//
-// New method:
-//
-// renderTimeline(order)
-//
-// Because order contains:
-// - status
-// - createdAt
-// - acceptedAt
-// - preparingAt
-// - completedAt
-// - cancelledAt
-//
-// =====================================================
-
-
-// =====================================================
 // RENDER TIMELINE
 // =====================================================
+//
+// Normal flow:
+//
+// new → accepted → preparing → completed
+//
+// Cancelled is treated separately because it is not a
+// normal forward step. It can happen at any point.
+//
 
 function renderTimeline(order) {
 
@@ -249,6 +178,10 @@ function renderTimeline(order) {
 
     let currentIndex = normalSteps.indexOf(status);
 
+    if (currentIndex === -1) {
+        return;
+    }
+
     for (let i = 0; i <= currentIndex; i++) {
 
         let stepId = "step-" + normalSteps[i];
@@ -265,10 +198,6 @@ function renderTimeline(order) {
 // =====================================================
 // RESET TIMELINE
 // =====================================================
-//
-// Before rendering current status, remove old active classes.
-// This prevents old UI state from staying stuck.
-//
 
 function resetTimeline() {
 
@@ -287,15 +216,8 @@ function resetTimeline() {
 
 
 // =====================================================
-// SET TIME TEXT
+// SET TIMELINE TIME
 // =====================================================
-//
-// If timestamp exists:
-// show readable time.
-//
-// If timestamp does not exist:
-// show Pending.
-//
 
 function setTimelineTime(step, timeValue) {
 
@@ -405,14 +327,6 @@ function formatStatus(status) {
 // =====================================================
 // FORMAT TIME
 // =====================================================
-//
-// MongoDB stores date like:
-//
-// 2026-06-06T12:45:22.123Z
-//
-// new Date() converts it into a JavaScript Date object.
-// toLocaleTimeString() makes it readable.
-//
 
 function formatTime(timeValue) {
 
@@ -437,22 +351,10 @@ fetchOrderStatus();
 // LIVE UPDATE CHECKER
 // =====================================================
 //
-// Every 5 seconds, this page asks backend:
+// Polling:
 //
-// "What is the current status of this order?"
-//
-// If admin changed status from admin panel,
-// backend returns new status,
-// and timeline updates automatically.
-//
-// This is called polling.
-//
-// Why polling:
-//
-// 1. Easy for beginner project.
-// 2. No WebSocket complexity.
-// 3. Works well for small café system.
-// 4. Similar result for user, even if not technically real-time.
+// Every 5 seconds this page asks backend for latest order.
+// If admin updates status, user page updates automatically.
 //
 
 setInterval(fetchOrderStatus, 5000);

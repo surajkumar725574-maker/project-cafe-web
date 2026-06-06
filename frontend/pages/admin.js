@@ -215,20 +215,20 @@ function renderOrders() {
 <div class="order-actions">
 
     <button onclick="updateOrderStatus('${orders[i]._id}', 'accepted')">
-        Accept
-    </button>
+    Accept
+</button>
 
-    <button onclick="updateOrderStatus('${orders[i]._id}', 'preparing')">
-        Preparing
-    </button>
+<button onclick="updateOrderStatus('${orders[i]._id}', 'preparing')">
+    Preparing
+</button>
 
-    <button onclick="updateOrderStatus('${orders[i]._id}', 'completed')">
-        Completed
-    </button>
+<button onclick="updateOrderStatus('${orders[i]._id}', 'completed')">
+    Completed
+</button>
 
-    <button onclick="updateOrderStatus('${orders[i]._id}', 'cancelled')">
-        Cancelled
-    </button>
+<button onclick="updateOrderStatus('${orders[i]._id}', 'cancelled')">
+    Cancelled
+</button>
 
 </div>
         `;
