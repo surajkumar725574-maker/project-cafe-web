@@ -589,7 +589,7 @@ function closeSidebar() {
 // =====================================================
 // INITIAL PAGE STATE
 // =====================================================
-
+console.log("Order id:", orders[i]._id);
 loadLoginPage();
 
 console.log("admin.js connected");

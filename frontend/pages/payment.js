@@ -415,7 +415,7 @@ function clearCart(orderId) {
 
         // Even if cart clear fails, user can still track order.
         window.location.href =
-            `order-status.html?id=${orderId}`;
+            `order-status.html?id=${data.order._id}`;
 
     });
 
