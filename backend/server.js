@@ -602,6 +602,29 @@ app.post("/order", async function (req, res) {
         });
     }
 });
+// GET ONE ORDER BY ID
+// User page can use this route to check live order status.
+
+app.get("/order/:id", async function (req, res) {
+    try {
+        const order = await Order.findById(req.params.id);
+
+        if (!order) {
+            res.status(404).send({
+                message: "Order not found"
+            });
+
+            return;
+        }
+
+        res.send(order);
+    }
+    catch (error) {
+        res.status(500).send({
+            message: error.message
+        });
+    }
+});
 
 
 // Admin panel gets all orders.
@@ -632,41 +655,85 @@ app.get("/orders", async function (req, res) {
 //
 // This route supports both.
 
+// app.post("/order/status/:id", async function (req, res) {
+//     try {
+//         const id = req.params.id;
+//         const newStatus = req.body.status;
+
+//         let updatedOrder;
+
+//         if (mongoose.Types.ObjectId.isValid(id)) {
+//             updatedOrder = await Order.findByIdAndUpdate(
+//                 id,
+//                 {
+//                     status: newStatus
+//                 },
+//                 {
+//                     new: true
+//                 }
+//             );
+//         }
+//         else {
+//             const orders = await Order.find().sort({
+//                 createdAt: -1
+//             });
+
+//             const index = Number(id);
+
+//             if (Number.isNaN(index) || !orders[index]) {
+//                 res.status(404).send({
+//                     message: "Order not found"
+//                 });
+
+//                 return;
+//             }
+
+//             orders[index].status = newStatus;
+//             updatedOrder = await orders[index].save();
+//         }
+
+//         const refreshedOrders = await Order.find().sort({
+//             createdAt: -1
+//         });
+
+//         res.send({
+//             message: "Order status updated",
+//             order: updatedOrder,
+//             orders: refreshedOrders
+//         });
+//     }
+//     catch (error) {
+//         res.status(500).send({
+//             message: error.message
+//         });
+//     }
+// });
+
 app.post("/order/status/:id", async function (req, res) {
     try {
         const id = req.params.id;
         const newStatus = req.body.status;
 
-        let updatedOrder;
-
-        if (mongoose.Types.ObjectId.isValid(id)) {
-            updatedOrder = await Order.findByIdAndUpdate(
-                id,
-                {
-                    status: newStatus
-                },
-                {
-                    new: true
-                }
-            );
-        }
-        else {
-            const orders = await Order.find().sort({
-                createdAt: -1
+        if (!newStatus) {
+            res.status(400).send({
+                message: "Status is required"
             });
 
-            const index = Number(id);
+            return;
+        }
 
-            if (Number.isNaN(index) || !orders[index]) {
-                res.status(404).send({
-                    message: "Order not found"
-                });
+        const updatedOrder = await Order.findByIdAndUpdate(
+            id,
+            { status: newStatus },
+            { new: true }
+        );
 
-                return;
-            }
+        if (!updatedOrder) {
+            res.status(404).send({
+                message: "Order not found"
+            });
 
-            orders[index].status = newStatus;
-            updatedOrder = await orders[index].save();
+            return;
         }
 
         const refreshedOrders = await Order.find().sort({
@@ -685,6 +752,7 @@ app.post("/order/status/:id", async function (req, res) {
         });
     }
 });
+
 
 
 // =====================================================
