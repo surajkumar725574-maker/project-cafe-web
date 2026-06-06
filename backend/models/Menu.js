@@ -1,9 +1,22 @@
 const mongoose = require("mongoose");
 
 const menuSchema = new mongoose.Schema({
-    name: String,
-    price: Number,
-    category: String
+
+    name: {
+        type: String,
+        required: true
+    },
+
+    price: {
+        type: Number,
+        required: true
+    },
+
+    category: {
+        type: String,
+        required: true
+    }
+
 });
 
-module.exports = mongoose.model("Menu", menuSchema);
+module.exports = mongoose.model("Menu", menuSchema, "menu");

@@ -176,9 +176,23 @@ app.get("/", function (req, res) {
 // NEW:
 // Fetch menu from MongoDB.
 
+// app.get("/menu", async function (req, res) {
+//     try {
+//         const menu = await Menu.find();
+
+//         res.send(menu);
+//     }
+//     catch (error) {
+//         res.status(500).send({
+//             message: error.message
+//         });
+//     }
+// });
 app.get("/menu", async function (req, res) {
     try {
         const menu = await Menu.find();
+
+        console.log("MENU COUNT:", menu.length);
 
         res.send(menu);
     }
