@@ -18,165 +18,126 @@
 
 <body>
 
-    <!-- =====================================================
-         ORDER STATUS PAGE
-    ======================================================
-
-    Purpose:
-
-    1. Show customer's current order
-    2. Show current admin-controlled status
-    3. Show Flipkart-style timeline
-    4. Keep checking backend for status updates
-
-    Flow:
-
-    payment.js saves order
-        ↓
-    backend returns order._id
-        ↓
-    user redirects to:
-    order-status.html?id=ORDER_ID
-        ↓
-    this page reads ORDER_ID from URL
-        ↓
-    this page calls:
-    GET /order/:id
-        ↓
-    timeline updates every 5 seconds
-
-    ====================================================== -->
-
-
     <main class="order-status-page">
 
-        <section class="order-status-card">
-
-            <h1>Your Order</h1>
-
-            <p id="status-text">
-                Loading order status...
-            </p>
+        <section class="order-status-layout">
 
 
-            <!-- =====================================================
-                 OLD SIMPLE TIMELINE STRUCTURE
-            ======================================================
+            <!-- ===============================
+                 LEFT SIDE: ORDER SUMMARY
+            ================================ -->
 
-            Earlier idea:
+            <div class="order-summary-card">
 
-            <div class="step">● Order Placed</div>
-            <div class="step">● Accepted</div>
+                <h1>Your Order</h1>
 
-            Why we improved it:
+                <p id="status-text">
+                    Loading order status...
+                </p>
 
-            1. Dot and line were mixed with text.
-            2. Styling was limited.
-            3. We could not show timestamps cleanly.
-            4. Real order tracking needs marker + line + content.
+                <h2>Order Summary</h2>
 
-            Current method:
-
-            timeline-step
-                timeline-marker
-                    timeline-dot
-                    timeline-line
-                timeline-content
-                    heading
-                    timestamp
-
-            ====================================================== -->
-
-
-            <div class="timeline">
-
-                <div class="timeline-step" id="step-new">
-
-                    <div class="timeline-marker">
-                        <span class="timeline-dot"></span>
-                        <span class="timeline-line"></span>
-                    </div>
-
-                    <div class="timeline-content">
-                        <h3>Order Placed</h3>
-                        <p id="time-new">Waiting...</p>
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-step" id="step-accepted">
-
-                    <div class="timeline-marker">
-                        <span class="timeline-dot"></span>
-                        <span class="timeline-line"></span>
-                    </div>
-
-                    <div class="timeline-content">
-                        <h3>Accepted</h3>
-                        <p id="time-accepted">Pending</p>
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-step" id="step-preparing">
-
-                    <div class="timeline-marker">
-                        <span class="timeline-dot"></span>
-                        <span class="timeline-line"></span>
-                    </div>
-
-                    <div class="timeline-content">
-                        <h3>Preparing</h3>
-                        <p id="time-preparing">Pending</p>
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-step" id="step-completed">
-
-                    <div class="timeline-marker">
-                        <span class="timeline-dot"></span>
-                    </div>
-
-                    <div class="timeline-content">
-                        <h3>Completed</h3>
-                        <p id="time-completed">Pending</p>
-                    </div>
-
-                </div>
-
-
-                <div class="timeline-step cancelled-step" id="step-cancelled">
-
-                    <div class="timeline-marker">
-                        <span class="timeline-dot"></span>
-                    </div>
-
-                    <div class="timeline-content">
-                        <h3>Cancelled</h3>
-                        <p id="time-cancelled">Only shown if cancelled</p>
-                    </div>
-
+                <div id="order-items">
+                    Loading items...
                 </div>
 
             </div>
 
 
-            <h2>Order Items</h2>
+            <!-- ===============================
+                 RIGHT SIDE: ORDER TRACKING
+            ================================ -->
 
-            <div id="order-items">
-                Loading items...
+            <div class="tracking-card">
+
+                <h2>Order Tracking</h2>
+
+                <div class="timeline">
+
+                    <div class="timeline-step" id="step-new">
+
+                        <div class="timeline-marker">
+                            <span class="timeline-dot"></span>
+                            <span class="timeline-line"></span>
+                        </div>
+
+                        <div class="timeline-content">
+                            <h3>Order Placed</h3>
+                            <p id="time-new">Waiting...</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-step" id="step-accepted">
+
+                        <div class="timeline-marker">
+                            <span class="timeline-dot"></span>
+                            <span class="timeline-line"></span>
+                        </div>
+
+                        <div class="timeline-content">
+                            <h3>Accepted</h3>
+                            <p id="time-accepted">Pending</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-step" id="step-preparing">
+
+                        <div class="timeline-marker">
+                            <span class="timeline-dot"></span>
+                            <span class="timeline-line"></span>
+                        </div>
+
+                        <div class="timeline-content">
+                            <h3>Preparing</h3>
+                            <p id="time-preparing">Pending</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-step" id="step-completed">
+
+                        <div class="timeline-marker">
+                            <span class="timeline-dot"></span>
+                        </div>
+
+                        <div class="timeline-content">
+                            <h3>Completed</h3>
+                            <p id="time-completed">Pending</p>
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="timeline-step cancelled-step"
+                        id="step-cancelled"
+                    >
+
+                        <div class="timeline-marker">
+                            <span class="timeline-dot"></span>
+                        </div>
+
+                        <div class="timeline-content">
+                            <h3>Cancelled</h3>
+                            <p id="time-cancelled">Only shown if cancelled</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </section>
 
     </main>
 
-
-    <script src="order-status.js"></script>
+    <script src="../order-status.js"></script>
 
 </body>
 
