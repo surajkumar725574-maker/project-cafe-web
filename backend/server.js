@@ -709,17 +709,66 @@ app.get("/orders", async function (req, res) {
 //     }
 // });
 
+// app.post("/order/status/:id", async function (req, res) {
+//     try {
+//         const id = req.params.id;
+//         const newStatus = req.body.status;
+
+//         if (!newStatus) {
+//             res.status(400).send({
+//                 message: "Status is required"
+//             });
+
+//             return;
+//         }
+
+//         const updatedOrder = await Order.findByIdAndUpdate(
+//             id,
+//             { status: newStatus },
+//             { new: true }
+//         );
+
+//         if (!updatedOrder) {
+//             res.status(404).send({
+//                 message: "Order not found"
+//             });
+
+//             return;
+//         }
+
+//         const refreshedOrders = await Order.find().sort({
+//             createdAt: -1
+//         });
+
+//         res.send({
+//             message: "Order status updated",
+//             order: updatedOrder,
+//             orders: refreshedOrders
+//         });
+//     }
+//     catch (error) {
+//         res.status(500).send({
+//             message: error.message
+//         });
+//     }
+// });
 app.post("/order/status/:id", async function (req, res) {
     try {
         const id = req.params.id;
         const newStatus = req.body.status;
 
+        console.log("Status update request:", id, newStatus);
+
         if (!newStatus) {
-            res.status(400).send({
+            return res.status(400).json({
                 message: "Status is required"
             });
+        }
 
-            return;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid MongoDB order id"
+            });
         }
 
         const updatedOrder = await Order.findByIdAndUpdate(
@@ -729,25 +778,25 @@ app.post("/order/status/:id", async function (req, res) {
         );
 
         if (!updatedOrder) {
-            res.status(404).send({
+            return res.status(404).json({
                 message: "Order not found"
             });
-
-            return;
         }
 
         const refreshedOrders = await Order.find().sort({
             createdAt: -1
         });
 
-        res.send({
+        res.json({
             message: "Order status updated",
             order: updatedOrder,
             orders: refreshedOrders
         });
-    }
-    catch (error) {
-        res.status(500).send({
+
+    } catch (error) {
+        console.log("Order status update error:", error);
+
+        res.status(500).json({
             message: error.message
         });
     }
