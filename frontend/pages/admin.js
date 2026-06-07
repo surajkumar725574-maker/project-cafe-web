@@ -157,6 +157,121 @@ function fetchOrders() {
 
 }
 
+//search orders by id
+function searchOrderById() {
+
+    let orderId = document
+        .getElementById("search-order-id")
+        .value
+        .trim();
+
+    if (orderId === "") {
+        document.getElementById("searched-order").innerHTML = `
+            <div class="cart-items">
+                <p>Please enter an Order ID.</p>
+            </div>
+        `;
+        return;
+    }
+
+    fetch(`${API_URL}/order/${orderId}`)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+
+        console.log(data);
+
+        renderSearchedOrder(data);
+
+    })
+    .catch(function(error) {
+
+        console.log("Search failed:", error);
+
+        document.getElementById("searched-order").innerHTML = `
+            <div class="cart-items">
+                <p>Unable to search order.</p>
+            </div>
+        `;
+
+    });
+
+}
+
+function renderSearchedOrder(order) {
+
+    let searchedOrderContainer =
+        document.getElementById("searched-order");
+
+    searchedOrderContainer.innerHTML = "";
+
+    if (!order || !order._id) {
+        searchedOrderContainer.innerHTML = `
+            <div class="cart-items">
+                <p>Order not found. Please enter a valid Order ID.</p>
+            </div>
+        `;
+        return;
+    }
+
+    let orderItems = order.items || [];
+    let orderStatus = order.status || "new";
+    let orderId = order._id;
+
+    searchedOrderContainer.innerHTML = `
+        <div class="cart-items">
+
+            <h3>Search Result</h3>
+
+            <p>Order Id : ${orderId}</p>
+
+            <p>Status: ${orderStatus}</p>
+
+            <div class="render-items">
+                ${renderItems(orderItems)}
+            </div>
+
+            <p>Total: ₹${order.total}</p>
+
+            <div class="order-actions">
+
+                <button onclick="updateOrderStatus('${orderId}', 'accepted')">
+                    Accept
+                </button>
+
+                <button onclick="updateOrderStatus('${orderId}', 'preparing')">
+                    Preparing
+                </button>
+
+                <button onclick="updateOrderStatus('${orderId}', 'completed')">
+                    Completed
+                </button>
+
+                <button onclick="updateOrderStatus('${orderId}', 'cancelled')">
+                    Cancelled
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // =====================================================
 // RENDER ALL ORDERS
@@ -205,7 +320,6 @@ function renderOrders() {
             <div class="cart-items">
 
                 <h3>Order No: ${i + 1}</h3>
-
                 <p>Status: ${orderStatus}</p>
 
                 <div class="render-items">
@@ -589,7 +703,7 @@ function closeSidebar() {
 // =====================================================
 // INITIAL PAGE STATE
 // =====================================================
-console.log("Order id:", orders[i]._id);
+
 loadLoginPage();
 
 console.log("admin.js connected");
