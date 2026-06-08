@@ -211,7 +211,7 @@ function renderSearchedOrder(order) {
     if (!order || !order._id) {
         searchedOrderContainer.innerHTML = `
             <div class="cart-items">
-                <p>Order not found. Please enter a valid Order ID.</p>
+                <p>Order not found. Please enter a valid Order ID or Order No.</p>
             </div>
         `;
         return;
@@ -226,8 +226,12 @@ function renderSearchedOrder(order) {
 
             <h3>Search Result</h3>
 
-            <p>Order Id : ${orderId}</p>
-            <p>Order NO: ${order.orderNumber||"Not Assigned"}</p>
+            <p>Order No: ${order.orderNumber || "Not Assigned"}</p>
+
+            <p class="order-id-text">
+                Order Id: ${orderId}
+            </p>
+
             <p>Status: ${orderStatus}</p>
 
             <div class="render-items">
@@ -259,13 +263,6 @@ function renderSearchedOrder(order) {
         </div>
     `;
 }
-
-
-
-
-
-
-
 
 
 
