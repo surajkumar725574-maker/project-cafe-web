@@ -87,7 +87,10 @@ function calculateTotal() {
     for (let i = 0; i < cart.length; i++) {
         total += cart[i].price * cart[i].quantity;
     }
-
+document.getElementById("total-amount").innerHTML =
+`₹${total}`;
+document.getElementById("sticky-total").innerText =
+`₹${total}`;
     return total;
 
 }

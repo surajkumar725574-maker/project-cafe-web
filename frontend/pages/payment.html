@@ -93,24 +93,29 @@
 
         <section id="payment-section">
 
-            <h2>Payment</h2>
+    <div class="payment-bar">
 
-            <!--
-                Later:
-                Razorpay button starts here
+        <div class="payment-total">
 
-                For now:
-                startPayment()
-            -->
+            <p>Total Amount</p>
 
-            <button id="pay-now-btn"
-                    onclick="startPayment()">
+            <h3 id="sticky-total">
+                ₹0
+            </h3>
 
-                Pay Now
+        </div>
 
-            </button>
+        <button
+            id="pay-now-btn"
+            onclick="startPayment()">
 
-        </section>
+            Pay Now
+
+        </button>
+
+    </div>
+
+</section>
 
 
         <!-- ==================================

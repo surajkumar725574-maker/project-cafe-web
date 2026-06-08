@@ -1204,3 +1204,425 @@ body {
     padding: 8px;
     border-radius: 8px;
 }
+/* =====================================================
+   ADMIN LOGIN VISIBILITY FIX
+===================================================== */
+
+#admin-panel {
+    display: none;
+}
+
+#login-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+
+/* =====================================================
+   ADMIN HEADER + SIDEBAR OVERLAP FIX
+===================================================== */
+
+#admin-panel header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    min-height: 86px;
+
+    padding: 18px 24px 18px 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(43, 20, 8, 0.96),
+            rgba(194, 106, 0, 0.88)
+        );
+}
+
+#admin-panel header h1 {
+    margin: 0;
+
+    font-size: clamp(26px, 4vw, 42px);
+    line-height: 1.1;
+}
+
+#admin-panel header .sidebar-toggle {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    margin: 0;
+}
+
+#admin-panel header .sidebar-toggle:hover {
+    transform: translateY(-50%) scale(1.04);
+}
+
+
+/* =====================================================
+   ADMIN SEARCH BOX AT TOP
+===================================================== */
+
+.admin-search-box {
+    position: sticky;
+    top: 86px;
+    z-index: 800;
+
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+
+    margin-bottom: 22px;
+    padding: 16px;
+
+    background: rgba(255, 248, 239, 0.96);
+
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    box-shadow: 0 12px 28px rgba(67, 32, 12, 0.1);
+
+    backdrop-filter: blur(14px);
+}
+
+.admin-search-box input {
+    flex: 1;
+    min-width: 220px;
+
+    padding: 13px 16px;
+
+    border: 1px solid rgba(122, 65, 25, 0.2);
+    border-radius: 16px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    outline: none;
+}
+
+.admin-search-box input:focus {
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
+}
+
+#searched-order {
+    margin-bottom: 24px;
+}
+
+
+/* =====================================================
+   PAYMENT STICKY BOTTOM BUTTON
+===================================================== */
+
+#payment-section {
+    position: sticky;
+    bottom: 0;
+    z-index: 900;
+
+    margin: 0 -18px;
+    padding: 16px 18px;
+
+    border-radius: 24px 24px 0 0;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    box-shadow: 0 -14px 34px rgba(67, 32, 12, 0.18);
+
+    backdrop-filter: blur(16px);
+}
+
+#payment-section h2 {
+    margin-bottom: 10px;
+}
+
+#pay-now-btn {
+    width: 100%;
+
+    padding: 16px 28px;
+
+    font-size: 17px;
+    border-radius: 18px;
+}
+
+
+/* Extra bottom space so sticky button does not cover content */
+body:has(#payment-section) main {
+    padding-bottom: 130px;
+}
+
+
+/* =====================================================
+   MOBILE ADMIN POLISH
+===================================================== */
+
+@media (max-width: 768px) {
+    #admin-panel header {
+        padding-left: 82px;
+    }
+
+    .admin-search-box {
+        top: 86px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-search-box input,
+    .admin-search-box button {
+        width: 100%;
+    }
+
+    #payment-section {
+        margin-left: -14px;
+        margin-right: -14px;
+    }
+}
+/* =====================================================
+   ADMIN CLEAN LAYOUT OVERRIDES
+===================================================== */
+
+#admin-panel {
+    display: none;
+    min-height: 100vh;
+}
+
+#login-section {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+#admin-panel header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    min-height: 86px;
+
+    padding: 18px 24px 18px 92px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(43, 20, 8, 0.96),
+            rgba(194, 106, 0, 0.88)
+        );
+}
+
+#admin-panel header h1 {
+    margin: 0;
+
+    font-size: clamp(26px, 4vw, 42px);
+    line-height: 1.1;
+}
+
+#admin-panel header .sidebar-toggle {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+
+    margin: 0;
+
+    transform: translateY(-50%);
+}
+
+#admin-panel header .sidebar-toggle:hover {
+    transform: translateY(-50%) scale(1.04);
+}
+
+.admin-section-heading {
+    margin-bottom: 18px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-section-heading h2 {
+    margin-bottom: 6px;
+}
+
+.admin-section-heading p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-weight: 700;
+}
+
+.admin-search-box {
+    position: sticky;
+    top: 86px;
+    z-index: 850;
+
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+
+    margin-bottom: 24px;
+    padding: 16px;
+
+    background: rgba(255, 248, 239, 0.96);
+
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    box-shadow: 0 12px 28px rgba(67, 32, 12, 0.1);
+
+    backdrop-filter: blur(14px);
+}
+
+.admin-search-box input {
+    flex: 1;
+    min-width: 230px;
+
+    padding: 13px 16px;
+
+    border: 1px solid rgba(122, 65, 25, 0.2);
+    border-radius: 16px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    outline: none;
+}
+
+.admin-search-box input:focus {
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
+}
+
+#searched-order {
+    margin-bottom: 24px;
+}
+
+#searched-order .cart-items {
+    border: 2px solid rgba(245, 158, 11, 0.35);
+}
+
+@media (max-width: 768px) {
+    #admin-panel header {
+        padding-left: 82px;
+    }
+
+    .admin-search-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-search-box input,
+    .admin-search-box button {
+        width: 100%;
+    }
+}
+/* =====================================================
+   STICKY PAYMENT BAR
+===================================================== */
+
+#payment-section {
+
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
+
+    padding: 12px;
+
+    background: rgba(255,255,255,0.97);
+
+    border-top: 1px solid rgba(0,0,0,0.08);
+
+    backdrop-filter: blur(16px);
+
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.12);
+
+}
+
+.payment-bar {
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 16px;
+}
+
+.payment-total p {
+
+    margin: 0;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+.payment-total h3 {
+
+    margin: 0;
+
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+#pay-now-btn {
+
+    min-width: 180px;
+
+    padding: 16px 28px;
+
+    border-radius: 16px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+/* prevent content hiding behind bar */
+
+main {
+
+    padding-bottom: 140px;
+}
+
+@media (max-width:768px){
+
+    .payment-bar{
+
+        gap:12px;
+    }
+
+    #pay-now-btn{
+
+        min-width:140px;
+    }
+
+}

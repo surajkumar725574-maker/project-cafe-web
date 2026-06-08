@@ -75,6 +75,8 @@ function loadLoginPage() {
     loginSection.style.display = "block";
     adminPanel.style.display = "none";
     message.style.display = "none";
+     menuSection.style.display="none";
+     addItemSection.style.display="none";
 
 }
 
@@ -225,7 +227,7 @@ function renderSearchedOrder(order) {
             <h3>Search Result</h3>
 
             <p>Order Id : ${orderId}</p>
-            <p>Order NO: ${orders[i].orderNumber}
+            <p>Order NO: ${orders.orderNumber||"Not Assigned"}</p>
             <p>Status: ${orderStatus}</p>
 
             <div class="render-items">

@@ -113,22 +113,50 @@
             <!-- ===============================
                  ORDERS SECTION
             ================================ -->
+<section id="orders-section">
 
-            <section id="orders-section">
+    <div class="admin-section-heading">
+
+        <div>
+            <h2>Orders</h2>
+            <p>Search, track, and update customer orders</p>
+        </div>
+
+    </div>
 
 
-                <h2>Orders</h2>
+    <!-- ===============================
+         SEARCH ORDER
+    ================================ -->
 
-                <div id="ordered-items"></div>
+    <div class="admin-search-box">
 
-               <input id="search-order-id" placeholder="Enter Order ID">
+        <input
+            id="search-order-id"
+            placeholder="Enter Order No or Order ID"
+        >
 
-<button onclick="searchOrderById()">
-    Search Order
-</button>
+        <button onclick="searchOrderByIdOrNumber()">
+            Search
+        </button>
 
-<div id="searched-order"></div>
-            </section>
+        <button onclick="fetchOrders()">
+            Show All
+        </button>
+
+    </div>
+
+
+    <!-- SEARCH RESULT -->
+
+    <div id="searched-order"></div>
+
+
+    <!-- ALL ORDERS -->
+
+    <div id="ordered-items"></div>
+
+</section>
 
 
             <!-- ===============================
