@@ -1,48 +1,4 @@
 // =====================================================
-// LEARNING SECTION : MANUAL ROUTER IMPLEMENTATION
-// =====================================================
-//
-// Kept for learning/reference.
-// This helped understand how Express internally stores routes.
-// Actual backend below uses Express + MongoDB.
-//
-
-/*
-let routes = [];
-
-function get(path, callback) {
-    routes.push({
-        method: "GET",
-        path: path,
-        callback: callback
-    });
-}
-
-function post(path, callback) {
-    routes.push({
-        method: "POST",
-        path: path,
-        callback: callback
-    });
-}
-
-function handleRequest(req, res) {
-    for (let i = 0; i < routes.length; i++) {
-        if (
-            routes[i].path === req.url &&
-            routes[i].method === req.method
-        ) {
-            routes[i].callback(req, res);
-            return;
-        }
-    }
-
-    res.send("404 not found");
-}
-*/
-
-
-// =====================================================
 // IMPORTS
 // =====================================================
 
@@ -53,7 +9,6 @@ const crypto = require("crypto");
 const Razorpay = require("razorpay");
 
 require("dotenv").config();
-
 
 const Menu = require("./models/Menu");
 const Cart = require("./models/Cart");
@@ -94,67 +49,6 @@ const razorpay = new Razorpay({
 
 
 // =====================================================
-// OLD ARRAY STORAGE - COMMENTED FOR LEARNING
-// =====================================================
-//
-// Earlier we used:
-//
-// let cart = [];
-// let orders = [];
-// let menu = [ ... ];
-//
-// Problem:
-// Render/server restart deletes memory data.
-//
-// New system:
-// MongoDB stores menu, cart, and orders permanently.
-//
-
-/*
-let cart = [];
-
-let menu = [
-    { name: "Bread Omelette", price: 60, category: "Breakfast" },
-    { name: "Half Fry", price: 50, category: "Breakfast" },
-    { name: "Veg Sandwich", price: 75, category: "Breakfast" },
-    { name: "Cheese Sandwich", price: 95, category: "Breakfast" },
-
-    { name: "Veg Thali", price: 110, category: "Lunch" },
-    { name: "Chicken Thali", price: 180, category: "Lunch" },
-    { name: "Chicken Chawal", price: 150, category: "Lunch" },
-    { name: "Roti Sabji", price: 120, category: "Lunch" },
-
-    { name: "Veg Burger", price: 60, category: "Burgers" },
-    { name: "Cheese Burger", price: 90, category: "Burgers" },
-    { name: "Chicken Burger", price: 130, category: "Burgers" },
-
-    { name: "Veg Momos", price: 80, category: "Chinese" },
-    { name: "Chicken Momos", price: 110, category: "Chinese" },
-    { name: "Veg Noodles", price: 100, category: "Chinese" },
-    { name: "Chicken Noodles", price: 140, category: "Chinese" },
-
-    { name: "Veg Roll", price: 70, category: "Rolls" },
-    { name: "Paneer Roll", price: 90, category: "Rolls" },
-    { name: "Chicken Roll", price: 120, category: "Rolls" },
-
-    { name: "Tea", price: 20, category: "Beverages" },
-    { name: "Coffee", price: 30, category: "Beverages" },
-    { name: "Cold Coffee", price: 90, category: "Beverages" },
-    { name: "Coke", price: 40, category: "Beverages" },
-    { name: "Sprite", price: 40, category: "Beverages" },
-
-    { name: "Orange Juice", price: 70, category: "Juices" },
-    { name: "Mango Juice", price: 80, category: "Juices" },
-
-    { name: "Chocolate Shake", price: 120, category: "Shakes" },
-    { name: "Oreo Shake", price: 140, category: "Shakes" }
-];
-
-let orders = [];
-*/
-
-
-// =====================================================
 // HEALTH CHECK
 // =====================================================
 
@@ -167,30 +61,9 @@ app.get("/", function (req, res) {
 // MENU ROUTES
 // =====================================================
 
-// OLD:
-// app.get("/menu", (req, res) => {
-//     res.send(menu);
-// });
-//
-// NEW:
-// Fetch menu from MongoDB.
-
-// app.get("/menu", async function (req, res) {
-//     try {
-//         const menu = await Menu.find();
-
-//         res.send(menu);
-//     }
-//     catch (error) {
-//         res.status(500).send({
-//             message: error.message
-//         });
-//     }
-// });
 app.get("/menu", async function (req, res) {
     try {
         const menu = await Menu.find();
-
         res.send(menu);
     }
     catch (error) {
@@ -199,11 +72,7 @@ app.get("/menu", async function (req, res) {
         });
     }
 });
-// OLD:
-// menu.push(NewItem)
-//
-// NEW:
-// Menu.create() saves permanently in MongoDB.
+
 
 app.post("/menu", async function (req, res) {
     try {
@@ -256,12 +125,6 @@ app.post("/menu", async function (req, res) {
 });
 
 
-// OLD:
-// menu.splice(i,1)
-//
-// NEW:
-// Menu.deleteOne() deletes from MongoDB.
-
 app.delete("/menu/:name", async function (req, res) {
     try {
         const itemName = decodeURIComponent(req.params.name);
@@ -286,16 +149,9 @@ app.delete("/menu/:name", async function (req, res) {
 // CART ROUTES
 // =====================================================
 
-// OLD:
-// res.send(cart)
-//
-// NEW:
-// Cart.find() reads cart collection.
-
 app.get("/cart", async function (req, res) {
     try {
         const cart = await Cart.find();
-
         res.send(cart);
     }
     catch (error) {
@@ -305,15 +161,6 @@ app.get("/cart", async function (req, res) {
     }
 });
 
-
-// OLD:
-// cart.push(...)
-// cart[i].quantity++
-//
-// NEW:
-// Cart.findOne()
-// existingItem.save()
-// Cart.create()
 
 app.post("/cart", async function (req, res) {
     try {
@@ -356,8 +203,6 @@ app.post("/cart", async function (req, res) {
 });
 
 
-// Increase item quantity from cart page.
-
 app.post("/cart/name", async function (req, res) {
     try {
         const existingItem = await Cart.findOne({
@@ -389,9 +234,6 @@ app.post("/cart/name", async function (req, res) {
     }
 });
 
-
-// Decrease item quantity.
-// If quantity becomes 0, remove item.
 
 app.post("/cart/decrease", async function (req, res) {
     try {
@@ -432,12 +274,6 @@ app.post("/cart/decrease", async function (req, res) {
 });
 
 
-// OLD:
-// cart = []
-//
-// NEW:
-// Cart.deleteMany() clears MongoDB cart collection.
-
 app.post("/cart/clear", async function (req, res) {
     try {
         await Cart.deleteMany({});
@@ -458,13 +294,6 @@ app.post("/cart/clear", async function (req, res) {
 // =====================================================
 // RAZORPAY ORDER CREATION
 // =====================================================
-//
-// OLD:
-// total calculated from cart array.
-//
-// NEW:
-// total calculated from MongoDB cart.
-//
 
 app.post("/create-razorpay-order", async function (req, res) {
     try {
@@ -510,25 +339,13 @@ app.post("/create-razorpay-order", async function (req, res) {
 // =====================================================
 // PAYMENT VERIFY
 // =====================================================
-//
-// Current learning mode:
-// Allows test_payment values.
-//
-// Real mode:
-// Uses Razorpay signature verification.
-//
 
 app.post("/payment/verify", function (req, res) {
     try {
-        console.log(req.body);
-
-
         const razorpay_payment_id = req.body.razorpay_payment_id;
         const razorpay_order_id = req.body.razorpay_order_id;
         const razorpay_signature = req.body.razorpay_signature;
 
-        // Temporary test success path.
-        // Keep this while Razorpay is in test-only workflow.
         if (
             razorpay_payment_id === "test_payment" &&
             razorpay_order_id === "test_order" &&
@@ -575,24 +392,6 @@ app.post("/payment/verify", function (req, res) {
 // ORDER ROUTES
 // =====================================================
 
-// OLD:
-// orders.push({
-//     items: req.body,
-//     status: "new"
-// });
-//
-// NEW:
-// Order.create() saves order in MongoDB.
-
-
-
-
-
-
-
-
-
-
 app.post("/order", async function (req, res) {
     try {
         let total = 0;
@@ -601,26 +400,25 @@ app.post("/order", async function (req, res) {
             total += req.body[i].price * req.body[i].quantity;
         }
 
-const latestOrder = await Order.findOne().sort({
-    orderNumber: -1
-});
+        const latestOrder = await Order.findOne().sort({
+            orderNumber: -1
+        });
 
-let nextOrderNumber = 1001;
+        let nextOrderNumber = 1001;
 
-if (latestOrder) {
-    nextOrderNumber = latestOrder.orderNumber + 1;
-}
-console.log("NEXT ORDER NUMBER:", nextOrderNumber);
+        if (latestOrder) {
+            nextOrderNumber = latestOrder.orderNumber + 1;
+        }
 
         const order = await Order.create({
-            orderNumber:nextOrderNumber,
+            orderNumber: nextOrderNumber,
             items: req.body,
             total: total,
             status: "new"
         });
 
         const orders = await Order.find().sort({
-            createdAt: -1
+            orderNumber: -1
         });
 
         res.send({
@@ -635,18 +433,16 @@ console.log("NEXT ORDER NUMBER:", nextOrderNumber);
         });
     }
 });
-// GET ONE ORDER BY ID
-// User page can use this route to check live order status.
 
 
-
-
-// Admin panel gets all orders.
+// =====================================================
+// GET ALL ORDERS
+// =====================================================
 
 app.get("/orders", async function (req, res) {
     try {
         const orders = await Order.find().sort({
-            createdAt: -1
+            orderNumber: -1
         });
 
         res.send(orders);
@@ -658,30 +454,47 @@ app.get("/orders", async function (req, res) {
     }
 });
 
-// =====================================================
-// GET ONE ORDER BY ID
-// =====================================================
-//
-// Used by order-status.html.
-//
-// Customer page calls:
-//
-// GET /order/:id
-//
-// This returns only that customer's order,
-// not all orders.
-//
 
-app.get("/order/:id", async function (req, res) {
+// =====================================================
+// SEARCH ORDER BY ORDER NUMBER OR MONGODB ID
+// =====================================================
+//
+// Admin can search:
+//
+// 1001
+// OR
+// 6a25766a70ef51a173887340
+//
+// Important:
+// This route must stay ABOVE /order/:order_id.
+// Otherwise Express may treat "search" as an order_id.
+//
+// =====================================================
+
+app.get("/order/search/:query", async function (req, res) {
     try {
-        const order = await Order.findById(req.params.id);
+        const query = req.params.query;
+
+        let order;
+
+        if (!isNaN(query)) {
+            order = await Order.findOne({
+                orderNumber: Number(query)
+            });
+        }
+        else if (mongoose.Types.ObjectId.isValid(query)) {
+            order = await Order.findById(query);
+        }
+        else {
+            return res.status(400).send({
+                message: "Invalid order ID or order number"
+            });
+        }
 
         if (!order) {
-            res.status(404).send({
+            return res.status(404).send({
                 message: "Order not found"
             });
-
-            return;
         }
 
         res.send(order);
@@ -693,181 +506,42 @@ app.get("/order/:id", async function (req, res) {
     }
 });
 
-// ORDER STATUS
+
+// =====================================================
+// GET ONE ORDER BY MONGODB ID
+// =====================================================
 //
-// Your older admin frontend used index:
-// /order/status/0
+// Used by order-status.html.
+// Customer page calls:
 //
-// MongoDB prefers _id:
-// /order/status/686....
+// GET /order/:order_id
 //
-// This route supports both.
+// =====================================================
 
-// app.post("/order/status/:id", async function (req, res) {
-//     try {
-//         const id = req.params.id;
-//         const newStatus = req.body.status;
+app.get("/order/:order_id", async function (req, res) {
+    try {
+        const order = await Order.findById(
+            req.params.order_id
+        );
 
-//         let updatedOrder;
+        if (!order) {
+            return res.status(404).send({
+                message: "Order not found"
+            });
+        }
 
-//         if (mongoose.Types.ObjectId.isValid(id)) {
-//             updatedOrder = await Order.findByIdAndUpdate(
-//                 id,
-//                 {
-//                     status: newStatus
-//                 },
-//                 {
-//                     new: true
-//                 }
-//             );
-//         }
-//         else {
-//             const orders = await Order.find().sort({
-//                 createdAt: -1
-//             });
+        res.send(order);
+    }
+    catch (error) {
+        res.status(500).send({
+            message: error.message
+        });
+    }
+});
 
-//             const index = Number(id);
 
-//             if (Number.isNaN(index) || !orders[index]) {
-//                 res.status(404).send({
-//                     message: "Order not found"
-//                 });
-
-//                 return;
-//             }
-
-//             orders[index].status = newStatus;
-//             updatedOrder = await orders[index].save();
-//         }
-
-//         const refreshedOrders = await Order.find().sort({
-//             createdAt: -1
-//         });
-
-//         res.send({
-//             message: "Order status updated",
-//             order: updatedOrder,
-//             orders: refreshedOrders
-//         });
-//     }
-//     catch (error) {
-//         res.status(500).send({
-//             message: error.message
-//         });
-//     }
-// });
-
-// app.post("/order/status/:id", async function (req, res) {
-//     try {
-//         const id = req.params.id;
-//         const newStatus = req.body.status;
-
-//         if (!newStatus) {
-//             res.status(400).send({
-//                 message: "Status is required"
-//             });
-
-//             return;
-//         }
-
-//         const updatedOrder = await Order.findByIdAndUpdate(
-//             id,
-//             { status: newStatus },
-//             { new: true }
-//         );
-
-//         if (!updatedOrder) {
-//             res.status(404).send({
-//                 message: "Order not found"
-//             });
-
-//             return;
-//         }
-
-//         const refreshedOrders = await Order.find().sort({
-//             createdAt: -1
-//         });
-
-//         res.send({
-//             message: "Order status updated",
-//             order: updatedOrder,
-//             orders: refreshedOrders
-//         });
-//     }
-//     catch (error) {
-//         res.status(500).send({
-//             message: error.message
-//         });
-//     }
-// });
-// app.post("/order/status/:id", async function (req, res) {
-//     try {
-//         const id = req.params.id;
-//         const newStatus = req.body.status;
-
-//         console.log("Status update request:", id, newStatus);
-
-//         if (!newStatus) {
-//             return res.status(400).json({
-//                 message: "Status is required"
-//             });
-//         }
-
-//         if (!mongoose.Types.ObjectId.isValid(id)) {
-//             return res.status(400).json({
-//                 message: "Invalid MongoDB order id"
-//             });
-//         }
-
-//         const updatedOrder = await Order.findByIdAndUpdate(
-//             id,
-//             { status: newStatus },
-//             { new: true }
-//         );
-
-//         if (!updatedOrder) {
-//             return res.status(404).json({
-//                 message: "Order not found"
-//             });
-//         }
-
-//         const refreshedOrders = await Order.find().sort({
-//             createdAt: -1
-//         });
-
-//         res.json({
-//             message: "Order status updated",
-//             order: updatedOrder,
-//             orders: refreshedOrders
-//         });
-
-//     } catch (error) {
-//         console.log("Order status update error:", error);
-
-//         res.status(500).json({
-//             message: error.message
-//         });
-//     }
-// });
 // =====================================================
 // UPDATE ORDER STATUS
-// =====================================================
-//
-// Admin panel calls this route.
-//
-// Example:
-//
-// POST /order/status/6860abcd...
-//
-// body:
-// {
-//     status: "accepted"
-// }
-//
-// This updates:
-// 1. status
-// 2. acceptedAt / preparingAt / completedAt / cancelledAt
-//
 // =====================================================
 
 app.post("/order/status/:id", async function (req, res) {
@@ -922,7 +596,7 @@ app.post("/order/status/:id", async function (req, res) {
         }
 
         const refreshedOrders = await Order.find().sort({
-            createdAt: -1
+            orderNumber: -1
         });
 
         res.json({
@@ -930,82 +604,13 @@ app.post("/order/status/:id", async function (req, res) {
             order: updatedOrder,
             orders: refreshedOrders
         });
-
     }
     catch (error) {
-
         res.status(500).json({
             message: error.message
         });
-
     }
 });
-
-
-// =====================================================
-// OLD ROUTES REFERENCE - COMMENTED
-// =====================================================
-
-/*
-app.get("/menu", (req, res) => {
-    res.send(menu);
-});
-
-app.post("/cart", (req, res) => {
-    cart.push(req.body);
-
-    res.send({
-        message: "cart added",
-        cart: cart
-    });
-});
-
-app.get("/cart", (req, res) => {
-    res.send(cart);
-});
-
-app.post("/cart/clear", (req, res) => {
-    cart = [];
-
-    res.send({
-        message: "cart cleared",
-        cart: cart
-    });
-});
-
-app.post("/order", (req, res) => {
-    orders.push({
-        items: req.body,
-        status: "new"
-    });
-
-    res.send({
-        message: "Order Saved",
-        orders: orders
-    });
-});
-*/
-
-//
-// Backend route for search button on admin page //
-app.get("/order/:order_id",(req,res)=>{
-    
-    const order=Order.findById(req.params.order_id)
-    .then(function(result){
-        res.send({
-            message:`found order by id ${req.params.order_id}`,
-            order:result
-        })
-
-    })
-    .catch(function(error){
-        res.send({
-            message:"order not found ,Enter correct id:"
-        })
-    })
-
-    
-})
 
 
 // =====================================================

@@ -158,7 +158,7 @@ function fetchOrders() {
 }
 
 //search orders by id
-function searchOrderById() {
+function searchOrderByIdOrNumber() {
 
     let orderId = document
         .getElementById("search-order-id")
@@ -168,13 +168,13 @@ function searchOrderById() {
     if (orderId === "") {
         document.getElementById("searched-order").innerHTML = `
             <div class="cart-items">
-                <p>Please enter an Order ID.</p>
+                <p>Please enter an Order ID or Number.</p>
             </div>
         `;
         return;
     }
 
-    fetch(`${API_URL}/order/${orderId}`)
+    fetch(`${API_URL}/order/search/${orderId}`)
     .then(function(response) {
         return response.json();
     })
