@@ -134,7 +134,7 @@ function renderOrder(order) {
 
             <p>
                 Current Status:
-                ${formatStatus(order.status)}
+                <strong>${formatStatus(order.status)}</strong>
             </p>
 
             <p>
@@ -149,6 +149,7 @@ function renderOrder(order) {
     renderItems(order.items, order.total);
 
 }
+
 // =====================================================
 // RENDER TIMELINE
 // =====================================================
@@ -208,6 +209,31 @@ function renderTimeline(order) {
 
 }
 
+function getETA(status) {
+
+    if (status === "new") {
+        return "Waiting for cafe confirmation";
+    }
+
+    if (status === "accepted") {
+        return "Estimated preparation time: 15–20 minutes";
+    }
+
+    if (status === "preparing") {
+        return "Estimated preparation time: 8–12 minutes";
+    }
+
+    if (status === "completed") {
+        return "Your order is ready";
+    }
+
+    if (status === "cancelled") {
+        return "Order cancelled";
+    }
+
+    return "Status update pending";
+
+}
 
 // =====================================================
 // RESET TIMELINE
@@ -312,27 +338,29 @@ function renderItems(items, total) {
 // FORMAT STATUS TEXT
 // =====================================================
 
-function getETA(status){
+function formatStatus(status) {
 
-    if(status === "new"){
-        return "Waiting for cafe confirmation";
+    if (status === "new") {
+        return "Order Placed";
     }
 
-    if(status === "accepted"){
-        return "Estimated preparation time: 15–20 minutes";
+    if (status === "accepted") {
+        return "Accepted";
     }
 
-    if(status === "preparing"){
-        return "Estimated preparation time: 8–12 minutes";
+    if (status === "preparing") {
+        return "Preparing";
     }
 
-    if(status === "completed"){
-        return "Your order is ready";
+    if (status === "completed") {
+        return "Completed";
     }
 
-    if(status === "cancelled"){
-        return "Order cancelled";
+    if (status === "cancelled") {
+        return "Cancelled";
     }
+
+    return status;
 
 }
 
