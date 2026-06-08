@@ -522,7 +522,7 @@ app.post("/payment/verify", function (req, res) {
     try {
         console.log(req.body);
 
-        
+
         const razorpay_payment_id = req.body.razorpay_payment_id;
         const razorpay_order_id = req.body.razorpay_order_id;
         const razorpay_signature = req.body.razorpay_signature;
@@ -610,7 +610,7 @@ let nextOrderNumber = 1001;
 if (latestOrder) {
     nextOrderNumber = latestOrder.orderNumber + 1;
 }
-
+console.log("NEXT ORDER NUMBER:", nextOrderNumber);
 
         const order = await Order.create({
             orderNumber:nextOrderNumber,
