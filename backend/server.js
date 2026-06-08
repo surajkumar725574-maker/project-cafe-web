@@ -522,6 +522,7 @@ app.post("/payment/verify", function (req, res) {
     try {
         console.log(req.body);
 
+        
         const razorpay_payment_id = req.body.razorpay_payment_id;
         const razorpay_order_id = req.body.razorpay_order_id;
         const razorpay_signature = req.body.razorpay_signature;
@@ -583,6 +584,15 @@ app.post("/payment/verify", function (req, res) {
 // NEW:
 // Order.create() saves order in MongoDB.
 
+
+
+
+
+
+
+
+
+
 app.post("/order", async function (req, res) {
     try {
         let total = 0;
@@ -591,7 +601,19 @@ app.post("/order", async function (req, res) {
             total += req.body[i].price * req.body[i].quantity;
         }
 
+const latestOrder = await Order.findOne().sort({
+    orderNumber: -1
+});
+
+let nextOrderNumber = 1001;
+
+if (latestOrder) {
+    nextOrderNumber = latestOrder.orderNumber + 1;
+}
+
+
         const order = await Order.create({
+            orderNumber:nextOrderNumber,
             items: req.body,
             total: total,
             status: "new"
@@ -963,6 +985,27 @@ app.post("/order", (req, res) => {
     });
 });
 */
+
+//
+// Backend route for search button on admin page //
+app.get("/order/:order_id",(req,res)=>{
+    
+    const order=Order.findById(req.params.order_id)
+    .then(function(result){
+        res.send({
+            message:`found order by id ${req.params.order_id}`,
+            order:result
+        })
+
+    })
+    .catch(function(error){
+        res.send({
+            message:"order not found ,Enter correct id:"
+        })
+    })
+
+    
+})
 
 
 // =====================================================

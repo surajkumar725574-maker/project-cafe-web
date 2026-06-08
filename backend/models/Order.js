@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
+    orderNumber:{
+        type:Number,
+        unique:true,
+        required:true
+
+
+    },
 
     items: {
         type: Array,
