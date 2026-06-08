@@ -265,6 +265,7 @@ function renderItems(items, total) {
         html += `
             <div class="order-status-item">
 
+
                 <p>
                     <strong>${items[i].name}</strong>
                 </p>

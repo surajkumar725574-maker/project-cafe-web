@@ -225,7 +225,7 @@ function renderSearchedOrder(order) {
             <h3>Search Result</h3>
 
             <p>Order Id : ${orderId}</p>
-
+            <p>Order NO: ${orders[i].orderNumber}
             <p>Status: ${orderStatus}</p>
 
             <div class="render-items">
@@ -319,33 +319,39 @@ function renderOrders() {
         orderContainer.innerHTML += `
             <div class="cart-items">
 
-                <h3>Order No: ${i + 1}</h3>
-                <p>Status: ${orderStatus}</p>
+    <h3>Order No: ${orders[i].orderNumber||"Not  Assigned"}</h3>
 
-                <div class="render-items">
-                    ${renderItems(orderItems)}
-                </div>
+    <p class="order-id-text">
+        Order ID: ${orders[i]._id}
+    </p>
 
-<div class="order-actions">
+    <p>Status: ${orderStatus}</p>
 
-    <button onclick="updateOrderStatus('${orders[i]._id}', 'accepted')">
-    Accept
-</button>
+    <div class="render-items">
+        ${renderItems(orderItems)}
+    </div>
 
-<button onclick="updateOrderStatus('${orders[i]._id}', 'preparing')">
-    Preparing
-</button>
+    <div class="order-actions">
 
-<button onclick="updateOrderStatus('${orders[i]._id}', 'completed')">
-    Completed
-</button>
+        <button onclick="updateOrderStatus('${orders[i]._id}', 'accepted')">
+            Accept
+        </button>
 
-<button onclick="updateOrderStatus('${orders[i]._id}', 'cancelled')">
-    Cancelled
-</button>
+        <button onclick="updateOrderStatus('${orders[i]._id}', 'preparing')">
+            Preparing
+        </button>
 
-</div>
-        `;
+        <button onclick="updateOrderStatus('${orders[i]._id}', 'completed')">
+            Completed
+        </button>
+
+        <button onclick="updateOrderStatus('${orders[i]._id}', 'cancelled')">
+            Cancelled
+        </button>
+
+    </div>
+
+</div>`;
 
     }
 
