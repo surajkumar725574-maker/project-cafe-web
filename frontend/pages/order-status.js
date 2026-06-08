@@ -125,16 +125,30 @@ function fetchOrderStatus() {
 
 function renderOrder(order) {
 
-    statusText.innerText =
-        "Current status: " + formatStatus(order.status);
+    statusText.innerHTML = `
+        <div class="status-card">
+
+            <h3>
+                Order #${order.orderNumber}
+            </h3>
+
+            <p>
+                Current Status:
+                ${formatStatus(order.status)}
+            </p>
+
+            <p>
+                ${getETA(order.status)}
+            </p>
+
+        </div>
+    `;
 
     renderTimeline(order);
 
     renderItems(order.items, order.total);
 
 }
-
-
 // =====================================================
 // RENDER TIMELINE
 // =====================================================
@@ -298,29 +312,27 @@ function renderItems(items, total) {
 // FORMAT STATUS TEXT
 // =====================================================
 
-function formatStatus(status) {
+function getETA(status){
 
-    if (status === "new") {
-        return "Order Placed";
+    if(status === "new"){
+        return "Waiting for cafe confirmation";
     }
 
-    if (status === "accepted") {
-        return "Accepted";
+    if(status === "accepted"){
+        return "Estimated preparation time: 15–20 minutes";
     }
 
-    if (status === "preparing") {
-        return "Preparing";
+    if(status === "preparing"){
+        return "Estimated preparation time: 8–12 minutes";
     }
 
-    if (status === "completed") {
-        return "Completed";
+    if(status === "completed"){
+        return "Your order is ready";
     }
 
-    if (status === "cancelled") {
-        return "Cancelled";
+    if(status === "cancelled"){
+        return "Order cancelled";
     }
-
-    return status;
 
 }
 
