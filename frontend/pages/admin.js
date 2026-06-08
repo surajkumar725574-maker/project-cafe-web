@@ -227,7 +227,7 @@ function renderSearchedOrder(order) {
             <h3>Search Result</h3>
 
             <p>Order Id : ${orderId}</p>
-            <p>Order NO: ${orders.orderNumber||"Not Assigned"}</p>
+            <p>Order NO: ${order.orderNumber||"Not Assigned"}</p>
             <p>Status: ${orderStatus}</p>
 
             <div class="render-items">
