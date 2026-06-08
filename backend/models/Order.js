@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const orderSchema = new mongoose.Schema({
     orderNumber:{
         type:Number,
+        required:true,
         unique:true,
-        required:true
 
 
     },
