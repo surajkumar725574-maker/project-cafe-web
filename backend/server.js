@@ -273,6 +273,33 @@ app.post("/cart/decrease", async function (req, res) {
     }
 });
 
+function calculateEstimatedMinutes(items) {
+
+    let minutes = 10;
+
+    if (items.length >= 3) {
+        minutes = 15;
+    }
+
+    if (items.length >= 5) {
+        minutes = 20;
+    }
+
+    for (let i = 0; i < items.length; i++) {
+        let name = items[i].name.toLowerCase();
+
+        if (
+            name.includes("thali") ||
+            name.includes("chicken") ||
+            name.includes("rice")
+        ) {
+            minutes += 10;
+        }
+    }
+
+    return minutes;
+}
+
 
 app.post("/cart/clear", async function (req, res) {
     try {
