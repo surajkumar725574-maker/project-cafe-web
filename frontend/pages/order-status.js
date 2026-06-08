@@ -128,9 +128,7 @@ function renderOrder(order) {
     statusText.innerHTML = `
         <div class="status-card">
 
-            <h3>
-                Order #${order.orderNumber}
-            </h3>
+            <h3>Order #${order.orderNumber}</h3>
 
             <p>
                 Current Status:
@@ -234,7 +232,6 @@ function getETA(status) {
     return "Status update pending";
 
 }
-
 // =====================================================
 // RESET TIMELINE
 // =====================================================

@@ -1652,3 +1652,67 @@ main {
 
     font-weight: 700;
 }
+/* =====================================================
+   FLIPKART STYLE ORDER TRACKER
+===================================================== */
+
+.status-card {
+    margin: 18px 0 26px;
+    padding: 18px;
+
+    background: #fff8e8;
+
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 18px;
+
+    box-shadow: 0 8px 20px rgba(67, 32, 12, 0.08);
+}
+
+.status-card h3 {
+    margin: 0 0 10px;
+    color: var(--coffee);
+    font-size: 24px;
+}
+
+.status-card p {
+    margin: 6px 0;
+    color: var(--coffee-soft);
+    font-weight: 800;
+}
+
+.timeline-step.active .timeline-dot::after {
+    content: "✓";
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    color: white;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.timeline-step.active .timeline-dot {
+    background: #16a34a;
+    border-color: #dcfce7;
+}
+
+.timeline-step.active .timeline-line {
+    background: #16a34a;
+}
+
+.timeline-content h3 {
+    color: var(--coffee);
+}
+
+.timeline-step.active .timeline-content h3 {
+    color: #166534;
+}
+
+.timeline-content p {
+    color: var(--muted);
+    font-weight: 700;
+}
