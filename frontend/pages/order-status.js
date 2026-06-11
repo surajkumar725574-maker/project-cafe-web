@@ -1,59 +1,26 @@
 // =====================================================
-// ORDER STATUS PAGE
-// =====================================================
-//
-// Responsibilities:
-//
-// 1. Read order id from URL
-// 2. Fetch exact order from backend
-// 3. Show current status
-// 4. Render order items
-// 5. Render timeline
-// 6. Poll backend every 5 seconds
-//
-// =====================================================
-
-
-// =====================================================
-// API BASE URL
+// CONFIG
 // =====================================================
 
 const API_URL = "https://project-cafe-web.onrender.com";
 
 
 // =====================================================
-// READ ORDER ID FROM URL
+// ORDER ID FROM URL
 // =====================================================
-//
-// URL:
-//
-// order-status.html?id=ORDER_ID
-//
-// window.location.search gives:
-//
-// ?id=ORDER_ID
-//
 
 const params = new URLSearchParams(window.location.search);
-
-let orderId = params.get("id");
-
-
-// =====================================================
-// FALLBACK ORDER ID
-// =====================================================
-//
-// If user opens order-status.html directly,
-// URL may not contain id.
-//
-// In that case we try localStorage.
-// payment.js stores currentOrderId after order save.
-//
-
-if (!orderId) {
-
-    orderId = localStorage.getItem("currentOrderId");
-
+const id = params.get("id");
+if (!id) {
+    info.innerHTML = `
+        <div class="info-card">
+            Order ID not found. Please place an order first.
+        </div>
+    `;
+}
+else {
+    fetchOrder();
+    setInterval(fetchOrder, 5000);
 }
 
 
@@ -61,151 +28,75 @@ if (!orderId) {
 // DOM REFERENCES
 // =====================================================
 
-let statusText = document.getElementById("status-text");
-let orderItems = document.getElementById("order-items");
+const info = document.getElementById("order-info");
+const orderItemContainer = document.getElementById("order-items");
 
 
 // =====================================================
-// FETCH ORDER STATUS
+// FETCH ORDER
 // =====================================================
-//
-// This asks backend:
-//
-// GET /order/:id
-//
-// Backend returns one order object.
-//
 
-function fetchOrderStatus() {
+function fetchOrder() {
 
-    if (!orderId) {
+    fetch(`${API_URL}/order/${id}`)
 
-        statusText.innerText = "Order ID not found";
+        .then(function (response) {
+            return response.json();
+        })
 
-        orderItems.innerHTML = `
-            <p>
-                No recent order found.
-                Please place an order first.
-            </p>
-        `;
-
-        return;
-
-    }
-
-    fetch(`${API_URL}/order/${orderId}`)
-    .then(function(response) {
-
-        if (!response.ok) {
-            throw new Error("Order could not be loaded");
-        }
-
-        return response.json();
-
-    })
-    .then(function(order) {
-
-        renderOrder(order);
-
-    })
-    .catch(function(error) {
-
-        console.log("Failed to fetch order:", error);
-
-        statusText.innerText = "Unable to load order status";
-
-    });
+        .then(function (order) {
+            renderOrder(order);
+        });
 
 }
 
 
 // =====================================================
-// RENDER ORDER
+// MASTER RENDER FUNCTION
 // =====================================================
 
 function renderOrder(order) {
 
-    statusText.innerHTML = `
-        <div class="status-card">
+    renderStatusCard(order);
 
-            <h3>Order #${order.orderNumber}</h3>
+    renderTimeline(order);
 
-            <p>
-                Current Status:
-                <strong>${formatStatus(order.status)}</strong>
-            </p>
+    orderItemContainer.innerHTML =
+        renderItems(order.items);
 
-            <p>
+}
+
+
+// =====================================================
+// STATUS CARD
+// =====================================================
+
+function renderStatusCard(order) {
+
+    info.innerHTML = `
+        <div class="info-card">
+
+            <div class="item">
+                Order #${order.orderNumber}
+            </div>
+
+            <div class="item">
+                Status : ${order.status}
+            </div>
+
+            <div class="item">
                 ${getETA(order.status)}
-            </p>
+            </div>
 
         </div>
     `;
 
-    renderTimeline(order);
-
-    renderItems(order.items, order.total);
-
 }
 
+
 // =====================================================
-// RENDER TIMELINE
+// ETA MESSAGES
 // =====================================================
-//
-// Normal flow:
-//
-// new → accepted → preparing → completed
-//
-// Cancelled is treated separately because it is not a
-// normal forward step. It can happen at any point.
-//
-
-function renderTimeline(order) {
-
-    let status = order.status;
-
-    let normalSteps = [
-        "new",
-        "accepted",
-        "preparing",
-        "completed"
-    ];
-
-    resetTimeline();
-
-    setTimelineTime("new", order.createdAt);
-    setTimelineTime("accepted", order.acceptedAt);
-    setTimelineTime("preparing", order.preparingAt);
-    setTimelineTime("completed", order.completedAt);
-    setTimelineTime("cancelled", order.cancelledAt);
-
-    if (status === "cancelled") {
-
-        document
-            .getElementById("step-cancelled")
-            .classList.add("active", "cancelled-active");
-
-        return;
-
-    }
-
-    let currentIndex = normalSteps.indexOf(status);
-
-    if (currentIndex === -1) {
-        return;
-    }
-
-    for (let i = 0; i <= currentIndex; i++) {
-
-        let stepId = "step-" + normalSteps[i];
-
-        document
-            .getElementById(stepId)
-            .classList.add("active");
-
-    }
-
-}
 
 function getETA(status) {
 
@@ -229,146 +120,22 @@ function getETA(status) {
         return "Order cancelled";
     }
 
-    return "Status update pending";
-
-}
-// =====================================================
-// RESET TIMELINE
-// =====================================================
-
-function resetTimeline() {
-
-    let allSteps = document.querySelectorAll(".timeline-step");
-
-    for (let i = 0; i < allSteps.length; i++) {
-
-        allSteps[i].classList.remove(
-            "active",
-            "cancelled-active"
-        );
-
-    }
+    return "";
 
 }
 
 
 // =====================================================
-// SET TIMELINE TIME
-// =====================================================
-
-function setTimelineTime(step, timeValue) {
-
-    let timeElement = document.getElementById(
-        "time-" + step
-    );
-
-    if (!timeElement) {
-        return;
-    }
-
-    if (!timeValue) {
-
-        timeElement.innerText = "Pending";
-
-        return;
-
-    }
-
-    timeElement.innerText = formatTime(timeValue);
-
-}
-
-
-// =====================================================
-// RENDER ORDER ITEMS
-// =====================================================
-
-function renderItems(items, total) {
-
-    let html = "";
-
-    if (!Array.isArray(items) || items.length === 0) {
-
-        orderItems.innerHTML = `
-            <p>No items found in this order.</p>
-        `;
-
-        return;
-
-    }
-
-    for (let i = 0; i < items.length; i++) {
-
-        html += `
-            <div class="order-status-item">
-
-
-                <p>
-                    <strong>${items[i].name}</strong>
-                </p>
-
-                <p>
-                    ₹${items[i].price} × ${items[i].quantity}
-                </p>
-
-                <p>
-                    Item total: ₹${items[i].price * items[i].quantity}
-                </p>
-
-            </div>
-        `;
-
-    }
-
-    html += `
-        <div class="order-status-total">
-            <strong>Total: ₹${total}</strong>
-        </div>
-    `;
-
-    orderItems.innerHTML = html;
-
-}
-
-
-// =====================================================
-// FORMAT STATUS TEXT
-// =====================================================
-
-function formatStatus(status) {
-
-    if (status === "new") {
-        return "Order Placed";
-    }
-
-    if (status === "accepted") {
-        return "Accepted";
-    }
-
-    if (status === "preparing") {
-        return "Preparing";
-    }
-
-    if (status === "completed") {
-        return "Completed";
-    }
-
-    if (status === "cancelled") {
-        return "Cancelled";
-    }
-
-    return status;
-
-}
-
-
-// =====================================================
-// FORMAT TIME
+// TIME FORMATTER
 // =====================================================
 
 function formatTime(timeValue) {
 
-    let date = new Date(timeValue);
+    if (!timeValue) {
+        return "Pending";
+    }
+
+    const date = new Date(timeValue);
 
     return date.toLocaleTimeString([], {
         hour: "2-digit",
@@ -379,23 +146,180 @@ function formatTime(timeValue) {
 
 
 // =====================================================
+// TIMELINE ACTIVATION
+// =====================================================
+
+function setTimeline(status) {
+
+    const steps = [
+        "new",
+        "accepted",
+        "preparing",
+        "completed"
+    ];
+
+    if (status === "cancelled") {
+
+        document
+            .getElementById("step-cancelled")
+            .classList.add("deactive");
+
+        return;
+
+    }
+
+    const currentIndex = steps.indexOf(status);
+
+    for (let i = 0; i <= currentIndex; i++) {
+
+        const stepId = "step-" + steps[i];
+
+        document
+            .getElementById(stepId)
+            .classList.add("active");
+
+    }
+
+}
+
+
+// =====================================================
+// TIMELINE RESET
+// =====================================================
+
+function resetTimeline() {
+
+    const steps = [
+        "new",
+        "accepted",
+        "preparing",
+        "completed",
+        "cancelled"
+    ];
+
+    for (let i = 0; i < steps.length; i++) {
+
+        const stepId = "step-" + steps[i];
+
+        const element =
+            document.getElementById(stepId);
+
+        element.classList.remove("active");
+        element.classList.remove("deactive");
+
+    }
+
+}
+
+
+// =====================================================
+// SINGLE TIMELINE TIME
+// =====================================================
+
+function setTimelineTime(step, timeValue) {
+
+    const stepId = "time-" + step;
+
+    const element =
+        document.getElementById(stepId);
+
+    if (!timeValue) {
+
+        element.innerHTML = "Pending";
+
+        return;
+
+    }
+
+    element.innerHTML =
+        formatTime(timeValue);
+
+}
+
+
+// =====================================================
+// TIMELINE RENDER
+// =====================================================
+
+function renderTimeline(order) {
+
+    resetTimeline();
+
+    setTimeline(order.status);
+
+    setTimelineTime("new", order.createdAt);
+
+    setTimelineTime("accepted", order.acceptedAt);
+
+    setTimelineTime("preparing", order.preparingAt);
+
+    setTimelineTime("completed", order.completedAt);
+
+    setTimelineTime("cancelled", order.cancelledAt);
+
+}
+
+
+// =====================================================
+// ORDER ITEMS
+// =====================================================
+
+function renderItems(items) {
+
+    let html = "";
+
+    let grandTotal = 0;
+
+    for (let i = 0; i < items.length; i++) {
+
+        const itemTotal =
+            items[i].price * items[i].quantity;
+
+        grandTotal += itemTotal;
+
+        html += `
+            <div class="item-card">
+
+                <div class="items">
+                    ${items[i].name}
+                </div>
+
+                <div class="items">
+                    ₹${items[i].price}
+                    ×
+                    ${items[i].quantity}
+                </div>
+
+                <div class="items">
+                    Item Total :
+                    ₹${itemTotal}
+                </div>
+
+            </div>
+        `;
+    }
+
+    html += `
+        <div class="grand-total">
+            Grand Total :
+            ₹${grandTotal}
+        </div>
+    `;
+
+    return html;
+
+}
+
+
+// =====================================================
 // INITIAL LOAD
 // =====================================================
 
-fetchOrderStatus();
+
 
 
 // =====================================================
-// LIVE UPDATE CHECKER
+// LIVE POLLING
 // =====================================================
-//
-// Polling:
-//
-// Every 5 seconds this page asks backend for latest order.
-// If admin updates status, user page updates automatically.
-//
 
-setInterval(fetchOrderStatus, 5000);
-
-
-console.log("order-status.js connected");
+//added both feature on the top of the js.....
