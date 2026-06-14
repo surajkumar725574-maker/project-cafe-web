@@ -11,6 +11,14 @@ const API_URL = "https://project-cafe-web.onrender.com";
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
+
+// =====================================================
+// DOM REFERENCES
+// =====================================================
+
+const info = document.getElementById("order-info");
+const orderItemContainer = document.getElementById("order-items");
+
 if (!id) {
     info.innerHTML = `
         <div class="info-card">
@@ -25,18 +33,11 @@ else {
 
 
 // =====================================================
-// DOM REFERENCES
-// =====================================================
-
-const info = document.getElementById("order-info");
-const orderItemContainer = document.getElementById("order-items");
-
-
-// =====================================================
 // FETCH ORDER
 // =====================================================
 
 function fetchOrder() {
+    console.log(`${API_URL}/order/${id}`);
 
     fetch(`${API_URL}/order/${id}`)
 
