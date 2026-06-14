@@ -640,6 +640,12 @@ app.post("/order/status/:id", async function (req, res) {
 });
 
 
+app.delete("/menu", async (req, res) => {
+    await Menu.deleteMany({});
+    res.json({ message: "All menu items deleted" });
+});
+
+
 // =====================================================
 // SERVER START
 // =====================================================
