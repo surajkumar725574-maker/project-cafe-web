@@ -23,6 +23,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static("public"));
 
 
 // =====================================================
@@ -640,10 +641,7 @@ app.post("/order/status/:id", async function (req, res) {
 });
 
 
-app.delete("/menu", async (req, res) => {
-    await Menu.deleteMany({});
-    res.json({ message: "All menu items deleted" });
-});
+
 
 
 // =====================================================
