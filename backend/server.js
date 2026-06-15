@@ -91,7 +91,8 @@ app.post("/menu", async function (req, res) {
         const newItem = {
             name: req.body.name.trim(),
             price: Number(req.body.price),
-            category: req.body.category.trim()
+            category: req.body.category.trim(),
+            image:req.body.image
         };
 
         const existingItem = await Menu.findOne({
