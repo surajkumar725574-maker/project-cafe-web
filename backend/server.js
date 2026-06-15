@@ -153,7 +153,8 @@ app.delete("/menu/:name", async function (req, res) {
 app.get("/cart", async function (req, res) {
     try {
         const cart = await Cart.find();
-        res.send(cart);
+        res.send(
+             cart );
     }
     catch (error) {
         res.status(500).send({

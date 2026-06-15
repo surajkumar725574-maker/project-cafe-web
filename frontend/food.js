@@ -504,7 +504,33 @@ let categoryBar = document.querySelector(".category-bar");
 // =====================================================
 // GET MENU FROM BACKEND
 // =====================================================
+// function deleteAll() {
 
+//     const confirmDelete = confirm(
+//         "Are you sure you want to delete all menu items?"
+//     );
+
+//     if (!confirmDelete) {
+//         return;
+//     }
+
+//     fetch(`${API_URL}/menu`, {
+//         method: "DELETE"
+//     })
+
+//     .then(function(response) {
+//         return response.json();
+//     })
+
+//     .then(function(data) {
+//         alert(data.message);
+//     })
+
+//     .catch(function(error) {
+//         console.log(error);
+//     });
+
+// }
 function menuGenerator() {
 
     menuContainer.innerHTML = `
@@ -552,20 +578,30 @@ function renderMenu(category) {
 
         foundItem = true;
 
+        console.log(API_URL+menu[i].image);
+
         menuContainer.innerHTML += `
-            <div class="food-card">
+           
+<div class="food-card">
 
-                <h3>${menu[i].name}</h3>
+    <img
+        src="${API_URL}${menu[i].image}"
+        alt="${menu[i].name}"
+        class="food-image"
+    >
 
-                <p class="price">₹${menu[i].price}</p>
+    <h3>${menu[i].name}</h3>
 
-                <p class="category-name">${menu[i].category}</p>
+    <p class="price">₹${menu[i].price}</p>
 
-                <button onclick="addToCart('${menu[i].name}', ${menu[i].price})">
-                    Add to Cart
-                </button>
+    <p class="category-name">${menu[i].category}</p>
 
-            </div>
+    <button onclick="addToCart('${menu[i].name}', ${menu[i].price}, event)">
+        Add to Cart
+    </button>
+
+</div>
+        
         `;
 
     }
@@ -579,7 +615,6 @@ function renderMenu(category) {
     }
 
 }
-
 
 // =====================================================
 // ADD TO CART
@@ -604,8 +639,9 @@ function addToCart(name, price) {
     .then(function(data) {
 
         cart = data.cart;
+        cartButtonCounter();
+        UpdateContinueBar();
 
-        alert(`${name} added to cart`);
 
     })
     .catch(function(error) {
@@ -615,7 +651,56 @@ function addToCart(name, price) {
 
     });
 
+
 }
+
+// it is for the cartbutton on the top of the menupage//
+
+function cartButtonCounter(){
+    fetch(`${API_URL}/cart`)
+     .then(function(response){
+        return response.json();
+     })
+     .then(function(data){
+        let total=0;
+        for(let i=0;i<data.length;i++){
+            total+=data[i].quantity;
+        }
+        document.getElementById("cart-count")
+                .innerText = total ;})
+}
+
+
+
+// it is for the floating continue bar that appears only when add to cart is clicked;
+function UpdateContinueBar(){
+     let contiueButton=document.getElementById("continue-bar");
+
+     fetch(`${API_URL}/cart`)
+     .then(function(response){
+        return response.json();
+     })
+     .then(function(data){
+        let total=0;
+        for(let i=0;i<data.length;i++){
+            total+=data[i].quantity;
+        }
+            if(total>0){
+                document.getElementById("item-count").innerText=total;
+                contiueButton.style.display="block"
+            }
+            else{
+                contiueButton.style.display="none"
+        
+            }
+             
+                
+     })
+
+            
+}
+
+
 
 
 // =====================================================
@@ -642,12 +727,13 @@ function searchMenu() {
 
             menuContainer.innerHTML += `
                 <div class="food-card">
-
+                <img src="${menu[i].image}" class="food-image">
                     <h3>${menu[i].name}</h3>
 
                     <p class="price">₹${menu[i].price}</p>
 
                     <p class="category-name">${menu[i].category}</p>
+
 
                     <button onclick="addToCart('${menu[i].name}', ${menu[i].price})">
                         Add to Cart
@@ -700,7 +786,8 @@ if (categoryBar) {
 // =====================================================
 // INITIALIZATION
 // =====================================================
-
+cartButtonCounter();
+UpdateContinueBar();
 menuGenerator();
 
 console.log("food.js connected");

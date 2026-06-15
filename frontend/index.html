@@ -211,11 +211,19 @@ oninput="searchMenu()"
         </div>
 
         <nav class="customer-nav">
-           <a href="pages/cart.html">Cart</a>
-           <a href="pages/payment.html">Payment</a>
-           <a href="pages/order-status.html">Order Status</a>
-        </nav>
 
+   <a href="pages/cart.html" class="cart-link">
+      🛒
+      <span id="cart-count">0</span>
+   </a>
+
+   <a href="pages/payment.html">Payment</a>
+
+   <a href="pages/order-status.html">
+      Order Status
+   </a>
+
+</nav>
     </header>
 
 
@@ -229,7 +237,6 @@ oninput="searchMenu()"
  placeholder="search here"
  oninput="searchMenu()">
 </div>
-
 
     <!-- ===============================
          CATEGORY BAR
@@ -252,6 +259,20 @@ oninput="searchMenu()"
 
     </section>
 
+    <!-- this section is for the bottom button which shows quantity and continue buttton that redirects user to cart page -->
+     <section id="continue-bar">
+
+    <div id="bottom-card">
+        <p id="item-count">
+        </p>
+
+        <a href="./pages/cart.html">
+            <button>Continue</button>
+        </a>
+    </div>
+
+</section>
+
 
     <!-- ===============================
          MENU CARDS
@@ -265,6 +286,7 @@ oninput="searchMenu()"
             <!-- food.js renders cards here -->
 
         </div>
+
 
     </main>
 
