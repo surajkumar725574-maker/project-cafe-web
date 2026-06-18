@@ -441,9 +441,9 @@ app.post("/order", async function (req, res) {
         }
 
         const order = await Order.create({
-            customerid:req.body.customerId,
+            customerId:req.body.customerId,
             orderNumber: nextOrderNumber,
-            items: req.body.cart.items,
+            items: req.body.cart,
             total: total,
             status: "new"
         });
