@@ -334,7 +334,7 @@ function paymentFailureHandler(error) {
 
 function placeOrder() {
     let customerId=localStorage.getItem("customerId");
-
+     console.log(customerId);
     if(!customerId){
         customerId=generateCustomerId();
       

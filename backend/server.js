@@ -427,7 +427,7 @@ app.post("/order", async function (req, res) {
         let total = 0;
 
         for (let i = 0; i < req.body.cart.length; i++) {
-            total += req.body[i].price * req.body[i].quantity;
+            total += req.body.cart[i].price * req.body.cart[i].quantity;
         }
 
         const latestOrder = await Order.findOne().sort({
