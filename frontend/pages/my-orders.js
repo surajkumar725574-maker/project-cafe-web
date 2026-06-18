@@ -16,6 +16,7 @@ function FetchAllOrders(){
     )
     .then(function(data){
         orders=data.order;
+        console.log(orders);
         RenderAllOrderOFaPage();
     })
 }
@@ -49,9 +50,9 @@ function RenderAllOrderOFaPage(){
     for(let i=0;i<orders.length;i++){
         OrderContainer.innerHTML+=`
         <div class=ordered-items>
-        <div class="items">${orders[i].orderNumber}
+        <div class="items">Order no:${orders[i].orderNumber}
         </div>
-        <div class="items">${formatTime(orders[i].createdAt)}</div>
+        <div class="items">Placed at :${formatTime(orders[i].createdAt)}</div>
         <a href="order-status.html?id=${orders[i]._id}">
         <button>View Order</button>
         </a>
@@ -62,5 +63,6 @@ function RenderAllOrderOFaPage(){
 }
 
 FetchAllOrders();
+setInterval(FetchAllOrders,5000);
 
 // setInterval(FetchAllOrders,5000);
