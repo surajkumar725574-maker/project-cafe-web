@@ -4,6 +4,10 @@
 
 const API_URL = "https://project-cafe-web.onrender.com";
 
+//retrieving the customer id from local storage
+
+
+
 
 // =====================================================
 // ORDER ID FROM URL
@@ -11,6 +15,8 @@ const API_URL = "https://project-cafe-web.onrender.com";
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
+
+
 
 // =====================================================
 // DOM REFERENCES
@@ -31,10 +37,14 @@ else {
     setInterval(fetchOrder, 5000);
 }
 
+//fetch all orders of a customer
+
 
 // =====================================================
-// FETCH ORDER
+// FETCH  single ORDER
 // =====================================================
+
+
 
 function fetchOrder() {
     console.log(`${API_URL}/order/${id}`);

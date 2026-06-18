@@ -333,12 +333,25 @@ function paymentFailureHandler(error) {
 //
 
 function placeOrder() {
+    let customerId=localStorage.getItem("customerId");
+
+    if(!customerId){
+        customerId=generateCustomerId();
+      
+        localStorage.setItem(
+            "customerId",
+            customerId
+        );
+    }
 
     fetch(`${API_URL}/order`, {
 
         method: "POST",
 
-        body: JSON.stringify(cart),
+        body: JSON.stringify({
+            customerId,
+            cart
+        }),
 
         headers: {
             "Content-Type": "application/json"
@@ -377,6 +390,15 @@ function placeOrder() {
 
 }
 
+//id generaor
+
+function generateCustomerId(){
+    const time=Date.now();
+    const num=Math.random();
+    const id=time+num;
+    return id;
+}
+
 
 // =====================================================
 // CLEAR CART
@@ -409,7 +431,7 @@ function clearCart(orderId) {
         paymentMessage.innerText = "Order placed successfully";
 
         window.location.href =
-            `order-status.html?id=${orderId}`;
+            `my-orders.html`;
 
     })
     .catch(function(error) {
@@ -418,7 +440,7 @@ function clearCart(orderId) {
 
         // Even if cart clear fails, user can still track order.
         window.location.href =
-            `order-status.html?id=${data.order._id}`;
+            `order-status.html`;
 
     });
 
