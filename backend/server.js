@@ -426,7 +426,7 @@ app.post("/order", async function (req, res) {
     try {
         let total = 0;
 
-        for (let i = 0; i < req.body.length; i++) {
+        for (let i = 0; i < req.body.cart.length; i++) {
             total += req.body[i].price * req.body[i].quantity;
         }
 
@@ -441,8 +441,9 @@ app.post("/order", async function (req, res) {
         }
 
         const order = await Order.create({
+            customerid:req.body.customerId,
             orderNumber: nextOrderNumber,
-            items: req.body,
+            items: req.body.cart.items,
             total: total,
             status: "new"
         });
@@ -566,6 +567,37 @@ app.get("/order/:order_id", async function (req, res) {
         res.status(500).send({
             message: error.message
         });
+    }
+});
+
+// UNDER construction:
+
+app.get("/order/customer/:customerid",async (req,res)=>{
+    try{
+       
+        const orders= await  Order.find({
+            customerId:req.params.customerid}).sort({
+                orderNumber:-1
+            });
+        
+        if(orders.length===0){
+            return res.status(404).send({
+                message:"order for this  customer id is not placed"
+            });
+        }
+        res.send({
+            message:"here are the orders/order of this customer id ",
+
+            order:orders
+        })
+
+
+    }
+    catch(error){
+        res.status(500).send({
+            message:error.message
+        });
+
     }
 });
 

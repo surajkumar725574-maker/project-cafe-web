@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
+    customerId:{
+        type:String,
+        required:true
+    },
+
     orderNumber:{
         type:Number,
         required:true,
