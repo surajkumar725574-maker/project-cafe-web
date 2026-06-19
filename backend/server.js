@@ -424,7 +424,7 @@ app.post("/payment/verify", function (req, res) {
 let originalAdminId = "chacha123";
 let originalPassword = "420chacha";
 
-app.post("/admin/password",async (req,res)=>{
+app.post("/admin/login",async (req,res)=>{
     let Admin_id=req.body.adminId;
     let Password=req.body.password;
 

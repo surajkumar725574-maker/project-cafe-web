@@ -35,6 +35,7 @@ let orders = [];
 let menu = [];
 
 
+//
 // =====================================================
 // DOM REFERENCES
 // =====================================================
@@ -69,6 +70,7 @@ let message = document.getElementById("message");
 // =====================================================
 // INITIAL LOGIN PAGE STATE
 // =====================================================
+
 
 function loadLoginPage() {
 
@@ -127,7 +129,7 @@ function PageLoader(){
     console.log(adminId);
 console.log(password);
 
-    fetch(`${API_URL}/admin/password`,{
+    fetch(`${API_URL}/admin/login`,{
         method:"POST",
         headers:{
             "Content-Type":"application/json"
@@ -141,18 +143,54 @@ console.log(password);
         return response.json();
     })
     .then(function(data){
-      if(data.data){
+      
         console.log(data);
-      LoadAdminPage();
-      return
-      }
-      else{
-        console.log(data);
-        message.style.display="block";
-        message.innerText=data.message;
-      }
-    })
+    if(data.data===true){
 
+    localStorage.setItem(
+        "isAdmin",
+        "true"
+    );
+
+    LoadAdminPage();
+
+}
+else{
+
+    localStorage.removeItem(
+        "isAdmin"
+    );
+
+    message.style.display="block";
+    message.innerText="Try Again";
+
+}
+  }
+    )
+
+}
+function LocalStorageRedirectingAdminPanels(){
+    if(
+    localStorage.getItem("isAdmin")
+    === "true"
+){
+    LoadAdminPage();
+}
+else{
+    loadLoginPage();
+}
+}
+
+
+
+
+//logout button for localstorage clearance
+
+function logOutofAdminPanel()
+{
+    localStorage.removeItem("isAdmin");
+    loadLoginPage();
+    closeSidebar();
 }
 
 
@@ -758,6 +796,6 @@ function closeSidebar() {
 // INITIAL PAGE STATE
 // =====================================================
 
-loadLoginPage();
+LocalStorageRedirectingAdminPanels();
 
 console.log("admin.js connected");
