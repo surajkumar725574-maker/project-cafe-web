@@ -62,8 +62,8 @@ let message = document.getElementById("message");
 // Real production login should happen on backend.
 //
 
-let originalAdminId = "chacha123";
-let originalPassword = "420chacha";
+// let originalAdminId = "chacha123";
+// let originalPassword = "420chacha";
 
 
 // =====================================================
@@ -85,24 +85,73 @@ function loadLoginPage() {
 // LOGIN CHECK
 // =====================================================
 
-function pageLoader() {
+// function pageLoader() {
 
-    let adminId = document.getElementById("admin-id").value.trim();
-    let password = document.getElementById("password").value.trim();
+//     let adminId = document.getElementById("admin-id").value.trim();
+//     let password = document.getElementById("password").value.trim();
 
-    if (adminId === originalAdminId && password === originalPassword) {
+//     if (adminId === originalAdminId && password === originalPassword) {
 
-        loginSection.style.display = "none";
+//         loginSection.style.display = "none";
+//         adminPanel.style.display = "block";
+//         message.style.display = "none";
+
+//         loadAdminData();
+
+//         return;
+//     }
+
+//     message.innerText = "Wrong ID or password";
+//     message.style.display = "block";
+
+// }
+
+function LoadAdminPage(){
+     loginSection.style.display = "none";
         adminPanel.style.display = "block";
         message.style.display = "none";
 
         loadAdminData();
 
-        return;
-    }
+}
 
-    message.innerText = "Wrong ID or password";
-    message.style.display = "block";
+
+//Backend authentication
+
+    
+
+
+function PageLoader(){
+    let adminId = document.getElementById("admin-id").value.trim();
+    let password = document.getElementById("password").value.trim();
+    console.log(adminId);
+console.log(password);
+
+    fetch(`${API_URL}/admin/password`,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+              adminId,
+              password
+        })
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+      if(data.data){
+        console.log(data);
+      LoadAdminPage();
+      return
+      }
+      else{
+        console.log(data);
+        message.style.display="block";
+        message.innerText=data.message;
+      }
+    })
 
 }
 

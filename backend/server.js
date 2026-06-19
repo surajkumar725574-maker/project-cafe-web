@@ -418,6 +418,32 @@ app.post("/payment/verify", function (req, res) {
 });
 
 
+//Authentication route
+
+
+let originalAdminId = "chacha123";
+let originalPassword = "420chacha";
+
+app.post("/admin/password",async (req,res)=>{
+    let Admin_id=req.body.adminId;
+    let Password=req.body.password;
+
+    if(Admin_id===originalAdminId&&Password===originalPassword){
+        res.send({
+            message:"Login successful",
+            data:true
+        })
+    }
+    else
+    {
+        res.send({
+            message:"try again",
+            data:false
+        })
+    }
+
+})
+
 // =====================================================
 // ORDER ROUTES
 // =====================================================
