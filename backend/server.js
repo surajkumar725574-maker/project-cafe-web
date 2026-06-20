@@ -7,7 +7,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
-
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const Menu = require("./models/Menu");
@@ -49,6 +49,9 @@ const razorpay = new Razorpay({
 });
 
 
+
+console.log(process.env.ADMIN_ID);
+console.log(process.env.JWT_SECRET);
 // =====================================================
 // HEALTH CHECK
 // =====================================================
@@ -421,14 +424,20 @@ app.post("/payment/verify", function (req, res) {
 //Authentication route
 
 
-let originalAdminId = "chacha123";
-let originalPassword = "420chacha";
+const ADMIN_ID =
+process.env.ADMIN_ID;
+
+const ADMIN_PASSWORD =
+process.env.ADMIN_PASSWORD;
 
 app.post("/admin/login",async (req,res)=>{
     let Admin_id=req.body.adminId;
     let Password=req.body.password;
 
-    if(Admin_id===originalAdminId&&Password===originalPassword){
+if(
+    adminId===ADMIN_ID &&
+    password===ADMIN_PASSWORD
+){
         res.send({
             message:"Login successful",
             data:true
