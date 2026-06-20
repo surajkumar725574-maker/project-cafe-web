@@ -145,26 +145,16 @@ console.log(password);
     .then(function(data){
       
         console.log(data);
-    if(data.data===true){
 
     localStorage.setItem(
-        "isAdmin",
-        "true"
+     "token",data.token
     );
+
 
     LoadAdminPage();
 
-}
-else{
 
-    localStorage.removeItem(
-        "isAdmin"
-    );
 
-    message.style.display="block";
-    message.innerText="Try Again";
-
-}
   }
     )
 

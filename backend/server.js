@@ -25,6 +25,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
+console.log(process.env.MONGODB_URI);
+
 
 // =====================================================
 // MONGODB CONNECTION
@@ -430,27 +432,40 @@ process.env.ADMIN_ID;
 const ADMIN_PASSWORD =
 process.env.ADMIN_PASSWORD;
 
-app.post("/admin/login",async (req,res)=>{
-   const adminId = req.body.adminId;
+app.post("/admin/login", async (req,res)=>{
+
+    const adminId = req.body.adminId;
     const password = req.body.password;
-if(
-    adminId===ADMIN_ID &&
-    password===ADMIN_PASSWORD
-){
+
+    console.log("Frontend:");
+    console.log(adminId);
+    console.log(password);
+
+    console.log("ENV:");
+    console.log(ADMIN_ID);
+    console.log(ADMIN_PASSWORD);
+
+    if(
+        adminId === ADMIN_ID &&
+        password === ADMIN_PASSWORD
+    ){
+        const token=jwt.sign({
+            role:"admin",
+            adminId:ADMIN_ID
+        },process.env.JWT_SECRET);
         res.send({
             message:"Login successful",
-            data:true
-        })
+            token:token
+        });
     }
-    else
-    {
+    else{
         res.send({
             message:"try again",
             data:false
-        })
+        });
     }
 
-})
+});
 
 // =====================================================
 // ORDER ROUTES
