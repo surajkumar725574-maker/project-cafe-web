@@ -159,18 +159,46 @@ console.log(password);
     )
 
 }
-function LocalStorageRedirectingAdminPanels(){
-    if(
-    localStorage.getItem("isAdmin")
-    === "true"
-){
-    LoadAdminPage();
-}
-else{
-    loadLoginPage();
-}
-}
+// function LocalStorageRedirectingAdminPanels(){
+//     if(
+//     localStorage.getItem("isAdmin")
+//     === "true"
+// ){
+//     LoadAdminPage();
+// }
+// else{
+//     loadLoginPage();
+// }
+// }
 
+function verifyAdminToken(){
+    const token= localStorage.getItem("token");
+    if(!token){
+        return;
+    }
+    fetch(`${API_URL}/verify/admin`,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+           token
+        })
+        
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        if(data.validation===true){
+          LoadAdminPage();
+        }
+        else{
+            loadLoginPage();
+            
+        }
+    })
+}
 
 
 
@@ -786,6 +814,6 @@ function closeSidebar() {
 // INITIAL PAGE STATE
 // =====================================================
 
-LocalStorageRedirectingAdminPanels();
+verifyAdminToken();
 
 console.log("admin.js connected");

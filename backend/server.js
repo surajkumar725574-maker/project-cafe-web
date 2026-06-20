@@ -25,7 +25,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-console.log(process.env.MONGODB_URI);
 
 
 // =====================================================
@@ -437,13 +436,13 @@ app.post("/admin/login", async (req,res)=>{
     const adminId = req.body.adminId;
     const password = req.body.password;
 
-    console.log("Frontend:");
-    console.log(adminId);
-    console.log(password);
+    // console.log("Frontend:");
+    // console.log(adminId);
+    // console.log(password);
 
-    console.log("ENV:");
-    console.log(ADMIN_ID);
-    console.log(ADMIN_PASSWORD);
+    // console.log("ENV:");
+    // console.log(ADMIN_ID);
+    // console.log(ADMIN_PASSWORD);
 
     if(
         adminId === ADMIN_ID &&
@@ -466,6 +465,26 @@ app.post("/admin/login", async (req,res)=>{
     }
 
 });
+
+//verify route
+app.post("/verify/admin",async (req,res)=>{
+try{
+    const recievedToken=req.body.token
+   const decoded= jwt.verify(recievedToken,process.env.JWT_SECRET);
+    if(decoded.role==="admin"){
+   res.send({
+        validation:true
+    });
+
+}
+}
+catch(error){
+    res.send({
+        validation:false
+    })
+
+}
+})
 
 // =====================================================
 // ORDER ROUTES
