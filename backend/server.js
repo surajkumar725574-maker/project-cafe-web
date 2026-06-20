@@ -431,8 +431,6 @@ const ADMIN_PASSWORD =
 process.env.ADMIN_PASSWORD;
 
 app.post("/admin/login",async (req,res)=>{
-    let Admin_id=req.body.adminId;
-    let Password=req.body.password;
 
 if(
     adminId===ADMIN_ID &&
