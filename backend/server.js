@@ -50,9 +50,6 @@ const razorpay = new Razorpay({
 });
 
 
-
-console.log(process.env.ADMIN_ID);
-console.log(process.env.JWT_SECRET);
 // =====================================================
 // HEALTH CHECK
 // =====================================================
@@ -431,7 +428,7 @@ process.env.ADMIN_ID;
 const ADMIN_PASSWORD =
 process.env.ADMIN_PASSWORD;
 
-console.log(process.env.ADMIN_PASSWORD);
+
 app.post("/admin/login", async (req,res)=>{
 
     const adminId = req.body.adminId;
@@ -477,6 +474,11 @@ try{
         validation:true
     });
 
+}
+else{
+    res.send({
+        validation:false
+    });
 }
 }
 catch(error){

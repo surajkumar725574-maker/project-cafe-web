@@ -126,8 +126,6 @@ function LoadAdminPage(){
 function PageLoader(){
     let adminId = document.getElementById("admin-id").value.trim();
     let password = document.getElementById("password").value.trim();
-    console.log(adminId);
-console.log(password);
 
     fetch(`${API_URL}/admin/login`,{
         method:"POST",
@@ -143,15 +141,17 @@ console.log(password);
         return response.json();
     })
     .then(function(data){
-      
-        console.log(data);
-
-    localStorage.setItem(
+      if(data.token){
+        localStorage.setItem(
      "token",data.token
     );
-
-
     LoadAdminPage();
+      }
+      else{
+        loadLoginPage();
+         message.style.display="block";
+            message.innerText="try again";
+      }
 
 
 
@@ -174,6 +174,7 @@ console.log(password);
 function verifyAdminToken(){
     const token= localStorage.getItem("token");
     if(!token){
+        loadLoginPage();
         return;
     }
     fetch(`${API_URL}/verify/admin`,{
@@ -195,6 +196,8 @@ function verifyAdminToken(){
         }
         else{
             loadLoginPage();
+            message.style.display="block";
+            message.innerText="try again";
             
         }
     })
@@ -206,7 +209,7 @@ function verifyAdminToken(){
 
 function logOutofAdminPanel()
 {
-    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("token");
     loadLoginPage();
     closeSidebar();
 }
