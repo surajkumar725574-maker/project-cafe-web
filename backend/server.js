@@ -431,11 +431,12 @@ process.env.ADMIN_ID;
 const ADMIN_PASSWORD =
 process.env.ADMIN_PASSWORD;
 
+console.log(process.env.ADMIN_PASSWORD);
 app.post("/admin/login", async (req,res)=>{
 
     const adminId = req.body.adminId;
     const password = req.body.password;
-
+    
     // console.log("Frontend:");
     // console.log(adminId);
     // console.log(password);
