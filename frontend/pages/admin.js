@@ -173,35 +173,16 @@ function PageLoader(){
 
 function verifyAdminToken(){
     const token= localStorage.getItem("token");
-    if(!token){
+     if(token){
+        LoadAdminPage();
+     }
+     else{
         loadLoginPage();
-        return;
-    }
-    fetch(`${API_URL}/verify/admin`,{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-           token
-        })
-        
-    })
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(data){
-        if(data.validation===true){
-          LoadAdminPage();
+     }
+    
         }
-        else{
-            loadLoginPage();
-            message.style.display="block";
-            message.innerText="try again";
-            
-        }
-    })
-}
+    
+
 
 
 

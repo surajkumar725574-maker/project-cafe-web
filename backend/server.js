@@ -50,6 +50,52 @@ const razorpay = new Razorpay({
 });
 
 
+function verifyAdmin(req, res, next) {
+
+    const authHeader=req.headers.authorization;
+    if(!authHeader){
+        return res.status(401).send({
+   message:"Unauthorized"
+});
+    }
+   const parts=authHeader.split(" ");
+   if(parts.length!==2){
+       return res.status(401).send({
+        message:"Unauthorized"
+      });
+   }
+   if(parts[0]!=="Bearer"){
+    return res.status(401).send({
+        message:"Unauthorized"
+    });
+   }
+
+        const token=parts[1];
+       let decoded;
+       try{
+        decoded= jwt.verify(token,process.env.JWT_SECRET);
+    }
+    catch(error){
+     return res.status(401).send({
+   message:"Unauthorized"
+});
+    
+}
+if(decoded.role==="admin"){
+    req.admin=decoded;
+    return next();
+}
+else{
+    return  res.status(401).send({
+   message:"Unauthorized"
+});
+
+    }
+  }
+
+
+
+
 // =====================================================
 // HEALTH CHECK
 // =====================================================
@@ -76,7 +122,7 @@ app.get("/menu", async function (req, res) {
 });
 
 
-app.post("/menu", async function (req, res) {
+app.post("/menu",verifyAdmin, async function (req, res) {
     try {
         if (!req.body.name || !req.body.price || !req.body.category) {
             const menu = await Menu.find();
@@ -128,7 +174,7 @@ app.post("/menu", async function (req, res) {
 });
 
 
-app.delete("/menu/:name", async function (req, res) {
+app.delete("/menu/:name", verifyAdmin,async function (req, res) {
     try {
         const itemName = decodeURIComponent(req.params.name);
 
@@ -207,7 +253,7 @@ app.post("/cart", async function (req, res) {
 });
 
 
-app.post("/cart/name", async function (req, res) {
+app.post("/cart/Increase", async function (req, res) {
     try {
         const existingItem = await Cart.findOne({
             name: req.body.name
@@ -277,32 +323,32 @@ app.post("/cart/decrease", async function (req, res) {
     }
 });
 
-function calculateEstimatedMinutes(items) {
+// function calculateEstimatedMinutes(items) {
 
-    let minutes = 10;
+//     let minutes = 10;
 
-    if (items.length >= 3) {
-        minutes = 15;
-    }
+//     if (items.length >= 3) {
+//         minutes = 15;
+//     }
 
-    if (items.length >= 5) {
-        minutes = 20;
-    }
+//     if (items.length >= 5) {
+//         minutes = 20;
+//     }
 
-    for (let i = 0; i < items.length; i++) {
-        let name = items[i].name.toLowerCase();
+//     for (let i = 0; i < items.length; i++) {
+//         let name = items[i].name.toLowerCase();
 
-        if (
-            name.includes("thali") ||
-            name.includes("chicken") ||
-            name.includes("rice")
-        ) {
-            minutes += 10;
-        }
-    }
+//         if (
+//             name.includes("thali") ||
+//             name.includes("chicken") ||
+//             name.includes("rice")
+//         ) {
+//             minutes += 10;
+//         }
+//     }
 
-    return minutes;
-}
+//     return minutes;
+// }
 
 
 app.post("/cart/clear", async function (req, res) {
@@ -465,29 +511,32 @@ app.post("/admin/login", async (req,res)=>{
 });
 
 //verify route
-app.post("/verify/admin",async (req,res)=>{
-try{
-    const recievedToken=req.body.token
-   const decoded= jwt.verify(recievedToken,process.env.JWT_SECRET);
-    if(decoded.role==="admin"){
-   res.send({
-        validation:true
-    });
 
-}
-else{
-    res.send({
-        validation:false
-    });
-}
-}
-catch(error){
-    res.send({
-        validation:false
-    })
+// this was a prototype to understand the middleware concept 
 
-}
-})
+// app.post("/verify/admin",async (req,res)=>{
+// try{
+//     const recievedToken=req.body.token
+//    const decoded= jwt.verify(recievedToken,process.env.JWT_SECRET);
+//     if(decoded.role==="admin"){
+//    res.send({
+//         validation:true
+//     });
+
+// }
+// else{
+//     res.send({
+//         validation:false
+//     });
+// }
+// }
+// catch(error){
+//     res.send({
+//         validation:false
+//     })
+
+// }
+// })
 
 // =====================================================
 // ORDER ROUTES
@@ -573,7 +622,7 @@ app.get("/orders", async function (req, res) {
 //
 // =====================================================
 
-app.get("/order/search/:query", async function (req, res) {
+app.get("/order/search/:query",verifyAdmin, async function (req, res) {
     try {
         const query = req.params.query;
 
@@ -620,7 +669,7 @@ app.get("/order/search/:query", async function (req, res) {
 //
 // =====================================================
 
-app.get("/order/:order_id", async function (req, res) {
+app.get("/order/:order_id",verifyAdmin, async function (req, res) {
     try {
         const order = await Order.findById(
             req.params.order_id
@@ -677,7 +726,7 @@ app.get("/order/customer/:customerid",async (req,res)=>{
 // UPDATE ORDER STATUS
 // =====================================================
 
-app.post("/order/status/:id", async function (req, res) {
+app.post("/order/status/:id", verifyAdmin,async function (req, res) {
     try {
         const id = req.params.id;
         const newStatus = req.body.status;
