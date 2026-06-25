@@ -54,7 +54,7 @@ function verifyAdmin(req, res, next) {
     
 
     const authHeader=req.headers.authorization;
-    console.log(req.headers.authorization);
+    
     if(!authHeader){
         return res.status(401).send({
    message:"Unauthorized"
