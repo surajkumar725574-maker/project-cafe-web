@@ -193,6 +193,7 @@ function logOutofAdminPanel()
     localStorage.removeItem("token");
     loadLoginPage();
     message.innerHTML="Session Expired. Please login again.";
+    message.style.display="block";
     closeSidebar();
 }
 
