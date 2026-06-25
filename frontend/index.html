@@ -270,14 +270,35 @@ oninput="searchMenu()"
     </div>
 
 </section>
+<!-- section for user login -->
 
+<section id="sign-in">
+    <button onclick="signIn()"></button>
+</section>
+
+<section id="user-signin">
+    <label for id="user-name">Name</label>
+    <input id="user-name" placeholder="type your name">
+    
+<label id="user-no">Phone-no</label>
+    <input id="user-no" placeholder="Phone no">
+
+
+<label for id="user-email">E-mail</label>
+    <input id="user-email" placeholder="your Email...name@gmail.com">
+
+    <label for id="user-pass">Password</label>
+    <input id="user-pass" placeholder="password.eg:-hsh@y2517#">
+
+    <button onclick="userRegistration()">sign in</button>
+</section>
 
     <!-- ===============================
          MENU CARDS
     ================================ -->
 
     <main>
-
+<section id="index-page">
         <div id="menu-items"
              class="menu-grid">
 
@@ -285,9 +306,11 @@ oninput="searchMenu()"
 
         </div>
 
-
+</section>
     </main>
+     
 
+    <script src="./util.js"></script>
 
     <script src="food.js"></script>
 

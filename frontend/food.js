@@ -499,6 +499,8 @@ let menu = [];
 
 let menuContainer = document.getElementById("menu-items");
 let categoryBar = document.querySelector(".category-bar");
+    let signinPage=document.getElementById("user-signin");
+        let indexPage=document.getElementById("Index-page");
 
 
 // =====================================================
@@ -670,7 +672,72 @@ function cartButtonCounter(){
                 .innerText = total ;})
 }
 
+// login page 
 
+function userRegisteration(){
+
+    getCustomerId();
+
+           let userName=document.getElementById("user-name").value.trim();
+
+       let userPhone=document.getElementById("user-no").value.trim();
+
+       let userEmail=document.getElementById("user-email").value.trim();
+
+       let userPassword=document.getElementById("user-pass").value.trim();
+
+       fetch(`${API_URL}/user/signup`,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            name:userName,
+            phoneNo:userPhone,
+            email:userEmail,
+            customerId:customerId,
+            password:userPassword
+            
+        })
+       })
+       .then(function(response){
+        return response.json();
+       })
+       .then(function(data){
+
+    if(data.token){
+        localStorage.setItem(
+            "Usertoken",
+            data.token
+        );
+
+        loadIndexPage();
+    }
+    else{
+        alert(data.message);
+    }
+   
+})
+
+}
+
+
+//signin()
+
+function sigIn(){
+            signinPage.style.display="block";
+        indexPage.style.display="none";
+
+}
+
+//an index pageloader so after login we can redirect  user from loginpage to indexpage(index.html) as usual user...
+
+function loadIndexPage(){
+    
+        signinPage.style.display="none";
+        indexPage.style.display="block";
+
+}
 
 // it is for the floating continue bar that appears only when add to cart is clicked;
 function UpdateContinueBar(){
@@ -789,5 +856,6 @@ if (categoryBar) {
 cartButtonCounter();
 UpdateContinueBar();
 menuGenerator();
+loadIndexPage();
 
 console.log("food.js connected");

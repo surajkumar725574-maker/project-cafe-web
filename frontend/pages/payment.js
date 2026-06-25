@@ -332,17 +332,11 @@ function paymentFailureHandler(error) {
 // redirects user to tracking page.
 //
 
+
+
+
 function placeOrder() {
-    let customerId=localStorage.getItem("customerId");
-     console.log(customerId);
-    if(!customerId){
-        customerId=generateCustomerId();
-      
-        localStorage.setItem(
-            "customerId",
-            customerId
-        );
-    }
+   getCustomerId();
 
     fetch(`${API_URL}/order`, {
 
