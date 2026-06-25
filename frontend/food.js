@@ -724,7 +724,7 @@ function userRegisteration(){
 
 //signin()
 
-function sigIn(){
+function signIn(){
             signinPage.style.display="block";
         indexPage.style.display="none";
 
