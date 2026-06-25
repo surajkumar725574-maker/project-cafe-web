@@ -769,8 +769,8 @@ app.post("/order/status/:id", verifyAdmin,async function (req, res) {
             id,
             updateData,
             {
-                new: true
-            }
+    returnDocument:"after"
+       }
         );
 
         if (!updatedOrder) {

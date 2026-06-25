@@ -34,7 +34,7 @@ if (!id) {
 }
 else {
     fetchOrder();
-    // setInterval(fetchOrder, 5000);
+    setInterval(fetchOrder, 5000);
 }
 
 //fetch all orders of a customer
