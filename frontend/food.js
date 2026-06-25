@@ -678,6 +678,7 @@ function userRegisteration(){
 
     getCustomerId();
 
+
            let userName=document.getElementById("user-name").value.trim();
 
        let userPhone=document.getElementById("user-no").value.trim();
@@ -685,6 +686,22 @@ function userRegisteration(){
        let userEmail=document.getElementById("user-email").value.trim();
 
        let userPassword=document.getElementById("user-pass").value.trim();
+
+       console.log(
+    document.getElementById("user-name")
+);
+
+console.log(
+    document.getElementById("user-no")
+);
+
+console.log(
+    document.getElementById("user-email")
+);
+
+console.log(
+    document.getElementById("user-pass")
+);
 
        fetch(`${API_URL}/user/signup`,{
         method:"POST",
