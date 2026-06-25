@@ -590,7 +590,7 @@ app.post("/order", async function (req, res) {
 // GET ALL ORDERS
 // =====================================================
 
-app.get("/orders", async function (req, res) {
+app.get("/orders", verifyAdmin,async function (req, res) {
     try {
         const orders = await Order.find().sort({
             orderNumber: -1
