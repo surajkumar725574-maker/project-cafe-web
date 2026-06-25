@@ -505,7 +505,7 @@ return res.status(409).send({
  customer=await Customer.create({
     name:username,
     phoneNo:userPhone,
-    email:useremail,
+    email:useremail||undefined,
     customerId:customerId,
     password:userPassword,
     
