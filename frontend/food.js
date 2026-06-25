@@ -500,7 +500,7 @@ let menu = [];
 let menuContainer = document.getElementById("menu-items");
 let categoryBar = document.querySelector(".category-bar");
     let signinPage=document.getElementById("user-signin");
-        let indexPage=document.getElementById("Index-page");
+        let indexPage=document.getElementById("index-page");
 
 
 // =====================================================
@@ -724,7 +724,7 @@ function userRegisteration(){
 
 //signin()
 
-function signIn(){
+function signUp(){
             signinPage.style.display="block";
         indexPage.style.display="none";
 
