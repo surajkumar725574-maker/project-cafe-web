@@ -676,7 +676,7 @@ function cartButtonCounter(){
 
 function userRegisteration(){
 
-    getCustomerId();
+    let customerId= getCustomerId();
 
 
            let userName=document.getElementById("user-name").value.trim();
