@@ -220,7 +220,13 @@ function loadAdminData() {
 
 function fetchOrders() {
 
-    fetch(`${API_URL}/orders`)
+    fetch(`${API_URL}/orders`,{
+        headers: {
+    "Authorization":
+        `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type":"application/json"
+}
+    })
     .then(function(response) {
         return response.json();
     })
@@ -265,7 +271,13 @@ function searchOrderByIdOrNumber() {
         return;
     }
 
-    fetch(`${API_URL}/order/search/${orderId}`)
+    fetch(`${API_URL}/order/search/${orderId}`,{
+        headers: {
+    "Authorization":
+        `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type":"application/json"
+}
+    })
     .then(function(response) {
         return response.json();
     })
@@ -496,6 +508,7 @@ function updateOrderStatus(id, status) {
     fetch(`${API_URL}/order/status/${id}`, {
         method: "POST",
         headers: {
+            "Authorization":`Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -642,7 +655,12 @@ function removeItems(name) {
     let safeName = encodeURIComponent(name);
 
     fetch(`${API_URL}/menu/${safeName}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+    "Authorization":
+        `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type":"application/json"
+}
     })
     .then(function(response) {
         return response.json();
@@ -685,10 +703,11 @@ function addItems() {
 
         method: "POST",
 
-        headers: {
-            "Content-Type": "application/json"
-        },
-
+      headers: {
+    "Authorization":
+        `Bearer ${localStorage.getItem("token")}`,
+    "Content-Type":"application/json"
+},
         body: JSON.stringify({
             name: name,
             price: Number(price),
