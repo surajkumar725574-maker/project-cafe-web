@@ -349,7 +349,7 @@ function renderCart() {
 
 function additems(name) {
 
-    fetch(`${API_URL}/cart/increase`, {
+    fetch(`${API_URL}/cart/Increase`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
