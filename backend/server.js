@@ -526,7 +526,7 @@ return res.send({
     catch(error){
         console.log(error);
 
-        return res.status.send({
+        return res.status(500).send({
             message:"Internal Server error"
         });
     }
