@@ -687,21 +687,21 @@ function userRegisteration(){
 
        let userPassword=document.getElementById("user-pass").value.trim();
 
-       console.log(
-    document.getElementById("user-name")
-);
+//        console.log(
+//     document.getElementById("user-name").value
+// );
 
-console.log(
-    document.getElementById("user-no")
-);
+// console.log(
+//     document.getElementById("user-no").value
+// );
 
-console.log(
-    document.getElementById("user-email")
-);
+// console.log(
+//     document.getElementById("user-email")
+// );
 
-console.log(
-    document.getElementById("user-pass")
-);
+// console.log(
+//     document.getElementById("user-pass")
+// );
 
        fetch(`${API_URL}/user/signup`,{
         method:"POST",
@@ -727,7 +727,9 @@ console.log(
             "Usertoken",
             data.token
         );
-
+       
+        localStorage.setItem("customer",data.customerId);
+        alert("Account created successfully");
         loadIndexPage();
     }
     else{
