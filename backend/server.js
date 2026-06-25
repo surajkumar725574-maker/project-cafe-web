@@ -507,7 +507,7 @@ return res.status(409).send({
     phoneNo:userPhone,
     email:useremail,
     customerId:customerId,
-    password=userPassword,
+    password:userPassword,
     
 })
 
