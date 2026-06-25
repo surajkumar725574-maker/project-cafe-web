@@ -34,7 +34,7 @@ if (!id) {
 }
 else {
     fetchOrder();
-    setInterval(fetchOrder, 5000);
+    // setInterval(fetchOrder, 5000);
 }
 
 //fetch all orders of a customer
@@ -67,10 +67,13 @@ function fetchOrder() {
 // =====================================================
 
 function renderOrder(order) {
+    console.log(order);
+    console.log(order.items);
 
     renderStatusCard(order);
 
     renderTimeline(order);
+
 
     orderItemContainer.innerHTML =
         renderItems(order.items);
@@ -277,6 +280,10 @@ function renderTimeline(order) {
 
 function renderItems(items) {
 
+    if(!items){
+        return;
+    }
+    console.log(items);
     let html = "";
 
     let grandTotal = 0;
