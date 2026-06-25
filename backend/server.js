@@ -671,7 +671,7 @@ app.get("/order/search/:query",verifyAdmin, async function (req, res) {
 //
 // =====================================================
 
-app.get("/order/:order_id", function (req, res) {
+app.get("/order/:order_id", async function (req, res) {
     try {
         const order = await Order.findById(
             req.params.order_id
