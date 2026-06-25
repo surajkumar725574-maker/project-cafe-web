@@ -544,7 +544,7 @@ app.post("/admin/login", async (req,res)=>{
 // ORDER ROUTES
 // =====================================================
 
-app.post("/order", async function (req, res) {
+app.post("/order", verifyAdmin,async function (req, res) {
     try {
         let total = 0;
 
@@ -592,7 +592,7 @@ app.post("/order", async function (req, res) {
 // GET ALL ORDERS
 // =====================================================
 
-app.get("/orders", verifyAdmin,async function (req, res) {
+app.get("/orders", async function (req, res) {
     try {
         const orders = await Order.find().sort({
             orderNumber: -1
@@ -671,7 +671,7 @@ app.get("/order/search/:query",verifyAdmin, async function (req, res) {
 //
 // =====================================================
 
-app.get("/order/:order_id",verifyAdmin, async function (req, res) {
+app.get("/order/:order_id", function (req, res) {
     try {
         const order = await Order.findById(
             req.params.order_id
