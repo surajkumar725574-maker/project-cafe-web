@@ -544,7 +544,7 @@ app.post("/admin/login", async (req,res)=>{
 // ORDER ROUTES
 // =====================================================
 
-app.post("/order", verifyAdmin,async function (req, res) {
+app.post("/order", async function (req, res) {
     try {
         let total = 0;
 
