@@ -873,8 +873,8 @@ app.post("/user/signup", async (req,res)=>{
         const userEmail = req.body.email;
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
-        console.log(customerId);
-console.log("customerId:", customerId);
+    
+console.log("Recieved customerId:", customerId);
         const existingCustomer = await Customer.findOne({
     customerId
 });
@@ -896,10 +896,11 @@ const existingPhone = await Customer.findOne({
 console.log("existingPhone:", existingPhone);
 
 if(existingPhone){
-    return res.status(409).send({
-        message:"Phone number already registered."
-    });
+   return res.send({
+      message:"phone no is already registered"
+   });
 }
+
 
 
         const customer = await Customer.create({
