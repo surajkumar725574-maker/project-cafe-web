@@ -876,8 +876,8 @@ app.post("/user/signup", async (req,res)=>{
     
 console.log("Recieved customerId:", customerId);
         const existingCustomer = await Customer.findOne({
-    customerId
-});
+       customerId
+       });
 console.log("existingCustomer:", existingCustomer);
 
 if(existingCustomer){
