@@ -873,6 +873,7 @@ app.post("/user/signup", async (req,res)=>{
         const userEmail = req.body.email;
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
+        console.log(customerId);
 
         const existingCustomer = await Customer.findOne({
     customerId
@@ -883,6 +884,8 @@ if(existingCustomer){
         message:"Account already exists. Please login."
     });
 }
+console.log(userPhone);
+
 
 const existingPhone = await Customer.findOne({
     phoneNo:userPhone
