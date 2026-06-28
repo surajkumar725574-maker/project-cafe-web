@@ -336,7 +336,7 @@ function paymentFailureHandler(error) {
 
 
 function placeOrder() {
-   getCustomerId();
+   let customerId=getCustomerId();
 
     fetch(`${API_URL}/order`, {
 
@@ -386,13 +386,7 @@ function placeOrder() {
 
 //id generaor
 
-function generateCustomerId(){
-    const time=Date.now();
-    const num=Math.random();
-    const id=time+num;
-    return id;
-}
-
+//shifted to util.js...
 
 // =====================================================
 // CLEAR CART

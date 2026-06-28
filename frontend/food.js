@@ -687,6 +687,16 @@ function userRegisteration(){
 
        let userPassword=document.getElementById("user-pass").value.trim();
 
+       
+
+       if(
+    !userName ||
+    !userPhone ||
+    !userPassword
+){
+    return alert("Please fill all fields");
+}
+
 //        console.log(
 //     document.getElementById("user-name").value
 // );
@@ -712,8 +722,8 @@ function userRegisteration(){
             name:userName,
             phoneNo:userPhone,
             email:userEmail,
-            customerId:customerId,
-            password:userPassword
+            password:userPassword,
+            customerId:customerId
             
         })
        })
@@ -728,7 +738,10 @@ function userRegisteration(){
             data.token
         );
        
-        localStorage.setItem("customer",data.customerId);
+        localStorage.setItem(
+    "customerId",
+    data.customerId
+);
         alert("Account created successfully");
         loadIndexPage();
     }

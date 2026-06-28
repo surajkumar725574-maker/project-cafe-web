@@ -1,6 +1,5 @@
 function getCustomerId(){
        let customerId=localStorage.getItem("customerId");
-     console.log(customerId);
     if(!customerId){
         customerId=generateCustomerId();
       

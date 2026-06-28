@@ -36,7 +36,9 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log("MongoDB Connected");
 })
 .catch(function (error) {
-    console.log("MongoDB Error:", error);
+    console.log(error);
+    console.log(error.message);
+    console.log(error.stack);
 });
 
 
@@ -863,7 +865,69 @@ app.post("/order/status/:id", verifyAdmin,async function (req, res) {
     }
 });
 
+app.post("/user/signup", async (req,res)=>{
+    try{
 
+        const userName = req.body.name;
+        const userPhone = req.body.phoneNo;
+        const userEmail = req.body.email;
+        const userPassword = req.body.password;
+        const customerId = req.body.customerId;
+
+        const existingCustomer = await Customer.findOne({
+    customerId
+});
+
+if(existingCustomer){
+    return res.status(409).send({
+        message:"Account already exists. Please login."
+    });
+}
+
+const existingPhone = await Customer.findOne({
+    phoneNo:userPhone
+});
+
+if(existingPhone){
+    return res.status(409).send({
+        message:"Phone number already registered."
+    });
+}
+
+
+        const customer = await Customer.create({
+            name:userName,
+            phoneNo:userPhone,
+            email:userEmail,
+            password:userPassword,
+            customerId:customerId
+        });
+
+        const token = jwt.sign(
+            {
+                role:"user",
+                customerId:customer.customerId
+            },
+            JWT_SECRET,{
+                expiresIn:"30d"
+            }
+        );
+
+        return res.send({
+            message:"Sign up successful",
+            token,
+            customerId:customer.customerId
+        });
+
+    }
+    catch(error){
+        console.log(error);
+
+        return res.status(500).send({
+            message:"Internal Server Error"
+        });
+    }
+});
 
 
 

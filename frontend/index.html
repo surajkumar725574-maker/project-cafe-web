@@ -270,10 +270,10 @@ oninput="searchMenu()"
     </div>
 
 </section>
-<!-- section for user login -->
+<!-- section for user signup -->
 
 <section id="sign-in">
-    <button onclick="signUp()">Sign in</button>
+    <button onclick="signUp()">log in</button>
 </section>
 
 <section id="user-signin">
@@ -281,14 +281,19 @@ oninput="searchMenu()"
     <input id="user-name" placeholder="type your name">
     
 <label for="user-no">Phone-no</label>
-    <input id="user-no" placeholder="Phone no">
-
+    <input
+id="user-no"
+type="tel"
+placeholder="Phone no">
 
 <label for ="user-email">E-mail</label>
-    <input id="user-email" placeholder="your Email...name@gmail.com" type="email">
+    <input id="user-email" placeholder="your Email...name@gmail.com" type="email" type="email">
 
     <label for ="user-pass">Password</label>
-    <input id="user-pass" placeholder="password.eg:-hsh@y2517#">
+   <input
+id="user-pass"
+type="password"
+placeholder="password">
 
     <button onclick="userRegisteration()">sign up</button>
 </section>
@@ -310,7 +315,7 @@ oninput="searchMenu()"
     </main>
      
 
-    <script src="./util.js"></script>
+    <script src="util.js"></script>
 
     <script src="food.js"></script>
 
