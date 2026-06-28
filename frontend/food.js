@@ -492,7 +492,7 @@
 //
 // =====================================================
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://project-cafe-web.onrender.com/";
 
 
 let cart = [];
@@ -701,7 +701,7 @@ function userRegisteration(){
     return alert("Please fill all fields");
 }
 
-       fetch(`http://localhost:3000/user/signup`,{
+       fetch({API_URL},{
         method:"POST",
         headers:{
             "Content-Type":"application/json"
