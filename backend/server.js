@@ -126,7 +126,7 @@ app.get("/", function (req, res) {
 app.get("/menu", async function (req, res) {
     try {
         const menu = await Menu.find();
-        res.send(menu);
+       return res.send(menu);
     }
     catch (error) {
         res.status(500).send({
