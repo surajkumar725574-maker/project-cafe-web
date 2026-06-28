@@ -472,70 +472,6 @@ app.post("/payment/verify", function (req, res) {
 //user-authentication
 
 
-app.post("/user/signup",async(req,res)=>{
-    try{
-    const username =req.body.name;
-const userPhone =req.body.phoneNo;
-const useremail =req.body.email;
-const userPassword=req.body.password;
-const customerId=req.body.customerId;
-
-if (
-    !username ||
-    !userPhone ||
-    !userPassword
-)
-{
-    return res.status(400).send({
-        message:"Missing required fields"
-    });
-}
-
-let customer=await Customer.findOne({
-  phoneNo:userPhone
-})
-console.log(customer);
-
-if(customer){
-return res.status(409).send({
-    message:"Account  already exists. Please login instead."
-    ,
-});
-}
-
-
- customer=await Customer.create({
-    name:username,
-    phoneNo:userPhone,
-    email:useremail||undefined,
-    customerId:customerId,
-    password:userPassword,
-    
-})
-
-const customerToken= jwt.sign({
-    role:"user",
-    customerId:customerId,
-    phoneNo:userPhone
-},process.env.JWT_SECRET)
-
-return res.send({
-    message:"sign-in successful",
-    token:customerToken,
-    customerId
-})
-    }
-    catch(error){
-        console.log(error);
-
-        return res.status(500).send({
-            message:"Internal Server error"
-        });
-    }
-
-
-});
-
 //Authentication route
 
 
@@ -873,8 +809,14 @@ app.post("/user/signup", async (req,res)=>{
         const userEmail = req.body.email;
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
-    
-console.log("Recieved customerId:", customerId);
+        
+        // console.log("userName:",userName);
+        // console.log("userPhone:",userPhone);
+        // console.log("customerId:",customerId);
+
+        // return res.json({msg:"got the request"});
+// console.log("Recieved customerId:");
+
         const existingCustomer = await Customer.findOne({
        customerId
        });
@@ -886,7 +828,6 @@ if(existingCustomer){
 
     });
 }
-console.log(userPhone);
 
 
 const existingPhone = await Customer.findOne({
