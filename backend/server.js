@@ -874,14 +874,16 @@ app.post("/user/signup", async (req,res)=>{
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
         console.log(customerId);
-
+console.log("customerId:", customerId);
         const existingCustomer = await Customer.findOne({
     customerId
 });
+console.log("existingCustomer:", existingCustomer);
 
 if(existingCustomer){
     return res.status(409).send({
         message:"Account already exists. Please login."
+
     });
 }
 console.log(userPhone);
@@ -890,6 +892,8 @@ console.log(userPhone);
 const existingPhone = await Customer.findOne({
     phoneNo:userPhone
 });
+
+console.log("existingPhone:", existingPhone);
 
 if(existingPhone){
     return res.status(409).send({
