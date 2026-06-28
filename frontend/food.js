@@ -701,7 +701,7 @@ function userRegisteration(){
     return alert("Please fill all fields");
 }
 
-       fetch(`${API_URL}/user/signup',{
+       fetch(`${API_URL}/user/signup`,{
         method:"POST",
         headers:{
             "Content-Type":"application/json"
