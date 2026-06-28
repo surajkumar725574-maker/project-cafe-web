@@ -685,6 +685,9 @@ function userRegisteration(){
        let userPhone=document.getElementById("user-no").value.trim();
 
        let userEmail=document.getElementById("user-email").value.trim();
+       if(userEmail===""){
+        userEmail=undefined;
+       }
 
        let userPassword=document.getElementById("user-pass").value.trim();
 

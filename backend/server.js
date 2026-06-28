@@ -14,6 +14,7 @@ const Menu = require("./models/Menu");
 const Cart = require("./models/Cart");
 const Order = require("./models/Order");
 const Customer=require("./models/Customer");
+const { error } = require("console");
 
 // =====================================================
 // APP SETUP
@@ -50,6 +51,15 @@ const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
+
+// class AppErr extends error{
+       
+//     constructor(message,statuscode){
+//         super(message);
+//         this.statuscode=statuscode;
+//     }
+
+// }
 
 
 function verifyAdmin(req, res, next) {
@@ -871,12 +881,18 @@ if(existingPhone){
     }
     catch(error){
         console.log(error);
-
+        if(error.code===11000){
+            let errorType=Object.keys(error.keyValue)[0];
+             return res.status(409).send({
+                message:`${errorType} is already present`
+            })
+        }
         return res.status(500).send({
             message:"Internal Server Error"
         });
     }
 });
+
 
 
 
