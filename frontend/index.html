@@ -272,31 +272,46 @@ oninput="searchMenu()"
 </section>
 <!-- section for user signup -->
 
+<!-- note
+will use query selector for this at optimization  -->
+
 <section id="sign-in">
-    <button onclick="signUp()">log in</button>
+    <button onclick="signUpPageLoader()">Sign in</button>
 </section>
 
 <section id="user-signin">
+    
+    <p id="signup-message">don't have an account?</p><hr>
+    <div id="name-field">
     <label for ="user-name">Name</label>
     <input id="user-name" placeholder="type your name">
+    </div>
     
 <label for="user-no">Phone-no</label>
     <input
 id="user-no"
 type="tel"
 placeholder="Phone no">
-
+   
+<div id="email-field">
 <label for ="user-email">E-mail</label>
     <input id="user-email" placeholder="your Email...name@gmail.com" type="email" type="email">
-
+</div>
     <label for ="user-pass">Password</label>
    <input
 id="user-pass"
 type="password"
 placeholder="password">
-
+<div id="sign-up-button">
     <button onclick="userRegisteration()">sign up</button>
+    </div>
+    <p id="login-message">already have an account? </p>
+    <button  id="login-button" onclick="loginPageLoader()">log in</button>
 </section>
+
+<!-- empty container to render js continue button // model for cleaner html -->
+<div id="continue-button">
+</div>
 
     <!-- ===============================
          MENU CARDS

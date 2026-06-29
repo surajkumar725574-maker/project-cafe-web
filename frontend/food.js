@@ -690,7 +690,7 @@ function userRegisteration(){
        }
 
        let userPassword=document.getElementById("user-pass").value.trim();
-
+       
        
 
        if(
@@ -743,12 +743,58 @@ function userRegisteration(){
 
 
 //signin()
+let SigninMode=false;
 
-function signUp(){
+function signUpPageLoader(){
+
+    if(SigninMode===false){
             signinPage.style.display="block";
         indexPage.style.display="none";
+        SigninMode=true;
+    }
+    else{
+        SigninMode=false;
+     
+            signinPage.style.display="none";
+        indexPage.style.display="block";        
+
+    }
+}
+
+//login page loader
+
+//will use query selector for this at the time of optimization 
+
+
+let LoginMode=false; 
+
+function loginPageLoader(){
+    if(LoginMode===false){
+
+    
+    document.getElementById("signup-message").style.display="none";
+document.getElementById("name-field").style.display = "none";
+document.getElementById("email-field").style.display = "none";
+document.getElementById("login-button").style.display="none";
+document.getElementById("sign-up-button").style.display="none";
+document.getElementById("login-message").style.display="none";
+ let continueBtn=document.getElementById("continue-button");
+
+ continueBtn.innerHTML=`
+ <button>continue<button>`;
+ continueBtn.style.display="block";
+LoginMode=true;
+}
+
+else{
+    LoginMode=false;
+    indexPage.style.display="block";
+    continueBtn.style.display="none";
 
 }
+}
+
+
 
 //an index pageloader so after login we can redirect  user from loginpage to indexpage(index.html) as usual user...
 

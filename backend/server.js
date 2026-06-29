@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
 const jwt = require("jsonwebtoken");
+const bcrypt=require("bcrypt");
 require("dotenv").config();
 
 const Menu = require("./models/Menu");
@@ -819,6 +820,7 @@ app.post("/user/signup", async (req,res)=>{
         const userEmail = req.body.email;
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
+        const hashedPassword=await bcrypt.hash(userPassword,10);
         
         // console.log("userName:",userName);
         // console.log("userPhone:",userPhone);
@@ -858,7 +860,7 @@ if(existingPhone){
             name:userName,
             phoneNo:userPhone,
             email:userEmail,
-            password:userPassword,
+            password:hashedPassword,
             customerId:customerId
         });
 
