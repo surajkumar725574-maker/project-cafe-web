@@ -684,10 +684,6 @@ function userRegisteration(){
 
        let userPhone=document.getElementById("user-no").value.trim();
 
-       let userEmail=document.getElementById("user-email").value.trim();
-       if(userEmail===""){
-        userEmail=undefined;
-       }
 
        let userPassword=document.getElementById("user-pass").value.trim();
        
@@ -709,7 +705,6 @@ function userRegisteration(){
         body:JSON.stringify({
             name:userName,
             phoneNo:userPhone,
-            email:userEmail,
             password:userPassword,
             customerId:customerId
             
@@ -731,7 +726,7 @@ function userRegisteration(){
     data.customerId
 );
         alert("Account created successfully");
-        loadIndexPage();
+        // loadIndexPage();
     }
     else{
         alert(data.message);
@@ -741,69 +736,73 @@ function userRegisteration(){
 
 }
 
+const signupBtn=document.getElementById("signup-btn");
+signupBtn.addEventListener("click",userRegisteration);
 
-//signin()
-let SigninMode=false;
 
-function signUpPageLoader(){
+// //signin()
+// let SigninMode=false;
 
-    if(SigninMode===false){
-            signinPage.style.display="block";
-        indexPage.style.display="none";
-        SigninMode=true;
-    }
-    else{
-        SigninMode=false;
+// function signUpPageLoader(){
+
+//     if(SigninMode===false){
+//             signinPage.style.display="block";
+//         indexPage.style.display="none";
+//         SigninMode=true;
+//     }
+//     else{
+//         SigninMode=false;
      
-            signinPage.style.display="none";
-        indexPage.style.display="block";        
+//             signinPage.style.display="none";
+//         indexPage.style.display="block";        
 
-    }
-}
+//     }
+// }
 
-//login page loader
+// //login page loader
 
-//will use query selector for this at the time of optimization 
+// //will use query selector for this at the time of optimization 
 
 
-let LoginMode=false; 
+// let LoginMode=false; 
+//  let continueBtn=document.getElementById("continue-button");
+//  continueBtn.style.display="none";
 
-function loginPageLoader(){
-    if(LoginMode===false){
+// function loginPageLoader(){
+//     if(LoginMode===false){
 
     
-    document.getElementById("signup-message").style.display="none";
-document.getElementById("name-field").style.display = "none";
-document.getElementById("email-field").style.display = "none";
-document.getElementById("login-button").style.display="none";
-document.getElementById("sign-up-button").style.display="none";
-document.getElementById("login-message").style.display="none";
- let continueBtn=document.getElementById("continue-button");
+//     document.getElementById("signup-message").style.display="none";
+// document.getElementById("name-field").style.display = "none";
+// document.getElementById("email-field").style.display = "none";
+// document.getElementById("login-button").style.display="none"
+// document.getElementById("sign-up-button").style.display="block";
+// document.getElementById("sign-in").style.display="none";
+// document.getElementById("login-message").style.display="none";
 
- continueBtn.innerHTML=`
- <button>continue<button>`;
- continueBtn.style.display="block";
-LoginMode=true;
-}
+//    indexPage.style.display="none";
+//  continueBtn.style.display="block";
+// LoginMode=true;
+// }
 
-else{
-    LoginMode=false;
-    indexPage.style.display="block";
-    continueBtn.style.display="none";
+// else{
+//     LoginMode=false;
+//     indexPage.style.display="block";
+//     continueBtn.style.display="none";
 
-}
-}
-
+// }
+// }
 
 
-//an index pageloader so after login we can redirect  user from loginpage to indexpage(index.html) as usual user...
 
-function loadIndexPage(){
+// //an index pageloader so after login we can redirect  user from loginpage to indexpage(index.html) as usual user...
+
+// function loadIndexPage(){
     
-        signinPage.style.display="none";
-        indexPage.style.display="block";
+//         signinPage.style.display="none";
+//         indexPage.style.display="block";
 
-}
+// }
 
 // it is for the floating continue bar that appears only when add to cart is clicked;
 function UpdateContinueBar(){
@@ -922,6 +921,5 @@ if (categoryBar) {
 cartButtonCounter();
 UpdateContinueBar();
 menuGenerator();
-loadIndexPage();
 
 console.log("food.js connected");

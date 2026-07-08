@@ -275,13 +275,13 @@ oninput="searchMenu()"
 <!-- note
 will use query selector for this at optimization  -->
 
-<section id="sign-in">
+<!-- <section id="sign-in">
     <button onclick="signUpPageLoader()">Sign in</button>
 </section>
 
 <section id="user-signin">
     
-    <p id="signup-message">don't have an account?</p><hr>
+    <p id="signup-message">don't have an account?</p>
     <div id="name-field">
     <label for ="user-name">Name</label>
     <input id="user-name" placeholder="type your name">
@@ -306,12 +306,46 @@ placeholder="password">
     <button onclick="userRegisteration()">sign up</button>
     </div>
     <p id="login-message">already have an account? </p>
+    
     <button  id="login-button" onclick="loginPageLoader()">log in</button>
 </section>
 
-<!-- empty container to render js continue button // model for cleaner html -->
-<div id="continue-button">
-</div>
+empty container to render js continue button // model for cleaner html -->
+<!-- <div id="continue-button">
+<button>Continue</button>
+</div> -->
+
+
+<section id ="Sign-up">
+
+
+    <h1>Sign up</h1>
+
+    <label for="user-name"></label>
+        <input id="user-name" placeholder="Full Name" type="text" required>
+
+    
+    
+    <label for="user-number"></label>
+        <input id="user-no" placeholder="123-456-7890" type="tel" pattern="[0-9]{10}" required>
+
+ 
+
+    
+    <label for="user-pass"></label>
+        <input id="user-pass" placeholder="password" type="password" required>
+
+    
+
+    <button id="signup-btn">continue</button>
+
+    <p id="log-in-message">Already have an account?</p>
+
+    <button>log in</button>
+
+
+
+</section>
 
     <!-- ===============================
          MENU CARDS

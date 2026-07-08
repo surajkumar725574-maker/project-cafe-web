@@ -817,7 +817,6 @@ app.post("/user/signup", async (req,res)=>{
 
         const userName = req.body.name;
         const userPhone = req.body.phoneNo;
-        const userEmail = req.body.email;
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
         const hashedPassword=await bcrypt.hash(userPassword,10);

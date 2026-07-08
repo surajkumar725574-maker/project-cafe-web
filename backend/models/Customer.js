@@ -20,13 +20,6 @@ const customerSchema = new mongoose.Schema({
         trim:true
     },
 
-    email:{
-        type:String,
-        unique:true,
-        sparse:true,
-        trim:true,
-        lowercase:true
-    },
 
     password:{
         type:String,
