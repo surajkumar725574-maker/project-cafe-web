@@ -827,7 +827,7 @@ app.post("/user/signup", async (req,res)=>{
 
         // return res.json({msg:"got the request"});
 // console.log("Recieved customerId:");
-
+       console.log(1);
         const existingCustomer = await Customer.findOne({
        customerId
        });
@@ -840,6 +840,7 @@ if(existingCustomer){
     });
 }
 
+console.log(2);
 
 const existingPhone = await Customer.findOne({
     phoneNo:userPhone
@@ -853,7 +854,7 @@ if(existingPhone){
    });
 }
 
-
+console.log(3);
 
         const customer = await Customer.create({
             name:userName,
