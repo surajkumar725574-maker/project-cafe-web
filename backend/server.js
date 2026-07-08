@@ -859,7 +859,6 @@ console.log(3);
         const customer = await Customer.create({
             name:userName,
             phoneNo:userPhone,
-            email:userEmail,
             password:hashedPassword,
             customerId:customerId
         });
@@ -890,7 +889,7 @@ console.log(3);
             })
         }
         return res.status(500).send({
-            message:"Internal Server Error"
+            message:error.message
         });
     }
 });

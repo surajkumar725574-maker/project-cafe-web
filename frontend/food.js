@@ -676,6 +676,7 @@ function cartButtonCounter(){
 // login page 
 
 function userRegisteration(){
+    event.preventDefault();
 
     let customerId= getCustomerId();
 
