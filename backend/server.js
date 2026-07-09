@@ -868,7 +868,7 @@ console.log(3);
                 role:"user",
                 customerId:customer.customerId
             },
-            JWT_SECRET,{
+            process.env.JWT_SECRET,{
                 expiresIn:"30d"
             }
         );
