@@ -82,7 +82,7 @@ header,
 header h1,
 .hero-text h1 {
     margin: 0;
-
+    
     max-width: 560px;
 
     font-size: clamp(34px, 6vw, 64px);
@@ -916,7 +916,7 @@ header {
     z-index: 21;
     pointer-events: auto;
 }
-
+ 
 .category-bar {
     z-index: 10;
 }
@@ -2282,7 +2282,7 @@ body:has(#order-info)::before {
 
     border-radius:50%;
 
-    background:red;
+    background:rgb(157, 56, 56);
     color:white;
 
     display:flex;
@@ -2291,4 +2291,86 @@ body:has(#order-info)::before {
 
     font-size:12px;
     font-weight:bold;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#index-sidebar{
+    width: 250px;
+    height:100vh;
+    background: white;
+    position: fixed;
+    top:0;
+    left:0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    padding: 20px;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+#index-sidebar.open{
+    transform: translateX(0);
+}
+
+.index-sidebar-nav{
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 35px;
+}
+
+.index-sidebar-nav a{
+    text-decoration: none;
+    color: #222;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all .2s ease;
+}
+
+.index-sidebar-nav a:hover{
+    background: #f5f5f5;
+    color:#ff5a5f
+}
+
+.sidebar-toggle{
+    /* background: transparent; */
+    border: none;
+    font: size 28px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.sidebar-toggle:hover{
+    background: #eeeeee;
+    border-radius: 50%;
+}
+
+#overlay{
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.4);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: opacity .3s ease;
+
+    z-index: 999;
+
+}
+
+#overlay.show{
+    visibility: visible;
+    opacity: 1;
 }

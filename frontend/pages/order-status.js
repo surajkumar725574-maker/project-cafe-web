@@ -2,7 +2,7 @@
 // CONFIG
 // =====================================================
 
-const API_URL = "https://project-cafe-web.onrender.com";
+// const API_URL = "https://project-cafe-web.onrender.com";
 
 //retrieving the customer id from local storage
 

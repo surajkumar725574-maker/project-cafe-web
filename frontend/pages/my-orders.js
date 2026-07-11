@@ -1,20 +1,25 @@
 
 
-const API_URL = "https://project-cafe-web.onrender.com";
+// const API_URL = "https://project-cafe-web.onrender.com";
 
 
 
 let orders = [];
 
-function FetchAllOrders(){
-    let customerId=localStorage.getItem("customerId");
+const customerId=getCustomerId();
 
-    fetch(`${API_URL}/order/customer/${customerId}`)
+function FetchAllOrders(){
+
+    fetch(`${API_URL}/order/by-customer?customerId=${customerId}`)
     .then(function(response){
         return response.json();
     }
     )
     .then(function(data){
+        if (!data.order) {
+    // console.log(data);
+    return;
+}
         orders=data.order;
         console.log(orders);
         RenderAllOrderOFaPage();
@@ -63,6 +68,6 @@ function RenderAllOrderOFaPage(){
 }
 
 FetchAllOrders();
-setInterval(FetchAllOrders,5000);
+setInterval(FetchAllOrders,10000);
 
 // setInterval(FetchAllOrders,5000);

@@ -1,3 +1,7 @@
+
+const API_URL = "http://localhost:3000"
+
+
 function getCustomerId(){
        let customerId=localStorage.getItem("customerId");
     if(!customerId){

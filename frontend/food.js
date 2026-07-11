@@ -492,7 +492,7 @@
 //
 // =====================================================
 
-const API_URL = "https://project-cafe-web.onrender.com";
+// const API_URL = "https://project-cafe-web.onrender.com";
 
 
 let cart = [];
@@ -500,8 +500,16 @@ let menu = [];
 
 let menuContainer = document.getElementById("menu-items");
 let categoryBar = document.querySelector(".category-bar");
-    let signinPage=document.getElementById("user-signin");
-        let indexPage=document.getElementById("index-page");
+
+
+const indexPage = document.getElementById("index-page");
+const signupPage = document.getElementById("Sign-up");
+const loginPage = document.getElementById("login");
+
+signupPage.style.display="none";
+loginPage.style.display="none";
+
+        
 
 
 // =====================================================
@@ -737,8 +745,131 @@ function userRegisteration(){
 
 }
 
+function userLogin(){
+
+
+    let phnNo=document.getElementById("user-phone").value.trim();
+    let pass=document.getElementById("pass").value.trim();
+    // console.log({phnNo,pass});
+
+    if(!phnNo||!pass){
+        return alert("please fill all fields");
+    }
+
+    fetch(`${API_URL}/user/login`,{
+        method:"POST",
+        headers:{
+         "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+        phoneNo:phnNo,
+        password:pass})
+
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        if(data.usertoken){
+            localStorage.setItem("Usertoken",data.usertoken);
+            localStorage.setItem("customerId",data.customerId);
+            console.log(data.message);
+            
+
+        }
+        else{
+            message=data.message
+            console.log(message);
+        }
+
+    })
+
+}
+
 const signupBtn=document.getElementById("signup-btn");
 signupBtn.addEventListener("click",userRegisteration);
+
+const userLoginbtn=document.getElementById("user-login-btn");
+userLoginbtn.addEventListener("click",userLogin);
+//
+
+// this was a repeated approach so i built a generic toggler for any element to be passed
+
+
+// function signupRedirector(){
+//     if( signupsec.style.display==="none"){
+//         signupsec.style.display="block";
+//     }
+//     else{
+//         signupsecRef.style.display="none";
+//     }
+    
+
+// }
+
+
+
+
+
+// function loginRedirector(){
+//     if( loginsec.style.display==="none"){
+//         loginsec.style.display="block";
+//     }
+//     else{
+//         loginsec.style.display="none";
+//     }
+    
+
+// }
+
+
+
+
+function showSection(section) {
+
+    indexPage.style.display = "none";
+    signupPage.style.display = "none";
+    loginPage.style.display = "none";
+
+    section.style.display = "block";
+}
+
+
+document.getElementById("menu-link").addEventListener("click",()=>showSection(indexPage));
+
+document.getElementById("Signup-link").addEventListener("click",()=>showSection(signupPage));
+
+
+
+document.getElementById("login-link").addEventListener("click",()=>showSection(loginPage));
+
+
+
+
+
+// sidebar//
+let sidebar = document.getElementById("index-sidebar");
+let overlay=document.getElementById("overlay");
+let hamburgerBtns = document.querySelectorAll(".sidebar-toggle");
+
+function toggleSidebar() {
+
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+
+    hamburgerBtns.forEach(btn => {
+        btn.textContent =
+            sidebar.classList.contains("open") ? "✕" : "☰";
+    });
+
+}
+
+hamburgerBtns.forEach(btn => {
+    btn.addEventListener("click", toggleSidebar);
+});
+// HamburgerBtn.addEventListener("click",sidebarToggle);
+
+
 
 
 // //signin()

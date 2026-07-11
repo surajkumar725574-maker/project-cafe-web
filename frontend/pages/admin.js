@@ -24,7 +24,6 @@
 // API BASE URL
 // =====================================================
 
-const API_URL = "https://project-cafe-web.onrender.com";
 
 
 // =====================================================
@@ -171,7 +170,7 @@ function PageLoader(){
 // }
 // }
 
-function verifyAdminToken(){
+function verifyAdminTokenAfterRefreshingPage(){
     const token= localStorage.getItem("token");
      if(token){
         LoadAdminPage();
@@ -275,8 +274,9 @@ function searchOrderByIdOrNumber() {
 
     fetch(`${API_URL}/order/search/${orderId}`,{
         headers: {
-    "Authorization":
-        `Bearer ${localStorage.getItem("token")}`,
+
+    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    
     "Content-Type":"application/json"
 }
     })
@@ -768,11 +768,11 @@ function addItems() {
 // transform is smoother and more performance-friendly.
 //
 
-function toggleSidebar() {
+// function toggleSidebar() {
 
-    sidebar.classList.toggle("open");
+//     sidebar.classList.toggle("open");
 
-}
+// }
 
 
 // =====================================================
@@ -819,6 +819,6 @@ function closeSidebar() {
 // INITIAL PAGE STATE
 // =====================================================
 
-verifyAdminToken();
+verifyAdminTokenAfterRefreshingPage();
 
 console.log("admin.js connected");

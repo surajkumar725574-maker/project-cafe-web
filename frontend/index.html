@@ -1,6 +1,6 @@
 
             
-        <!-- <section id="breakfast">
+        < <section id="breakfast">
             <h2>Breakfast</h2>
             <ul>
                 <li>bread-omelete</li>
@@ -142,8 +142,9 @@
     <!-- </main>
     <script src="food.js"></script>
 
-</body> -->
-<!-- </html -->
+
+
+
  <!DOCTYPE html>
 <html lang="en">
 
@@ -158,14 +159,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
+
+
 <body>
 
-    <!-- ===============================
+    
+    
+
+     ===============================
          HERO / HEADER
     ================================ -->
 
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Food & beverages</title>
+        <link rel="stylesheet" href="../frontend/style.css">
+    </head>
+    <body>
+
+
+    
     <header class="food-header">
 
+        <button class="sidebar-toggle">☰</button>
         <div class="hero-text">
             <h1>Fresh Food, Fast Orders</h1>
 
@@ -174,7 +194,12 @@
             </p>
         </div>
 
+
+
+
         <nav class="customer-nav">
+
+            
 
    <a href="pages/cart.html" class="cart-link">
       🛒
@@ -183,10 +208,33 @@
 
    <a href="pages/payment.html">Payment</a>
 
-   <a href="my-orders.html">Your Orders</a>
+   <a href="./pages/my-orders.html">Your Orders</a>
 
 </nav>
     </header>
+
+    <div id="overlay"></div>
+
+    <aside id="index-sidebar">
+        
+        
+      <button class="sidebar-toggle">☰</button>
+
+        <nav class=" index-sidebar-nav">
+        <a id="menu-link">
+            Menu
+        </a>
+        <a id="Signup-link">
+            Sign up
+        </a>
+        <a id="login-link">
+            log in
+        </a>
+        </nav>
+
+    </aside>
+
+
 
 
     <!-- ===============================
@@ -285,29 +333,47 @@ empty container to render js continue button // model for cleaner html -->
 
     <h1>Sign up</h1>
 
-    <label for="user-name"></label>
+    <label >name
         <input id="user-name" placeholder="Full Name" type="text" required>
-
+</label>
     
     
-    <label for="user-number"></label>
+    <label >Phone
         <input id="user-no" placeholder="123-456-7890" type="tel" pattern="[0-9]{10}" required>
-
+</label>
  
 
     
-    <label for="user-pass"></label>
+    <label >Password
         <input id="user-pass" placeholder="password" type="password" required>
 
-    
+    </label>
 
     <button id="signup-btn">continue</button>
 
     <p id="log-in-message">Already have an account?</p>
 
-    <button>log in</button>
+    <button  >log in</button>
 
 
+
+</section>
+
+<section id="login">
+
+    <h1>log in</h1>
+
+     <label>
+        Phone no
+    <input id="user-phone" placeholder="123-456-7890" type="tel" pattern="[0-9]{10}" required>
+ </label>
+
+ <label>
+    password
+    <input id="pass" placeholder="#hsh24250" type="password" required>
+ </label>
+
+ <button id="user-login-btn">log in</button>
 
 </section>
 
