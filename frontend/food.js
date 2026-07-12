@@ -865,10 +865,11 @@ function toggleSidebar() {
     overlay.classList.toggle("show");
 
     hamburgerBtns.forEach(btn => {
+        btn.classList.toggle("open");
         btn.textContent =
             sidebar.classList.contains("open") ? "✕" : "☰";
     });
-
+   
 }
 
 hamburgerBtns.forEach(btn => {
