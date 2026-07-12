@@ -380,6 +380,12 @@ function additems(name) {
 
 function deleteitems(name) {
 
+    // if(quantity===0){
+    //     renderCart();
+    //     return;
+    // }
+
+
     fetch(`${API_URL}/cart/decrease`, {
         method: "POST",
         headers: {

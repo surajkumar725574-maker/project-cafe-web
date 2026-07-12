@@ -1,5 +1,7 @@
 
-const API_URL = "https://project-cafe-web.onrender.com"
+// const API_URL = "https://project-cafe-web.onrender.com"
+
+const API_URL = "http://localhost:3000";
 
 
 function getCustomerId(){

@@ -631,7 +631,10 @@ function renderMenu(category) {
 // ADD TO CART
 // =====================================================
 
-function addToCart(name, price) {
+function addToCart(name, price,event) {
+    const button =event.target;
+    button.disabled=true;
+    button.textContent="Adding ...."
 
     fetch(`${API_URL}/cart`, {
         method: "POST",
@@ -645,10 +648,12 @@ function addToCart(name, price) {
         })
     })
     .then(function(response) {
+        
         return response.json();
     })
     .then(function(data) {
-
+        button.disabled=false;
+        button.textContent="Add to cart";
         cart = data.cart;
         cartButtonCounter();
         UpdateContinueBar();
@@ -656,6 +661,8 @@ function addToCart(name, price) {
 
     })
     .catch(function(error) {
+        button.disabled=false;
+        button.textContent="Add to cart";
 
         console.log("Failed to add item:", error);
         alert("Unable to add item to cart");
