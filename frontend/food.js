@@ -505,9 +505,14 @@ let categoryBar = document.querySelector(".category-bar");
 const indexPage = document.getElementById("index-page");
 const signupPage = document.getElementById("Sign-up");
 const loginPage = document.getElementById("login");
-
+const searchNavigate=document.getElementById("search-navigate");
 signupPage.style.display="none";
 loginPage.style.display="none";
+
+// sidebar//
+let sidebar = document.getElementById("index-sidebar");
+let overlay=document.getElementById("overlay");
+let hamburgerBtns = document.querySelectorAll(".sidebar-toggle");
 
         
 
@@ -743,6 +748,7 @@ function userRegisteration(){
 );
         alert("Account created successfully");
         // loadIndexPage();
+        showSection(indexPage);
     }
     else{
         alert(data.message);
@@ -780,7 +786,14 @@ function userLogin(){
         if(data.usertoken){
             localStorage.setItem("Usertoken",data.usertoken);
             localStorage.setItem("customerId",data.customerId);
+            // loginPage.insertAdjacentElement(
+            //     'beforeend',
+            //     `<p>login successful </p>`
+            // );
+            showSection(indexPage);
             console.log(data.message);
+
+            
             
 
         }
@@ -839,25 +852,39 @@ function showSection(section) {
     loginPage.style.display = "none";
 
     section.style.display = "block";
+    if(section===indexPage){
+     searchNavigate.style.display="block";
+    }
+
+    else{
+        searchNavigate.style.display="none";
+    }
 }
 
 
-document.getElementById("menu-link").addEventListener("click",()=>showSection(indexPage));
+document.getElementById("menu-link").addEventListener("click",(e)=>{
+    e.preventDefault();
+    showSection(indexPage);
+    toggleSidebar()});
 
-document.getElementById("Signup-link").addEventListener("click",()=>showSection(signupPage));
+document.getElementById("Signup-link").addEventListener("click",(e)=>{
+    e.preventDefault();
+    showSection(signupPage);
+    toggleSidebar();
+});
 
 
 
-document.getElementById("login-link").addEventListener("click",()=>showSection(loginPage));
+document.getElementById("login-link").addEventListener("click",(e)=>{
+    e.preventDefault();
+    showSection(loginPage);
+    toggleSidebar();
+});
 
 
 
 
 
-// sidebar//
-let sidebar = document.getElementById("index-sidebar");
-let overlay=document.getElementById("overlay");
-let hamburgerBtns = document.querySelectorAll(".sidebar-toggle");
 
 function toggleSidebar() {
 
@@ -999,7 +1026,8 @@ function searchMenu() {
 
             menuContainer.innerHTML += `
                 <div class="food-card">
-                <img src="${menu[i].image}" class="food-image">
+                <img src="${API_URL}${menu[i].image}">
+                class="food-image">
                     <h3>${menu[i].name}</h3>
 
                     <p class="price">₹${menu[i].price}</p>
