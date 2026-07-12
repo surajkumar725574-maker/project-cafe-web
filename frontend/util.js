@@ -1,7 +1,18 @@
 
 // const API_URL = "https://project-cafe-web.onrender.com"
 
-const API_URL = "http://localhost:3000";
+// let API_URL;
+
+// if(window.location.hostname==="localhost"){
+//      API_URL = "http://localhost:3000";
+// }
+// else{
+//     API_URL="https://project-cafe-web.onrender.com"
+// }
+
+const API_URL=window.location.hostname==="localhost"
+?"http://localhost:3000"
+:"https://project-cafe-web.onrender.com"
 
 
 function getCustomerId(){
