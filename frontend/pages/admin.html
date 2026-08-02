@@ -19,12 +19,67 @@
 </head>
 
 <body>
+ <!-- ===============================
+             HEADER
+        ================================ -->
+    
+        <header id="admin-header">
+
+            <button
+                class="sidebar-toggle"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <h1>Admin Page</h1>
+
+        </header>
+
+
+        <!-- ===============================
+             MAIN CONTENT
+        ================================ -->
+
+        <main>
+
+
+    <!-- ===============================
+         ADMIN's sidebar- PANEL
+    ================================ -->
+
+    <section id="sidebar-panel">
+        <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+        <!-- ===============================
+             SIDEBAR
+        ================================ -->
+
+        <aside id="sidebar">
+
+            <button
+                class="sidebar-toggle"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <nav  class="sidebar-btns">
+                <button onclick="showOrdersSection()">Orders</button>
+                <button onclick="showMenuSection()">Manage Menu</button>
+                <button onclick="showAddItemSection()">Add Item</button>
+                <button onclick="logOutofAdminPanel()">log Out</button>
+            </nav>
+
+        </aside>
+
+    </section>
 
     <!-- ===============================
          ADMIN LOGIN SECTION
     ================================ -->
 
-    <section id="login-section">
+       <section id="login-section">
 
         <div class="form-group">
 
@@ -56,81 +111,26 @@
 
     </section>
 
-
-    <!-- ===============================
-         ADMIN PANEL
-    ================================ -->
-
-    <section id="admin-panel">
-        <div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-        <!-- ===============================
-             SIDEBAR
-        ================================ -->
-
-        <aside id="sidebar">
-
-            <button
-                class="sidebar-toggle"
-                onclick="toggleSidebar()"
-            >
-                ☰
-            </button>
-
-            <nav>
-                <button onclick="showOrdersSection()">Orders</button>
-                <button onclick="showMenuSection()">Manage Menu</button>
-                <button onclick="showAddItemSection()">Add Item</button>
-                <button onclick="logOutofAdminPanel()">log Out</button>
-            </nav>
-
-        </aside>
-
-
-        <!-- ===============================
-             HEADER
-        ================================ -->
-
-        <header>
-
-            <button
-                class="sidebar-toggle"
-                onclick="toggleSidebar()"
-            >
-                ☰
-            </button>
-
-            <h1>Admin Page</h1>
-
-        </header>
-
-
-        <!-- ===============================
-             MAIN CONTENT
-        ================================ -->
-
-        <main>
-
             <!-- ===============================
                  ORDERS SECTION
             ================================ -->
-<section id="orders-section">
+     <section id="orders-section">
 
-    <div class="admin-section-heading">
+    
 
-        <div>
+        <div class="admin-section-heading">
             <h2>Orders</h2>
             <p>Search, track, and update customer orders</p>
         </div>
 
-    </div>
+    
 
 
     <!-- ===============================
          SEARCH ORDER
     ================================ -->
 
-    <div class="admin-search-box">
+    <div id="admin-search-box">
 
         <input
             id="search-order-id"
@@ -197,7 +197,7 @@
                 <label for="item-price">Price</label>
                 <input
                     id="item-price"
-                    type="number"
+                    type="tel"
                     placeholder="Enter price"
                 >
 
@@ -215,7 +215,7 @@
 
         </main>
 
-    </section>
+   
 
     <script src="../util.js"></script>
 

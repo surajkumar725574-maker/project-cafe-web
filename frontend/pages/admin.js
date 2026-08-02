@@ -19,6 +19,8 @@
 //
 // =====================================================
 
+// const ms = require("ms");
+
 
 // =====================================================
 // API BASE URL
@@ -39,18 +41,21 @@ let menu = [];
 // DOM REFERENCES
 // =====================================================
 
-let orderContainer = document.getElementById("ordered-items");
-let menuContainer = document.getElementById("admin-menu-items");
+const orderContainer = document.getElementById("ordered-items");
+const menuContainer = document.getElementById("admin-menu-items");
 
-let sidebar = document.getElementById("sidebar");
+const adminHeader=document.getElementById("admin-header");
+const sidebarPanel=document.getElementById("sidebar-panel");
 
-let ordersSection = document.getElementById("orders-section");
-let menuSection = document.getElementById("menu-section");
-let addItemSection = document.getElementById("add-item-section");
+const sidebar = document.getElementById("sidebar");
 
-let loginSection = document.getElementById("login-section");
-let adminPanel = document.getElementById("admin-panel");
-let message = document.getElementById("message");
+const ordersSection = document.getElementById("orders-section");
+const menuSection = document.getElementById("menu-section");
+const addItemSection = document.getElementById("add-item-section");
+
+const loginSection = document.getElementById("login-section");
+
+const message = document.getElementById("message");
 
 
 // =====================================================
@@ -72,12 +77,13 @@ let message = document.getElementById("message");
 
 
 function loadLoginPage() {
-
-    loginSection.style.display = "block";
-    adminPanel.style.display = "none";
-    message.style.display = "none";
-     menuSection.style.display="none";
-     addItemSection.style.display="none";
+    loginSection.classList.remove("hidden");
+    adminHeader.classList.add("hidden");
+    sidebarPanel.classList.add("hidden");
+    ordersSection.classList.add("hidden");
+     menuSection.classList.add("hidden");
+     addItemSection.classList.add("hidden");
+    
 
 }
 
@@ -108,9 +114,14 @@ function loadLoginPage() {
 // }
 
 function LoadAdminPage(){
-     loginSection.style.display = "none";
-        adminPanel.style.display = "block";
-        message.style.display = "none";
+    adminHeader.classList.remove("hidden");
+    sidebarPanel.classList.remove("hidden");
+    ordersSection.classList.remove("hidden");
+     loginSection.classList.add("hidden");
+       menuSection.classList.add("hidden");
+     addItemSection.classList.add("hidden");
+       
+        message.classList.add("hidden");
 
         loadAdminData();
 
@@ -324,7 +335,7 @@ function renderSearchedOrder(order) {
     let orderStatus = order.status || "new";
     let orderId = order._id;
 
-    searchedOrderContainer.innerHTML = `
+    searchedOrderContainer.innerHTML += `
         <div class="cart-items">
 
             <h3>Search Result</h3>
@@ -507,15 +518,13 @@ function renderItems(order) {
 //
 function updateOrderStatus(id, status) {
 
-    fetch(`${API_URL}/order/status/${id}`, {
+    fetch(`${API_URL}/order/status/${id}/${status}`, {
         method: "POST",
         headers: {
             "Authorization":`Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            status: status
-        })
+       
     })
     .then(function(response) {
         return response.json();
@@ -780,25 +789,25 @@ function addItems() {
 // =====================================================
 
 function showOrdersSection() {
-    ordersSection.style.display = "block";
-    menuSection.style.display = "none";
-    addItemSection.style.display = "none";
+    ordersSection.classList.remove('hidden');
+    menuSection.classList.add("hidden");
+    addItemSection.classList.add("hidden");
 
     closeSidebar();
 }
 
 function showMenuSection() {
-    ordersSection.style.display = "none";
-    menuSection.style.display = "block";
-    addItemSection.style.display = "none";
+    ordersSection.classList.add('hidden');
+    menuSection.classList.remove('hidden');
+    addItemSection.classList.add('hidden');
 
     closeSidebar();
 }
 
 function showAddItemSection() {
-    ordersSection.style.display = "none";
-    menuSection.style.display = "none";
-    addItemSection.style.display = "block";
+    ordersSection.classList.add('hidden');
+    menuSection.classList.add('hidden');
+    addItemSection.classList.remove('hidden');
 
     closeSidebar();
 }
@@ -819,6 +828,8 @@ function closeSidebar() {
 // INITIAL PAGE STATE
 // =====================================================
 
+loadLoginPage();
 verifyAdminTokenAfterRefreshingPage();
+setInterval(fetchOrders,500000);
 
 console.log("admin.js connected");

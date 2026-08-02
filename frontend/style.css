@@ -23,11 +23,19 @@
 
     --success: #16a34a;
     --danger: #dc2626;
+    --box-radius:20px;
+    --btn-radius:16px;
+    --input-radius:18px;
+    --input-shadow:0 0 0 4px rgba(245, 158, 11, 0.18);
 
     --border: rgba(120, 60, 20, 0.14);
 
     --shadow: 0 18px 40px rgba(67, 32, 12, 0.13);
     --shadow-hover: 0 26px 60px rgba(67, 32, 12, 0.22);
+
+    --header-gradient: linear-gradient(135deg,#2B1408,#C26A00
+);
+
 }
 
 html {
@@ -65,13 +73,9 @@ header,
 
     color: white;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(43, 20, 8, 0.92),
-            rgba(194, 106, 0, 0.78)
-        ),
-        url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=80");
+    background:var(--header-gradient);
+        
+        
 
     background-size: cover;
     background-position: center;
@@ -105,6 +109,11 @@ header p,
     line-height: 1.45;
 }
 
+header .sidebar-toggle {
+    position: absolute;
+    left: 22px;
+    top: 24px;
+}
 /* =====================================================
    CUSTOMER NAVBAR
 ===================================================== */
@@ -157,124 +166,13 @@ header p,
 /* =====================================================
    SEARCH SECTION
 ===================================================== */
-
-.search-section {
-    padding: 14px 20px;
-
-    background: rgba(255, 250, 244, 0.9);
-
-    border-bottom: 1px solid var(--border);
-
-    backdrop-filter: blur(12px);
-}
-
-#search-bar {
-    width: min(460px, 100%);
-
-    padding: 13px 16px;
-
-    border-radius: 16px;
-
-    border: 1px solid rgba(122, 65, 25, 0.2);
-
-    background: white;
-
-    color: var(--text);
-
-    font-size: 15px;
-    font-weight: 600;
-
-    outline: none;
-
-    box-shadow: 0 8px 20px rgba(60, 30, 10, 0.06);
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-#search-bar:focus {
-    border-color: var(--primary);
-
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
-}
+/* deleted this permanently */
 
 /* =====================================================
    CATEGORY BAR - YOUTUBE STYLE
 ===================================================== */
 
-.category-bar {
-    position: sticky;
-    top: 0;
-    z-index: 900;
 
-    display: flex;
-    gap: 12px;
-
-    overflow-x: auto;
-
-    padding: 14px 20px;
-
-    background: rgba(255, 248, 239, 0.96);
-
-    border-bottom: 1px solid var(--border);
-
-    backdrop-filter: blur(14px);
-
-    box-shadow: 0 10px 24px rgba(69, 33, 12, 0.08);
-
-    transition:
-        transform 0.25s ease,
-        opacity 0.25s ease;
-
-    will-change: transform;
-}
-
-.category-bar.hide-category {
-    transform: translateY(-120%);
-    opacity: 0;
-}
-
-.category-bar::-webkit-scrollbar {
-    display: none;
-}
-
-.category-bar {
-    scrollbar-width: none;
-}
-
-.category-bar button {
-    white-space: nowrap;
-
-    margin: 0;
-
-    padding: 11px 20px;
-
-    border: none;
-    border-radius: 999px;
-
-    color: white;
-    background: linear-gradient(135deg, var(--primary), #ffbd45);
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    box-shadow: 0 10px 22px rgba(245, 158, 11, 0.28);
-
-    transition:
-        transform 0.22s ease,
-        box-shadow 0.22s ease,
-        filter 0.22s ease;
-}
-
-.category-bar button:hover {
-    transform: translateY(-2px);
-
-    filter: brightness(1.04);
-
-    box-shadow: 0 16px 34px rgba(245, 158, 11, 0.38);
-}
 
 /* =====================================================
    MAIN LAYOUT
@@ -310,7 +208,7 @@ section h2 {
 
 .food-card,
 .menu-item {
-    min-height: 215px;
+    min-height: 190px;
 
     padding: 24px;
 
@@ -417,7 +315,7 @@ button:active {
 }
 
 /* =====================================================
-   CART PAGE
+   CART PAGE//refactored...
 ===================================================== */
 
 .cart-items {
@@ -449,18 +347,24 @@ button:active {
 
     font-size: 15px;
 }
-
+/* 
 .cart-items button {
     min-width: 42px;
 
     padding: 10px 15px;
+} */
+
+.cart-actions{
+    display: flex;
+    gap: 15px;
+
 }
 
 .cart-summary {
     width: fit-content;
 
     margin-top: 24px;
-    margin-left: auto;
+    margin-left: 1px;
 
     padding: 16px 24px;
 
@@ -478,13 +382,13 @@ button:active {
 }
 
 /* =====================================================
-   PAYMENT PAGE
+
+   PAYMENT PAGE (refactoring....)
 ===================================================== */
 
 #order-summary-section,
-#total-section,
-#payment-section,
-#payment-status-section {
+#payment-message
+ {
     margin-bottom: 24px;
 
     padding: 24px;
@@ -499,78 +403,62 @@ button:active {
     backdrop-filter: blur(12px);
 }
 
-#order-summary {
+#payment-section
+{
+     position:sticky;
+    bottom:0;
+    margin: 10px;
+
+
+    padding: 24px;
+
+    background: rgba(255, 255, 255, 0.88);
+
+    border: 1px solid var(--border);
+    border-radius: 28px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(12px);
+}
+.payment-bar{
+   
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    gap: 20px;
+    padding:8px 10px ;
+    align-items: center;
+}
+.payment-total{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+    }
+.payment-total p {
+  color: #555;
 }
 
-.ordered-item,
-#order-summary #cart-items {
-    padding: 16px 18px;
 
-    background: #fffaf3;
-
-    border: 1px solid rgba(245, 158, 11, 0.16);
+ #pay-now-btn {
+    /* width: 100%; */
+    
+    padding: 16px 28px;
+    flex-grow: 1;
+    font-size: 17px;
     border-radius: 18px;
 
-    color: var(--coffee);
+} 
 
-    font-weight: 800;
-}
 
-#order-summary p {
-    margin: 0;
 
-    color: var(--coffee);
 
-    font-size: 16px;
-}
 
-#total-amount {
-    display: flex;
-    justify-content: flex-end;
-}
-
-#total-amount-card {
-    width: fit-content;
-    min-width: 150px;
-
-    padding: 14px 22px;
-
-    border-radius: 18px;
-
-    background: linear-gradient(135deg, #fffaf4, #ffe1b3);
-
-    border: 1px solid rgba(245, 158, 11, 0.3);
-
-    color: var(--coffee);
-
-    font-size: 19px;
-    font-weight: 900;
-
-    box-shadow: 0 10px 22px rgba(67, 32, 12, 0.12);
-}
-
-#total-amount-card p {
-    margin: 0;
-}
-
-#pay-now-btn {
-    padding: 14px 28px;
-
-    font-size: 16px;
-}
-
-#payment-message {
-    color: var(--coffee);
-
-    font-size: 16px;
-    font-weight: 900;
-}
 
 /* =====================================================
-   FORM / LOGIN
+   FORM / LOGIN(refactored)
 ===================================================== */
 
 .form-group {
@@ -587,7 +475,7 @@ button:active {
     background: rgba(255, 255, 255, 0.9);
 
     border: 1px solid var(--border);
-    border-radius: 28px;
+    border-radius: var(--box-radius);
 
     box-shadow: var(--shadow);
 
@@ -606,14 +494,14 @@ button:active {
 .form-group label {
     color: var(--coffee);
 
-    font-weight: 900;
+    font-weight: 500;
 }
 
 .form-group input {
     padding: 13px 15px;
 
-    border: 1px solid rgba(122, 65, 25, 0.2);
-    border-radius: 15px;
+    border: 1px solid var(--border);
+    border-radius: var(--input-radius);
 
     background: white;
 
@@ -631,7 +519,7 @@ button:active {
 .form-group input:focus {
     border-color: var(--primary);
 
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
+    box-shadow: var(--input-shadow);
 }
 
 #message {
@@ -639,22 +527,14 @@ button:active {
 
     color: var(--danger);
 
-    font-weight: 900;
+    font-weight: 500;
 }
 
 /* =====================================================
    ADMIN PANEL
 ===================================================== */
 
-#admin-panel {
-    min-height: 100vh;
-}
 
-#admin-panel header {
-    min-height: 120px;
-
-    justify-content: center;
-}
 
 #orders-section,
 #menu-section,
@@ -721,44 +601,171 @@ button:active {
     color: var(--muted);
 }
 
+/*=============================
+
+ADMIN'S order section(refactoring).....
+
+==============================*/
+
+#orders-section{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+}
+
+.admin-section-heading {
+    margin-bottom: 18px;
+
+    
+}
+
+.admin-section-heading h2 {
+    margin-bottom: 6px;
+}
+
+.admin-section-heading p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-weight: 700;
+}
+
+#admin-search-box {
+    position: sticky;
+    top: 0;
+    z-index: 850;
+
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+
+    margin-bottom: 24px;
+    padding: 16px;
+
+    background: rgba(255, 248, 239, 0.96);
+
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    box-shadow: 0 12px 28px rgba(67, 32, 12, 0.1);
+
+    backdrop-filter: blur(14px);
+}
+
+#search-order-id {
+    
+    min-width: 230px;
+    flex-grow: 1;
+
+    padding: 13px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    outline: none;
+}
+
+#search-order-id:focus {
+    border-color: var(--primary);
+
+    box-shadow: var(--input-shadow);
+}
+
+#searched-order {
+    margin-top: 24px;
+    
+}
+
+#searched-order .cart-items {
+    border: 2px solid var(--border);
+}
+
+
+
+
 /* =====================================================
-   ADMIN SIDEBAR
+   ADMIN SIDEBAR(refactored)
 ===================================================== */
+
+
+
+#sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.25s ease;
+}
+
+#sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
 
 #sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1200;
+    z-index: 1000;
 
     width: 280px;
     height: 100vh;
 
     padding: 28px 18px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(43, 20, 8, 0.98),
-            rgba(83, 39, 12, 0.98)
-        );
+    background:var(--header-gradient);
+        
 
     color: white;
 
-    box-shadow: 20px 0 50px rgba(43, 20, 8, 0.28);
+    box-shadow: var(--shadow);
 
     transform: translateX(-105%);
 
     transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 
-    will-change: transform;
+    
 }
 
 #sidebar.open {
     transform: translateX(0);
 }
 
-#sidebar nav {
+/* =====================================================
+   SIDEBAR TOGGLE(refactored)
+===================================================== */
+
+.sidebar-toggle {
+    width: 50px;
+    height: 50px;
+
+    background: transparent;
+    
+
+    padding: 8px;
+    cursor: pointer;
+    color: var(--bg);
+    border-radius: 50%;
+
+    font-size: 24px;
+    font-weight: 900;
+}
+
+
+
+.sidebar-btns {
     margin-top: 50px;
 
     display: flex;
@@ -766,7 +773,7 @@ button:active {
     gap: 14px;
 }
 
-#sidebar nav button {
+.sidebar-btns button {
     width: 100%;
 
     padding: 14px 16px;
@@ -777,40 +784,18 @@ button:active {
 
     box-shadow: none;
 
-    border-radius: 16px;
-}
+    border-radius: var(--btn-radius);
 
-#sidebar nav button:hover {
+    transition: transform 0.2s ease,
+    background-color 0.2s ease;
+
+}
+.sidebar-btns button:hover {
     background: var(--primary);
 
-    transform: translateX(4px);
+    transform: translateY(-4px);
 }
 
-/* =====================================================
-   SIDEBAR TOGGLE
-===================================================== */
-
-.sidebar-toggle {
-    width: 50px;
-    height: 50px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border-radius: 50%;
-
-    font-size: 24px;
-    font-weight: 900;
-}
-
-header .sidebar-toggle {
-    position: absolute;
-    left: 22px;
-    top: 24px;
-}
 
 /* =====================================================
    ANIMATIONS
@@ -880,15 +865,9 @@ header .sidebar-toggle {
         font-size: 15px;
     }
 
-    .category-bar {
-        padding: 12px 14px;
-    }
+    
 
-    .category-bar button {
-        padding: 10px 15px;
-
-        font-size: 13px;
-    }
+    
 
     .food-card {
         min-height: 190px;
@@ -919,274 +898,12 @@ header {
     pointer-events: auto;
 }
  
-.category-bar {
-    z-index: 10;
-}
 
 
-#sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1100;
 
-    background: rgba(0, 0, 0, 0.35);
 
-    opacity: 0;
-    pointer-events: none;
-
-    transition: opacity 0.25s ease;
-}
-
-#sidebar-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#sidebar {
-    z-index: 1200;
-}
 body {
     font-family: "Inter", Arial, sans-serif;
-}
-.timeline {
-    margin-top: 30px;
-    border-left: 4px solid #ddd;
-    padding-left: 25px;
-}
-
-.step {
-    padding: 15px;
-    color: gray;
-    font-weight: 600;
-}
-
-.step.active {
-    color: green;
-}
-/* =====================================================
-   ORDER STATUS PAGE
-===================================================== */
-
-.order-status-page {
-    min-height: 100vh;
-    padding: 30px;
-    background-color: #f5f5f5;
-}
-
-.order-status-card {
-    max-width: 700px;
-    margin: auto;
-    padding: 25px;
-    background-color: white;
-    border-radius: 16px;
-}
-
-#status-text {
-    font-weight: 600;
-    margin-bottom: 25px;
-}
-
-
-/* =====================================================
-   TIMELINE
-===================================================== */
-
-.timeline {
-    margin: 30px 0;
-}
-
-.timeline-step {
-    display: flex;
-    gap: 15px;
-    min-height: 80px;
-    color: gray;
-}
-
-.timeline-marker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.timeline-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background-color: #ccc;
-}
-
-.timeline-line {
-    width: 3px;
-    flex: 1;
-    background-color: #ccc;
-}
-
-.timeline-content h3 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.timeline-content p {
-    margin-top: 5px;
-    font-size: 14px;
-}
-
-
-/* Active normal states */
-
-.timeline-step.active {
-    color: green;
-}
-
-.timeline-step.active .timeline-dot,
-.timeline-step.active .timeline-line {
-    background-color: green;
-}
-
-
-/* Cancel state */
-
-.cancelled-step {
-    display: none;
-}
-
-.cancelled-step.cancelled-active {
-    display: flex;
-    color: red;
-}
-
-.cancelled-step.cancelled-active .timeline-dot {
-    background-color: red;
-}
-
-
-/* =====================================================
-   ORDER ITEMS
-===================================================== */
-
-.order-status-item {
-    padding: 12px;
-    margin-bottom: 12px;
-    background-color: #fafafa;
-    border-radius: 10px;
-}
-
-.order-status-total {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-}
-.order-status-page {
-    min-height: 100vh;
-    padding: 40px;
-    background: #f6f1e8;
-}
-
-.order-status-layout {
-    max-width: 1100px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-    align-items: start;
-}
-
-.order-summary-card,
-.tracking-card {
-    background: white;
-    border-radius: 22px;
-    padding: 28px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.order-summary-card h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
-}
-
-#status-text {
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #c98500;
-}
-
-.order-status-item {
-    padding: 15px;
-    margin-bottom: 12px;
-    border-radius: 14px;
-    background: #fff8e8;
-}
-
-.order-status-total {
-    margin-top: 18px;
-    padding: 18px;
-    border-radius: 14px;
-    background: #f3d27a;
-    font-size: 18px;
-}
-
-.tracking-card h2 {
-    margin-bottom: 30px;
-}
-
-.timeline-step {
-    display: flex;
-    gap: 18px;
-    min-height: 90px;
-    color: #999;
-}
-
-.timeline-marker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.timeline-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #ddd;
-    border: 4px solid #f5f5f5;
-}
-
-.timeline-line {
-    width: 4px;
-    flex: 1;
-    background: #ddd;
-}
-
-.timeline-content h3 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.timeline-content p {
-    margin-top: 6px;
-    font-size: 14px;
-}
-
-.timeline-step.active {
-    color: #1f8f3a;
-}
-
-.timeline-step.active .timeline-dot,
-.timeline-step.active .timeline-line {
-    background: #1f8f3a;
-}
-
-.cancelled-step {
-    display: none;
-}
-
-.cancelled-step.cancelled-active {
-    display: flex;
-    color: #d62828;
-}
-
-.cancelled-step.cancelled-active .timeline-dot {
-    background: #d62828;
 }
 
 @media (max-width: 768px) {
@@ -1270,98 +987,6 @@ body {
 }
 
 
-/* =====================================================
-   ADMIN SEARCH BOX AT TOP
-===================================================== */
-
-.admin-search-box {
-    position: sticky;
-    top: 86px;
-    z-index: 800;
-
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-
-    margin-bottom: 22px;
-    padding: 16px;
-
-    background: rgba(255, 248, 239, 0.96);
-
-    border: 1px solid var(--border);
-    border-radius: 22px;
-
-    box-shadow: 0 12px 28px rgba(67, 32, 12, 0.1);
-
-    backdrop-filter: blur(14px);
-}
-
-.admin-search-box input {
-    flex: 1;
-    min-width: 220px;
-
-    padding: 13px 16px;
-
-    border: 1px solid rgba(122, 65, 25, 0.2);
-    border-radius: 16px;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    outline: none;
-}
-
-.admin-search-box input:focus {
-    border-color: var(--primary);
-
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
-}
-
-#searched-order {
-    margin-bottom: 24px;
-}
-
-
-/* =====================================================
-   PAYMENT STICKY BOTTOM BUTTON
-===================================================== */
-
-#payment-section {
-    position: sticky;
-    bottom: 0;
-    z-index: 900;
-
-    margin: 0 -18px;
-    padding: 16px 18px;
-
-    border-radius: 24px 24px 0 0;
-
-    background: rgba(255, 255, 255, 0.96);
-
-    box-shadow: 0 -14px 34px rgba(67, 32, 12, 0.18);
-
-    backdrop-filter: blur(16px);
-}
-
-#payment-section h2 {
-    margin-bottom: 10px;
-}
-
-#pay-now-btn {
-    width: 100%;
-
-    padding: 16px 28px;
-
-    font-size: 17px;
-    border-radius: 18px;
-}
-
-
-/* Extra bottom space so sticky button does not cover content */
-body:has(#payment-section) main {
-    padding-bottom: 130px;
-}
 
 
 /* =====================================================
@@ -1393,134 +1018,6 @@ body:has(#payment-section) main {
    ADMIN CLEAN LAYOUT OVERRIDES
 ===================================================== */
 
-#admin-panel {
-    display: none;
-    min-height: 100vh;
-}
-
-#login-section {
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 24px;
-}
-
-#admin-panel header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    min-height: 86px;
-
-    padding: 18px 24px 18px 92px;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(43, 20, 8, 0.96),
-            rgba(194, 106, 0, 0.88)
-        );
-}
-
-#admin-panel header h1 {
-    margin: 0;
-
-    font-size: clamp(26px, 4vw, 42px);
-    line-height: 1.1;
-}
-
-#admin-panel header .sidebar-toggle {
-    position: absolute;
-    left: 24px;
-    top: 50%;
-
-    margin: 0;
-
-    transform: translateY(-50%);
-}
-
-#admin-panel header .sidebar-toggle:hover {
-    transform: translateY(-50%) scale(1.04);
-}
-
-.admin-section-heading {
-    margin-bottom: 18px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.admin-section-heading h2 {
-    margin-bottom: 6px;
-}
-
-.admin-section-heading p {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-weight: 700;
-}
-
-.admin-search-box {
-    position: sticky;
-    top: 86px;
-    z-index: 850;
-
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-
-    margin-bottom: 24px;
-    padding: 16px;
-
-    background: rgba(255, 248, 239, 0.96);
-
-    border: 1px solid var(--border);
-    border-radius: 22px;
-
-    box-shadow: 0 12px 28px rgba(67, 32, 12, 0.1);
-
-    backdrop-filter: blur(14px);
-}
-
-.admin-search-box input {
-    flex: 1;
-    min-width: 230px;
-
-    padding: 13px 16px;
-
-    border: 1px solid rgba(122, 65, 25, 0.2);
-    border-radius: 16px;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    outline: none;
-}
-
-.admin-search-box input:focus {
-    border-color: var(--primary);
-
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
-}
-
-#searched-order {
-    margin-bottom: 24px;
-}
-
-#searched-order .cart-items {
-    border: 2px solid rgba(245, 158, 11, 0.35);
-}
 
 @media (max-width: 768px) {
     #admin-panel header {
@@ -1537,76 +1034,7 @@ body:has(#payment-section) main {
         width: 100%;
     }
 }
-/* =====================================================
-   STICKY PAYMENT BAR
-===================================================== */
 
-#payment-section {
-
-    position: fixed;
-
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    z-index: 1000;
-
-    padding: 12px;
-
-    background: rgba(255,255,255,0.97);
-
-    border-top: 1px solid rgba(0,0,0,0.08);
-
-    backdrop-filter: blur(16px);
-
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.12);
-
-}
-
-.payment-bar {
-
-    max-width: 1200px;
-
-    margin: auto;
-
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 16px;
-}
-
-.payment-total p {
-
-    margin: 0;
-
-    font-size: 12px;
-
-    color: #777;
-}
-
-.payment-total h3 {
-
-    margin: 0;
-
-    font-size: 22px;
-
-    font-weight: 700;
-}
-
-#pay-now-btn {
-
-    min-width: 180px;
-
-    padding: 16px 28px;
-
-    border-radius: 16px;
-
-    font-size: 16px;
-
-    font-weight: 700;
-}
 
 /* prevent content hiding behind bar */
 
@@ -1615,126 +1043,30 @@ main {
     padding-bottom: 140px;
 }
 
-@media (max-width:768px){
 
-    .payment-bar{
 
-        gap:12px;
-    }
 
-    #pay-now-btn{
-
-        min-width:140px;
-    }
-
-}
-.status-card {
-    padding: 18px;
-
-    background: #fff8e8;
-
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    border-radius: 18px;
-
-    box-shadow: 0 8px 20px rgba(67, 32, 12, 0.08);
-}
-
-.status-card h3 {
-    margin: 0 0 10px;
-
-    color: #2b1408;
-
-    font-size: 24px;
-}
-
-.status-card p {
-    margin: 6px 0;
-
-    color: #6f3b18;
-
-    font-weight: 700;
-}
 /* =====================================================
    FLIPKART STYLE ORDER TRACKER
 ===================================================== */
 
-.status-card {
-    margin: 18px 0 26px;
-    padding: 18px;
-
-    background: #fff8e8;
-
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    border-radius: 18px;
-
-    box-shadow: 0 8px 20px rgba(67, 32, 12, 0.08);
-}
-
-.status-card h3 {
-    margin: 0 0 10px;
-    color: var(--coffee);
-    font-size: 24px;
-}
-
-.status-card p {
-    margin: 6px 0;
-    color: var(--coffee-soft);
-    font-weight: 800;
-}
-
-.timeline-step.active .timeline-dot::after {
-    content: "✓";
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    height: 100%;
-
-    color: white;
-    font-size: 12px;
-    font-weight: 900;
-}
-
-.timeline-step.active .timeline-dot {
-    background: #16a34a;
-    border-color: #dcfce7;
-}
-
-.timeline-step.active .timeline-line {
-    background: #16a34a;
-}
-
-.timeline-content h3 {
-    color: var(--coffee);
-}
-
-.timeline-step.active .timeline-content h3 {
-    color: #166534;
-}
-
-.timeline-content p {
-    color: var(--muted);
-    font-weight: 700;
-}
 /* =====================================================
-   ORDER STATUS PAGE - NEW CLEAN VERSION
+   ORDER STATUS PAGE - NEW CLEAN VERSION(refactored.....
 ===================================================== */
-
+/* 
 body:has(#order-info) main,
 body:has(#order-info) {
     background:
         radial-gradient(circle at top left, #ffe0b8 0, transparent 34%),
         radial-gradient(circle at bottom right, #ffd39c 0, transparent 28%),
         linear-gradient(135deg, #fff8ef, #ffe8c7);
-}
+} */
 
 #order-info,
-.timeline,
+#timeline,
 #order-items {
     width: min(720px, calc(100% - 28px));
-    margin: 22px auto;
+    margin: 22px 20px;
 }
 
 .info-card {
@@ -1765,80 +1097,98 @@ body:has(#order-info) {
 }
 
 /* =====================================================
-   ORDER TIMELINE
+   ORDER TIMELINE (Refactored......
 ===================================================== */
-
-.timeline {
-    padding: 26px;
-
-    background: rgba(255, 255, 255, 0.92);
-
-    border: 1px solid var(--border);
-    border-radius: 26px;
-
+#timeline{
+    
+    background-color: rgba(255, 255, 255, 0.92);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid var(--muted);
+    margin: 15px;
+    border:1px solid var(--border);
+    border-radius: 24px;
     box-shadow: var(--shadow);
 }
+
 
 .timeline-step {
     position: relative;
 
     display: grid;
     grid-template-columns: 34px 1fr;
+    
     column-gap: 14px;
-
-    min-height: 86px;
-
-    color: var(--muted);
+   
 }
 
-.timeline-step::after {
+ .timeline-step::after {
     content: "";
 
     position: absolute;
-    left: 9px;
+    left: 15px;
     top: 24px;
 
     width: 3px;
-    height: calc(100% - 20px);
+    z-index: 2;
+    height:100%;
+    
 
-    background: #e4d4bd;
-    border-radius: 999px;
+    background: #e8eae9;
+    border-radius: 1px;
 }
 
-.timeline-step:last-child::after {
+.timeline-step.active::after{
+    background-color: var(--success);
+} 
+
+ .timeline-step.deactive::after{
+    background-color: var(--danger);
+ }
+
+ .timeline-step.cancelled-connector::after {
+    background: red;
+}
+
+.timeline-step.cancelled-next::after{
+    display: none;
+}
+
+ .timeline-step:last-child::after {
     display: none;
 }
 
 .timeline-step .dot {
-    position: relative;
-    z-index: 2;
 
     width: 22px;
     height: 22px;
 
-    margin-top: 4px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    margin: 5px;
+    z-index: 3;
     border-radius: 50%;
 
     background: #d8c5aa;
     border: 4px solid #fff7e8;
 }
 
+
+.timeline-step.active .dot {
+    background: var(--success);
+    border-color: #dcfce7;
+} 
+
 .timeline-step h3 {
-    margin: 0;
+    margin: 5px ;
 
     color: var(--coffee);
 
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .timeline-step p {
-    margin: 6px 0 0;
+    margin-left: 40px;
 
     color: var(--muted);
 
@@ -1846,26 +1196,9 @@ body:has(#order-info) {
     font-weight: 800;
 }
 
-.timeline-step.active {
-    color: var(--success);
-}
-
-.timeline-step.active .dot {
-    background: var(--success);
-    border-color: #dcfce7;
-}
-
-.timeline-step.active .dot::after {
-    content: "✓";
-
-    color: white;
-
-    font-size: 12px;
-    font-weight: 900;
-}
-
-.timeline-step.active::after {
-    background: var(--success);
+.timeline-step.deactive .dot {
+    background: var(--danger);
+    border-color: #fee2e2;
 }
 
 .timeline-step.active h3 {
@@ -1876,24 +1209,12 @@ body:has(#order-info) {
     color: var(--danger);
 }
 
-.timeline-step.deactive .dot {
-    background: var(--danger);
-    border-color: #fee2e2;
-}
-
-.timeline-step.deactive .dot::after {
-    content: "!";
-    color: white;
-    font-size: 12px;
-    font-weight: 900;
-}
-
 .timeline-step.deactive h3 {
     color: var(--danger);
 }
-
+ 
 /* =====================================================
-   ORDER ITEMS
+   ORDER ITEMS(refactoring....
 ===================================================== */
 
 #order-items {
@@ -1902,7 +1223,7 @@ body:has(#order-info) {
     background: rgba(255, 255, 255, 0.92);
 
     border: 1px solid var(--border);
-    border-radius: 26px;
+    border-radius: 25px;
 
     box-shadow: var(--shadow);
 }
@@ -1970,273 +1291,9 @@ body:has(#order-info) {
     }
 }
 
-/* =====================================================
-   ORDER STATUS FINAL POLISH
-===================================================== */
-
-body:has(#order-info) {
-    background:
-        radial-gradient(circle at top left, #ffe0b8 0, transparent 34%),
-        radial-gradient(circle at bottom right, #ffd39c 0, transparent 28%),
-        linear-gradient(135deg, #fff8ef, #ffe8c7);
-}
-
-body:has(#order-info)::before {
-    content: "Your Order";
-
-    display: block;
-
-    width: min(720px, calc(100% - 28px));
-
-    margin: 36px auto 18px;
-
-    color: var(--coffee);
-
-    font-size: clamp(34px, 7vw, 48px);
-    font-weight: 900;
-    letter-spacing: -1px;
-}
-
-#order-info,
-#order-items,
-.timeline {
-    width: min(720px, calc(100% - 28px));
-    margin: 0 auto 26px;
-}
-
-.info-card,
-#order-items,
-.timeline {
-    background: rgba(255, 255, 255, 0.78);
-
-    border: 1px solid rgba(120, 60, 20, 0.08);
-    border-radius: 26px;
-
-    box-shadow: 0 16px 38px rgba(67, 32, 12, 0.08);
-
-    backdrop-filter: blur(12px);
-}
-
-/* Status card */
-
-.info-card {
-    padding: 24px;
-}
-
-.info-card .item:first-child {
-    margin-bottom: 12px;
-
-    color: var(--coffee);
-
-    font-size: 26px;
-    font-weight: 900;
-}
-
-.info-card .item {
-    margin: 8px 0;
-
-    color: var(--coffee-soft);
-
-    font-size: 15px;
-    font-weight: 900;
-}
-
-/* Order summary */
-
-#order-items {
-    padding: 28px;
-}
-
-#order-items::before {
-    content: "Order Summary";
-
-    display: block;
-
-    margin-bottom: 24px;
-
-    color: var(--coffee);
-
-    font-size: 30px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-}
-
-.item-card {
-    padding: 18px 8px;
-
-    background: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-.item-card .items:first-child {
-    color: var(--coffee);
-
-    font-size: 16px;
-    font-weight: 900;
-}
-
-.item-card .items {
-    margin: 10px 0;
-
-    color: var(--muted);
-
-    font-size: 15px;
-    font-weight: 800;
-}
-
-.grand-total {
-    margin-top: 22px;
-
-    padding: 18px 22px;
-
-    background: linear-gradient(135deg, #ffe58a, #e4b64c);
-
-    border-radius: 16px;
-
-    color: var(--coffee);
-
-    font-size: 18px;
-    font-weight: 900;
-}
-
-/* Timeline card */
-
-.timeline {
-    padding: 32px 28px 36px;
-}
-
-.timeline::before {
-    content: "Order Tracking";
-
-    display: block;
-
-    margin-bottom: 30px;
-
-    color: var(--coffee);
-
-    font-size: 30px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-}
-
-.timeline-step {
-    position: relative;
-
-    display: grid;
-    grid-template-columns: 34px 1fr;
-    column-gap: 20px;
-
-    min-height: 104px;
-}
-
-.timeline-step::after {
-    content: "";
-
-    position: absolute;
-    left: 10px;
-    top: 28px;
-
-    width: 4px;
-    height: calc(100% - 20px);
-
-    background: #e2d4bd;
-    border-radius: 999px;
-}
-
-.timeline-step:last-child::after {
-    display: none;
-}
-
-.timeline-step .dot {
-    position: relative;
-    z-index: 2;
-
-    width: 22px;
-    height: 22px;
-
-    margin-top: 4px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #d8c5aa;
-    border: 4px solid #fff7e8;
-}
-
-.timeline-step h3 {
-    margin: 0;
-
-    color: var(--muted);
-
-    font-size: 22px;
-    font-weight: 900;
-}
-
-.timeline-step p {
-    margin: 8px 0 0;
-
-    color: var(--muted);
-
-    font-size: 15px;
-    font-weight: 800;
-}
-
-.timeline-step.active h3 {
-    color: #166534;
-}
-
-.timeline-step.active .dot {
-    background: var(--success);
-    border-color: #dcfce7;
-}
-
-.timeline-step.active .dot::after {
-    content: "✓";
-
-    color: white;
-
-    font-size: 12px;
-    font-weight: 900;
-}
-
-.timeline-step.active::after {
-    background: var(--success);
-}
-
-.timeline-step.deactive h3 {
-    color: var(--danger);
-}
-
-.timeline-step.deactive .dot {
-    background: var(--danger);
-    border-color: #fee2e2;
-}
-
-.timeline-step.deactive .dot::after {
-    content: "!";
-
-    color: white;
-
-    font-size: 12px;
-    font-weight: 900;
-}
 
 @media (max-width: 600px) {
-    body:has(#order-info)::before,
-    #order-info,
-    #order-items,
-    .timeline {
-        width: calc(100% - 24px);
-    }
-
-    body:has(#order-info)::before {
-        margin-top: 28px;
-        font-size: 38px;
-    }
+   
 
     .info-card,
     #order-items,
@@ -2299,6 +1356,39 @@ html {
     scroll-behavior: smooth;
 }
 
+
+
+/*
+-------------------------------------------
+refactored My order page
+-------------------------------------------
+
+*/
+.ordered-items{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 13px 16px;
+    gap: 20px;
+    background:var(--bg);
+    transition: background-color 0.2s ease,
+    border 0.2s ease,transform 0.2s ease;
+    margin: 10px;
+}
+
+
+/* 
+--------------------
+refactored sidebar of index.html
+---------------------
+
+*/
+
 #index-sidebar{
     width: 250px;
     height:100vh;
@@ -2310,7 +1400,7 @@ html {
     transition: transform 0.3s ease;
     padding: 20px;
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+    z-index: 60;
 }
 
 #index-sidebar.open{
@@ -2341,6 +1431,9 @@ html {
     color:#ff5a5f
 }
 
+
+/*i have a toggle btn already in admin.html ,so we could just use that;
+
 .sidebar-toggle{
     background: transparent;
     border: none;
@@ -2348,7 +1441,7 @@ html {
     color:#f5f5f5;
     cursor: pointer;
     padding: 8px;
-}
+} */
 
 .sidebar-toggle.open{
     background: transparent;
@@ -2376,7 +1469,7 @@ html {
 
     transition: opacity .3s ease;
 
-    z-index: 999;
+    z-index: 45;
 
 }
 
@@ -2384,3 +1477,164 @@ html {
     visibility: visible;
     opacity: 1;
 }
+
+
+
+
+
+
+
+
+/* 1. Style the actual container box here */
+
+/* ======================================================
+   SEARCH COMPONENT (REFACTORED)
+   TODO:
+   - Replace old search styles after full CSS cleanup.
+   ====================================================== */
+
+   /* ==========================================================
+   SEARCH COMPONENT (REFACTORED)
+========================================================== */
+
+#search-navigate{
+
+    padding: 16px 20px;
+
+}
+
+.search-section{
+    width:min(460px,100%);
+    
+}
+
+.search-wrapper{
+    position:relative;
+    width: min(460px,100%);
+
+}
+
+#search-bar{
+
+    width:100%;
+    padding:13px 16px;
+    border-radius: 10px ;
+    border:1px solid rgb(251, 171, 24);
+    transition:border-radius 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+}
+#search-bar:focus{
+   
+    transform: translateY(-2px);
+    border-color: rgb(250, 163, 2);
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+    outline:none;
+     
+
+}
+#result{
+    position:absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    max-height: 300px;
+    border:1px solid #f5f5f5;
+    border-radius: 10px;
+    z-index: 42;
+    overflow-y: auto;
+
+
+
+}
+.data-list{
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    padding: 0;
+    margin:0;
+    list-style:none;
+    
+    
+}
+.data-item{
+
+    display: flex;
+    flex-direction:row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 15px;
+    width:100%;
+    height: 70px;
+    background-color: #f5f5f5;
+    color: #0d0d0d;
+    border-radius: 2px;
+    transition: background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-radius 0.2s ease;
+
+    /* width:100%;
+    height: 80px;;
+    background: #f5f5f5;
+    left:0;
+    top:0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: all 0.2s ease; */
+    
+}
+.data-item:hover{
+    background: #d3d3d3;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    
+
+}
+.data-item img{
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid #f5f5f5;
+    
+    border-radius: 50px;
+    
+}
+.item-name{
+    
+    color:#0d0d0d;
+    
+
+}
+/*
+refactored category bar
+
+*/
+
+
+
+.category-bar{
+    height: 70px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    overflow-x: auto;
+    padding-left:10px;
+    
+
+}
+
+.hidden{
+    display:none !important;
+}
+
+
+
+
+
+
+

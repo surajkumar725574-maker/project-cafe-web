@@ -34,7 +34,7 @@ if (!id) {
 }
 else {
     fetchOrder();
-    setInterval(fetchOrder, 5000);
+    setInterval(fetchOrder, 1000000);
 }
 
 //fetch all orders of a customer
@@ -67,8 +67,8 @@ function fetchOrder() {
 // =====================================================
 
 function renderOrder(order) {
-    console.log(order);
-    console.log(order.items);
+    // console.log(order);
+    // console.log(order.items);
 
     renderStatusCard(order);
 
@@ -172,17 +172,40 @@ function setTimeline(status) {
         "completed"
     ];
 
+    
+
+
     if (status === "cancelled") {
 
-        document
+            document
+            .getElementById("step-new")
+            .classList.add("active");
+            document
+            .getElementById("step-new")
+            .classList.add("cancelled-connector");
+
+             document
             .getElementById("step-cancelled")
             .classList.add("deactive");
+                
+        
+     for (let i = 1; i < steps.length; i++) {
 
+
+        let stepId = "step-" + steps[i];
+
+        
+        document.getElementById(stepId).classList.add("hidden");
+        
+
+            
+    }
         return;
 
     }
 
-    const currentIndex = steps.indexOf(status);
+     const currentIndex = steps.indexOf(status);
+     
 
     for (let i = 0; i <= currentIndex; i++) {
 
@@ -193,6 +216,9 @@ function setTimeline(status) {
             .classList.add("active");
 
     }
+
+   document.getElementById("step-cancelled").classList.add("hidden");
+   document.getElementById("step-completed").classList.add("cancelled-next");
 
 }
 
@@ -219,7 +245,9 @@ function resetTimeline() {
             document.getElementById(stepId);
 
         element.classList.remove("active");
+        element.classList.remove("hidden");
         element.classList.remove("deactive");
+        element.classList.remove("cancelled-connector");
 
     }
 
@@ -236,6 +264,10 @@ function setTimelineTime(step, timeValue) {
 
     const element =
         document.getElementById(stepId);
+
+        if(stepId=="time-cancelled"&&!timeValue){
+            return element.innerHTML='';
+        }
 
     if (!timeValue) {
 
@@ -283,7 +315,7 @@ function renderItems(items) {
     if(!items){
         return;
     }
-    console.log(items);
+    // console.log(items);
     let html = "";
 
     let grandTotal = 0;

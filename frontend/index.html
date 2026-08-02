@@ -243,8 +243,15 @@
     ================================ -->
     <section id="search-navigate">
         <div class="search-section">
+            <div class="search-wrapper">
             <input id="search-bar" placeholder="search here" oninput="searchMenu()">
+
+            <div id="result">
+                
+            </div>
+            </div>
         </div>
+        </section>
 
         <!-- ===============================
          CATEGORY BAR
@@ -255,15 +262,15 @@
 
         <section class="category-bar">
 
-            <button onclick="renderMenu('All')">All</button>
-            <button onclick="renderMenu('Breakfast')">Breakfast</button>
-            <button onclick="renderMenu('Lunch')">Lunch</button>
-            <button onclick="renderMenu('Beverages')">Beverages</button>
-            <button onclick="renderMenu('Burgers')">Burgers</button>
-            <button onclick="renderMenu('Chinese')">Chinese</button>
-            <button onclick="renderMenu('Rolls')">Rolls</button>
-            <button onclick="renderMenu('Juices')">Juices</button>
-            <button onclick="renderMenu('Shakes')">Shakes</button>
+            <button class="category-bar-btn"onclick="renderMenu('All')">All</button>
+            <button class="category-bar-btn"onclick="renderMenu('Breakfast')">Breakfast</button>
+            <button class="category-bar-btn"onclick="renderMenu('Lunch')">Lunch</button>
+            <button class="category-bar-btn"onclick="renderMenu('Beverages')">Beverages</button>
+            <button class="category-bar-btn"onclick="renderMenu('Burgers')">Burgers</button>
+            <button class="category-bar-btn"onclick="renderMenu('Chinese')">Chinese</button>
+            <button class="category-bar-btn"onclick="renderMenu('Rolls')">Rolls</button>
+            <button class="category-bar-btn"onclick="renderMenu('Juices')">Juices</button>
+            <button class="category-bar-btn"onclick="renderMenu('snacks')">Snacks</button>
 
         </section>
 
@@ -279,7 +286,7 @@
                 </a>
             </div>
 
-        </section>
+        
     </section>
     <!-- section for user signup -->
 
@@ -352,7 +359,7 @@ empty container to render js continue button // model for cleaner html -->
 
         <p id="log-in-message">Already have an account?</p>
 
-        <button>log in</button>
+        <button id="signup-login-redirector">log in</button>
 
 
 

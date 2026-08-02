@@ -138,9 +138,8 @@ function renderOrderSummary() {
     }
 
     totalAmount.innerHTML = `
-        <div id="total-amount-card">
-            <p>Total amount : ₹${total}</p>
-        </div>
+            <strong><p>Total amount :</strong> ₹${total}</p>
+        
     `;
 
 }

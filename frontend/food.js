@@ -3,7 +3,7 @@
 // // // =====================================================
 
 // // let cart =[];
-    
+
 
 
 
@@ -186,9 +186,9 @@
 
 // //     for(let i=0;i<menu.length;i++){
 // //          let existingtext=menu[i].name.toLowerCase().includes(typedText);
-        
+
 // //          if(existingtext){
-           
+
 // //              menuContainer.innerHTML+=`<div class="menu-item">
 // //              <div class="item">${menu[i].name}</div>
 // //              <div class="item">${menu[i].price}</div>
@@ -196,9 +196,9 @@
 // // <button onclick="addToCart('${menu[i].name}', ${menu[i].price})">
 // //     Add
 // // </button>
-             
+
 // //              </div>`
-             
+
 // //          }
 
 // //     }
@@ -505,16 +505,17 @@ let categoryBar = document.querySelector(".category-bar");
 const indexPage = document.getElementById("index-page");
 const signupPage = document.getElementById("Sign-up");
 const loginPage = document.getElementById("login");
-const searchNavigate=document.getElementById("search-navigate");
-signupPage.style.display="none";
-loginPage.style.display="none";
+const searchNavigate = document.getElementById("search-navigate");
+let contiueSection = document.getElementById("continue-bar");
+signupPage.style.display = "none";
+loginPage.style.display = "none";
 
 // sidebar//
 let sidebar = document.getElementById("index-sidebar");
-let overlay=document.getElementById("overlay");
+let overlay = document.getElementById("overlay");
 let hamburgerBtns = document.querySelectorAll(".sidebar-toggle");
 
-        
+
 
 
 // =====================================================
@@ -554,24 +555,24 @@ function menuGenerator() {
     `;
 
     fetch(`${API_URL}/menu`)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
 
-        menu = data;
-        renderMenu("All");
+            menu = data;
+            renderMenu("All");
 
-    })
-    .catch(function(error) {
+        })
+        .catch(function (error) {
 
-        console.log("Failed to load menu:", error);
+            console.log("Failed to load menu:", error);
 
-        menuContainer.innerHTML = `
+            menuContainer.innerHTML = `
             <p>Unable to load menu. Please try again.</p>
         `;
 
-    });
+        });
 
 }
 
@@ -594,19 +595,18 @@ function renderMenu(category) {
 
         foundItem = true;
 
-        console.log(API_URL+menu[i].image);
+        
 
         menuContainer.innerHTML += `
            
-<div class="food-card">
+<div class="food-card" data-name="${menu[i].name}">
 
-    <img
-        src="${API_URL}${menu[i].image}"
-        alt="${menu[i].name}"
-        class="food-image"
-    >
+   <img src="${API_URL}${menu[i].image}"
+   alt="${menu[i].name}"
+   >
+   
 
-    <h3>${menu[i].name}</h3>
+    <h4>${menu[i].name}</h4>
 
     <p class="price">₹${menu[i].price}</p>
 
@@ -636,10 +636,10 @@ function renderMenu(category) {
 // ADD TO CART
 // =====================================================
 
-function addToCart(name, price,event) {
-    const button =event.target;
-    button.disabled=true;
-    button.textContent="Adding ...."
+function addToCart(name, price, event) {
+    const button = event.target;
+    button.disabled = true;
+    button.textContent = "Adding ...."
 
     fetch(`${API_URL}/cart`, {
         method: "POST",
@@ -652,165 +652,176 @@ function addToCart(name, price,event) {
             quantity: 1
         })
     })
-    .then(function(response) {
-        
-        return response.json();
-    })
-    .then(function(data) {
-        button.disabled=false;
-        button.textContent="Add to cart";
-        cart = data.cart;
-        cartButtonCounter();
-        UpdateContinueBar();
+        .then(function (response) {
+
+            return response.json();
+        })
+        .then(function (data) {
+            button.disabled = false;
+            button.textContent = "Add to cart";
+            cart = data.cart;
+            cartButtonCounter();
+            UpdateContinueBar();
 
 
-    })
-    .catch(function(error) {
-        button.disabled=false;
-        button.textContent="Add to cart";
+        })
+        .catch(function (error) {
+            button.disabled = false;
+            button.textContent = "Add to cart";
 
-        console.log("Failed to add item:", error);
-        alert("Unable to add item to cart");
+            console.log("Failed to add item:", error);
+            alert("Unable to add item to cart");
 
-    });
+        });
 
 
 }
 
 // it is for the cartbutton on the top of the menupage//
 
-function cartButtonCounter(){
+function cartButtonCounter() {
     fetch(`${API_URL}/cart`)
-     .then(function(response){
-        return response.json();
-     })
-     .then(function(data){
-        let total=0;
-        for(let i=0;i<data.length;i++){
-            total+=data[i].quantity;
-        }
-        document.getElementById("cart-count")
-                .innerText = total ;})
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            let total = 0;
+            for (let i = 0; i < data.length; i++) {
+                total += data[i].quantity;
+            }
+            document.getElementById("cart-count")
+                .innerText = total;
+        })
 }
 
 // login page 
 
-function userRegisteration(){
+function userRegisteration() {
     event.preventDefault();
 
-    let customerId= getCustomerId();
+    let customerId = getCustomerId();
 
 
-           let userName=document.getElementById("user-name").value.trim();
+    let userName = document.getElementById("user-name").value.trim();
 
-       let userPhone=document.getElementById("user-no").value.trim();
+    let userPhone = document.getElementById("user-no").value.trim();
 
 
-       let userPassword=document.getElementById("user-pass").value.trim();
-       
-       
+    let userPassword = document.getElementById("user-pass").value.trim();
 
-       if(
-    !userName ||
-    !userPhone ||
-    !userPassword
-){
-    return alert("Please fill all fields");
-}
 
-       fetch(`${API_URL}/user/signup`,{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
+
+    if (
+        !userName ||
+        !userPhone ||
+        !userPassword
+    ) {
+        return alert("Please fill all fields");
+    }
+
+    fetch(`${API_URL}/user/signup`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
         },
-        body:JSON.stringify({
-            name:userName,
-            phoneNo:userPhone,
-            password:userPassword,
-            customerId:customerId
-            
-        })
-       })
-       .then(function(response){
-        return response.json();
-       })
-       .then(function(data){
+        body: JSON.stringify({
+            name: userName,
+            phoneNo: userPhone,
+            password: userPassword,
+            customerId: customerId
 
-    if(data.token){
-        localStorage.setItem(
-            "Usertoken",
-            data.token
-        );
-       
-        localStorage.setItem(
-    "customerId",
-    data.customerId
-);
-        alert("Account created successfully");
-        // loadIndexPage();
-        showSection(indexPage);
-    }
-    else{
-        alert(data.message);
-    }
-   
-})
+        })
+    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+
+            if (data.token) {
+                localStorage.setItem(
+                    "Usertoken",
+                    data.token
+                );
+
+                localStorage.setItem(
+                    "customerId",
+                    data.customerId
+                );
+                alert("Account created successfully");
+                // loadIndexPage();
+                showSection(indexPage);
+            }
+            else {
+                alert(data.message);
+            }
+
+        })
 
 }
 
-function userLogin(){
+function userLogin() {
 
 
-    let phnNo=document.getElementById("user-phone").value.trim();
-    let pass=document.getElementById("pass").value.trim();
+    let phnNo = document.getElementById("user-phone").value.trim();
+    let pass = document.getElementById("pass").value.trim();
     // console.log({phnNo,pass});
 
-    if(!phnNo||!pass){
+    if (!phnNo || !pass) {
         return alert("please fill all fields");
     }
 
-    fetch(`${API_URL}/user/login`,{
-        method:"POST",
-        headers:{
-         "Content-Type":"application/json"
+    fetch(`${API_URL}/user/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
         },
-        body:JSON.stringify({
-        phoneNo:phnNo,
-        password:pass})
+        body: JSON.stringify({
+            phoneNo: phnNo,
+            password: pass
+        })
 
     })
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(data){
-        if(data.usertoken){
-            localStorage.setItem("Usertoken",data.usertoken);
-            localStorage.setItem("customerId",data.customerId);
-            // loginPage.insertAdjacentElement(
-            //     'beforeend',
-            //     `<p>login successful </p>`
-            // );
-            showSection(indexPage);
-            console.log(data.message);
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            if (data.usertoken) {
+                localStorage.setItem("Usertoken", data.usertoken);
+                localStorage.setItem("customerId", data.customerId);
+                // loginPage.insertAdjacentElement(
+                //     'beforeend',
+                //     `<p>login successful </p>`
+                // );
+                showSection(indexPage);
+                console.log(data.message);
 
-            
-            
 
-        }
-        else{
-            message=data.message
-            console.log(message);
-        }
 
-    })
+
+            }
+            else {
+                message = data.message
+                console.log(message);
+            }
+
+        })
 
 }
 
-const signupBtn=document.getElementById("signup-btn");
-signupBtn.addEventListener("click",userRegisteration);
+const signupBtn = document.getElementById("signup-btn");
+signupBtn.addEventListener("click", userRegisteration);
 
-const userLoginbtn=document.getElementById("user-login-btn");
-userLoginbtn.addEventListener("click",userLogin);
+//signUp's login button//
+
+const SignupLoginBtn=document.getElementById("signup-login-redirector");
+SignupLoginBtn.addEventListener("click",(e)=>{
+    e.target.closest("signup-login-redirector");
+    showSection(loginPage)
+
+});
+
+const userLoginbtn = document.getElementById("user-login-btn");
+userLoginbtn.addEventListener("click", userLogin);
 //
 
 // this was a repeated approach so i built a generic toggler for any element to be passed
@@ -823,7 +834,7 @@ userLoginbtn.addEventListener("click",userLogin);
 //     else{
 //         signupsecRef.style.display="none";
 //     }
-    
+
 
 // }
 
@@ -838,7 +849,7 @@ userLoginbtn.addEventListener("click",userLogin);
 //     else{
 //         loginsec.style.display="none";
 //     }
-    
+
 
 // }
 
@@ -852,22 +863,30 @@ function showSection(section) {
     loginPage.style.display = "none";
 
     section.style.display = "block";
-    if(section===indexPage){
-     searchNavigate.style.display="block";
+    if (section === indexPage) {
+        
+       searchNavigate.classList.remove("hidden");
+       categoryBar.classList.remove("hidden");
+       contiueSection.classList.remove("hidden");
+
     }
 
-    else{
-        searchNavigate.style.display="none";
+    else {
+        searchNavigate.classList.add("hidden");
+        categoryBar.classList.add("hidden");
+      
+        contiueSection.classList.add("hidden");
     }
 }
 
 
-document.getElementById("menu-link").addEventListener("click",(e)=>{
+document.getElementById("menu-link").addEventListener("click", (e) => {
     e.preventDefault();
     showSection(indexPage);
-    toggleSidebar()});
+    toggleSidebar()
+});
 
-document.getElementById("Signup-link").addEventListener("click",(e)=>{
+document.getElementById("Signup-link").addEventListener("click", (e) => {
     e.preventDefault();
     showSection(signupPage);
     toggleSidebar();
@@ -875,7 +894,7 @@ document.getElementById("Signup-link").addEventListener("click",(e)=>{
 
 
 
-document.getElementById("login-link").addEventListener("click",(e)=>{
+document.getElementById("login-link").addEventListener("click", (e) => {
     e.preventDefault();
     showSection(loginPage);
     toggleSidebar();
@@ -896,7 +915,7 @@ function toggleSidebar() {
         btn.textContent =
             sidebar.classList.contains("open") ? "✕" : "☰";
     });
-   
+
 }
 
 hamburgerBtns.forEach(btn => {
@@ -919,7 +938,7 @@ hamburgerBtns.forEach(btn => {
 //     }
 //     else{
 //         SigninMode=false;
-     
+
 //             signinPage.style.display="none";
 //         indexPage.style.display="block";        
 
@@ -938,7 +957,7 @@ hamburgerBtns.forEach(btn => {
 // function loginPageLoader(){
 //     if(LoginMode===false){
 
-    
+
 //     document.getElementById("signup-message").style.display="none";
 // document.getElementById("name-field").style.display = "none";
 // document.getElementById("email-field").style.display = "none";
@@ -965,38 +984,38 @@ hamburgerBtns.forEach(btn => {
 // //an index pageloader so after login we can redirect  user from loginpage to indexpage(index.html) as usual user...
 
 // function loadIndexPage(){
-    
+
 //         signinPage.style.display="none";
 //         indexPage.style.display="block";
 
 // }
 
 // it is for the floating continue bar that appears only when add to cart is clicked;
-function UpdateContinueBar(){
-     let contiueButton=document.getElementById("continue-bar");
+function UpdateContinueBar() {
+   
 
-     fetch(`${API_URL}/cart`)
-     .then(function(response){
-        return response.json();
-     })
-     .then(function(data){
-        let total=0;
-        for(let i=0;i<data.length;i++){
-            total+=data[i].quantity;
-        }
-            if(total>0){
-                document.getElementById("item-count").innerText=total;
-                contiueButton.style.display="block"
+    fetch(`${API_URL}/cart`)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            let total = 0;
+            for (let i = 0; i < data.length; i++) {
+                total += data[i].quantity;
             }
-            else{
-                contiueButton.style.display="none"
-        
+            if (total > 0) {
+                document.getElementById("item-count").innerText = total;
+                contiueSection.style.display = "block"
             }
-             
-                
-     })
+            else {
+                contiueSection.style.display = "none"
 
-            
+            }
+
+
+        })
+
+
 }
 
 
@@ -1006,81 +1025,281 @@ function UpdateContinueBar(){
 // SEARCH MENU
 // =====================================================
 
+// function searchMenu() {
+
+//     let searchText = document.getElementById("search-bar").value.trim().toLowerCase();
+
+//     // let typedText = searchText.trim().toLowerCase();
+
+//     menuContainer.innerHTML = "";
+
+//     let foundItem = false;
+
+//     for (let i = 0; i < menu.length; i++) {
+
+//         let itemName = menu[i].name.toLowerCase();
+
+//         if (itemName.includes(searchText)) {
+
+//             foundItem = true;
+
+//             menuContainer.innerHTML += `
+
+//             <div class="food-card">
+
+//                  <img
+//                    src="${API_URL}${menu[i].image}"
+//                    alt="${menu[i].name}"
+//                    class="food-image>"
+//                     <h3>${menu[i].name}</h3>
+
+//                     <p class="price">₹${menu[i].price}</p>
+
+//                     <p class="category-name">${menu[i].category}</p>
+
+
+//                     <button onclick="addToCart('${menu[i].name}', ${menu[i].price})">
+//                         Add to Cart
+//                     </button>
+
+//                 </div>
+//             `;
+
+//         }
+
+//     }
+
+//     if (!foundItem) {
+
+//         menuContainer.innerHTML = `
+//             <p>No matching food item found.</p>
+//         `;
+
+//     }
+
+// }
+
+
+// menu redirecting item after searched card gets clicked //
+
+
+
+// seperating the menu rendering from searching the menu items //
+
+const searchBar=document.getElementById("search-bar");
+    const result = document.getElementById("result");
+
+    
+    result.addEventListener("click",(e)=>{
+        
+        const card=e.target.closest(".data-item");
+
+        if(card){
+            findItem(card);
+            searchBar.value="";
+
+            result.innerHTML="";
+
+        }
+        else{
+            alert("please select an item first");
+        }
+
+
+    })
+
 function searchMenu() {
 
-    let searchText = document.getElementById("search-bar").value;
+    const matchedItems = [];
 
-    let typedText = searchText.trim().toLowerCase();
 
-    menuContainer.innerHTML = "";
+    const searchText = searchBar.value.trim().toLowerCase();
 
-    let foundItem = false;
+    console.log(searchText);
+
+    
 
     for (let i = 0; i < menu.length; i++) {
 
         let itemName = menu[i].name.toLowerCase();
 
-        if (itemName.includes(typedText)) {
+        if (itemName.includes(searchText)) {
 
-            foundItem = true;
+            matchedItems.push(menu[i]);
 
-            menuContainer.innerHTML += `
-                <div class="food-card">
-                <img src="${API_URL}${menu[i].image}">
-                class="food-image">
-                    <h3>${menu[i].name}</h3>
-
-                    <p class="price">₹${menu[i].price}</p>
-
-                    <p class="category-name">${menu[i].category}</p>
-
-
-                    <button onclick="addToCart('${menu[i].name}', ${menu[i].price})">
-                        Add to Cart
-                    </button>
-
-                </div>
-            `;
 
         }
 
     }
 
-    if (!foundItem) {
+   
 
-        menuContainer.innerHTML = `
-            <p>No matching food item found.</p>
-        `;
+    console.log(matchedItems);
 
+
+    if (matchedItems.length === 0 || searchText === "") {
+        result.innerHTML="";
+        return;
     }
 
+
+
+
+
+
+    result.innerHTML=`<ul class="data-list"></ul>`;
+
+    const dataList=result.querySelector(".data-list");
+
+    for(let i=0;i<matchedItems.length;i++){
+
+        dataList.insertAdjacentHTML( 'beforeend',`
+
+        <li  class="data-item" data-name="${matchedItems[i].name}"> <img src="${API_URL}${matchedItems[i].image}"
+        alt="${matchedItems[i].name}">
+        <span class="item-name">${matchedItems[i].name}</span>
+        
+        </li>
+       `
+
+        
+);
+    }
+
+
+
+    console.log(result);
+
+
+
+   
+
+
 }
+
+function findItem(element){
+     let name=element.dataset.name;
+     console.log(name);
+    let matchedcard= document.querySelector(`#menu-items [data-name="${name}"]`);
+
+    if(!matchedcard){
+        alert("item unavailable");
+        return;
+    }
+
+    console.log(matchedcard);
+    
+        matchedcard.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest",
+        inline:"nearest"
+     });
+
+     
+
+            
+        }
+     
+
+
+//     result.innerHTML="";
+
+
+
+//     matchedItems.forEach(element => {
+
+//         result.innerHTML+=`
+//         <div
+//         class="search-result"
+//          data-target="${element.name}-card">
+//         <h>${element.name}</h>
+//         <img src="${API_URL}${element.image}"
+//         alt="${element.name}">
+//         </div>
+
+//         `;
+
+
+//     // const resultChild=document.createElement("div");
+//     // resultChild.id= `${element.name}-card`;
+
+//     // resultChild.style.padding = "10px";
+//     // resultChild.style.cursor = "pointer";
+//     // resultChild.innerHTML = `
+
+//     // <h4>${element.name}</h4>
+//     // <img
+//     //     src="${API_URL}${element.image}"
+//     //     alt="${element.name}">`;
+
+
+//     //     console.log(resultChild);
+
+
+
+//     });
+
+//     const resultChild=document.querySelectorAll(".search-result");
+
+
+//     result.addEventListener("click",()=>{
+
+//         findCard(element.dataset.target);
+//     });
+
+//     searchText.remove();
+
+//     result.removeEventListener("click",()=>{
+//         findCard(element.dataset.target);
+//     });
+
+
+
+
+
+
+
+
+//     //    console.log(matchedItems);
+
+// }
+
+
+
+// // suggestion handler
+
+// function findCard(dataTarget){
+//    const suggestedElement=document.getElementById(dataTarget);
+
+//    suggestedElement.scrollIntoView({behavior:"smooth",block:"start"});
+
+// }
 
 
 // =====================================================
 // CATEGORY BAR SCROLL BEHAVIOUR
 // =====================================================
 
-if (categoryBar) {
+// if (categoryBar) {
 
-    let lastScroll = window.scrollY;
+//     let lastScroll = window.scrollY;
 
-    window.addEventListener("scroll", function() {
+//     window.addEventListener("scroll", function () {
 
-        let currentScroll = window.scrollY;
+//         let currentScroll = window.scrollY;
 
-        if (currentScroll > lastScroll + 5) {
-            categoryBar.classList.add("hide-category");
-        }
-        else if (currentScroll < lastScroll - 5) {
-            categoryBar.classList.remove("hide-category");
-        }
+//         if (currentScroll > lastScroll + 5) {
+//             categoryBar.classList.add("hide-category");
+//         }
+//         else if (currentScroll < lastScroll - 5) {
+//             categoryBar.classList.remove("hide-category");
+//         }
 
-        lastScroll = currentScroll;
+//         lastScroll = currentScroll;
 
-    });
+//     });
 
-}
+// }
 
 
 // =====================================================

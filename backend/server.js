@@ -2,7 +2,7 @@
 // IMPORTS
 
 // =====================================================
-const path=require("path");
+const path = require("path");
 
 
 const express = require("express");
@@ -11,13 +11,13 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
 const jwt = require("jsonwebtoken");
-const bcrypt=require("bcrypt");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const Menu = require("./models/Menu");
 const Cart = require("./models/Cart");
 const Order = require("./models/Order");
-const Customer=require("./models/Customer");
+const Customer = require("./models/Customer");
 const { error } = require("console");
 
 // =====================================================
@@ -39,15 +39,15 @@ app.use(express.static("public"));
 // =====================================================
 
 mongoose.connect(process.env.MONGODB_URI)
-.then(function () {
-    console.log("MongoDB Connected");
-    console.log("connected DB:",mongoose.connection.name);
-})
-.catch(function (error) {
-    console.log(error);
-    console.log(error.message);
-    console.log(error.stack);
-});
+    .then(function () {
+        console.log("MongoDB Connected");
+        console.log("connected DB:", mongoose.connection.name);
+    })
+    .catch(function (error) {
+        console.log(error);
+        console.log(error.message);
+        console.log(error.stack);
+    });
 
 
 // =====================================================
@@ -60,7 +60,7 @@ const razorpay = new Razorpay({
 });
 
 // class AppErr extends error{
-       
+
 //     constructor(message,statuscode){
 //         super(message);
 //         this.statuscode=statuscode;
@@ -75,16 +75,16 @@ const razorpay = new Razorpay({
 //        req.customerId=req.query.customerId;
 //        console.log("Resolved customer:", req.customerId);
 //           next();
-          
-        
+
+
 //     }
 //     else{
 
 //     verifyUser(req,res,next);
 // }
-        
 
-    
+
+
 
 
 //}
@@ -110,21 +110,21 @@ function resolveCustomer(req, res, next) {
     return verifyUser(req, res, next);
 }
 
-function verifyUser(req,res,next){
-    const header=req.headers.authorization;
-    if(!header){
+function verifyUser(req, res, next) {
+    const header = req.headers.authorization;
+    if (!header) {
         return res.status(401).send({
-            message:"unauthorized"
+            message: "unauthorized"
         })
     }
 
-    const parts=header.split(" ");
+    const parts = header.split(" ");
 
 
-    if(parts.length!=2||parts[0]!=="Bearer"){
-      return res.status(401).send({
-        message:"unauthorized"
-      })
+    if (parts.length != 2 || parts[0] !== "Bearer") {
+        return res.status(401).send({
+            message: "unauthorized"
+        })
     }
 
     // if(parts[0]!=="Bearer"){
@@ -132,89 +132,89 @@ function verifyUser(req,res,next){
     //     message:"unauthorized"})
     // }
 
-    const extractedToken=parts[1];
+    const extractedToken = parts[1];
     let userdecoded;
 
-    try{
+    try {
 
-      userdecoded=jwt.verify(extractedToken,process.env.JWT_SECRET)
+        userdecoded = jwt.verify(extractedToken, process.env.JWT_SECRET)
     }
-    catch(err){
-      return res.status(401).send({
-      message:"unauthorized"
+    catch (err) {
+        return res.status(401).send({
+            message: "unauthorized"
 
-      })
+        })
 
     }
 
-    if(userdecoded.role==="user"){
-        if(userdecoded.customerId){
-            req.customerId=userdecoded.customerId;
-             next();
+    if (userdecoded.role === "user") {
+        if (userdecoded.customerId) {
+            req.customerId = userdecoded.customerId;
+            next();
 
         }
-        else{
+        else {
             return res.status(401).send({
-                message:"Invalid user"
+                message: "Invalid user"
             })
 
         }
     }
-    else{
+    else {
         return res.status(401).send({
-            message:"unauthorized"
+            message: "unauthorized"
         })
     }
 }
 
 
 function verifyAdmin(req, res, next) {
-    
 
-    const authHeader=req.headers.authorization;
-    
-    if(!authHeader){
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
         return res.status(401).send({
-   message:"Unauthorized"
-});
+            message: "Unauthorized"
+        });
     }
-   const parts=authHeader.split(" ");
-   if(parts.length!==2){
-       return res.status(401).send({
-        message:"Unauthorized"
-      });
-   }
-   if(parts[0]!=="Bearer"){
-    return res.status(401).send({
-        message:"Unauthorized"
-    });
-   }
+    const parts = authHeader.split(" ");
+    if (parts.length !== 2) {
+        return res.status(401).send({
+            message: "Unauthorized"
+        });
+    }
+    if (parts[0] !== "Bearer") {
+        return res.status(401).send({
+            message: "Unauthorized"
+        });
+    }
 
-        const token=parts[1];
-       let decoded;
-       try{
-        decoded= jwt.verify(token,process.env.JWT_SECRET);
+    const token = parts[1];
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
     }
-    catch(error){
-     return res.status(401).send({
-   message:"Unauthorized"
-});
-    
+    catch (error) {
+        return res.status(401).send({
+            message: "Unauthorized"
+        });
+
+    }
+    if (decoded.role === "admin") {
+        req.admin = decoded;
+        return next();
+    }
+
+
+    // }
+    else {
+        return res.status(401).send({
+            message: "Unauthorized"
+        });
+
+    }
 }
-if(decoded.role==="admin"){
-    req.admin=decoded;
-    return next();
-}
-
-
-// }
-else{
-    return  res.status(401).send({
-   message:"Unauthorized"
-});
-
-    }
-  }
 
 
 
@@ -236,7 +236,7 @@ app.get("/", function (req, res) {
 app.get("/menu", async function (req, res) {
     try {
         const menu = await Menu.find();
-       return res.send(menu);
+        return res.send(menu);
     }
     catch (error) {
         res.status(500).send({
@@ -246,7 +246,7 @@ app.get("/menu", async function (req, res) {
 });
 
 
-app.post("/menu",verifyAdmin, async function (req, res) {
+app.post("/menu", verifyAdmin, async function (req, res) {
     try {
         if (!req.body.name || !req.body.price || !req.body.category) {
             const menu = await Menu.find();
@@ -263,7 +263,7 @@ app.post("/menu",verifyAdmin, async function (req, res) {
             name: req.body.name.trim(),
             price: Number(req.body.price),
             category: req.body.category.trim(),
-            image:req.body.image
+            image: req.body.image
         };
 
         const existingItem = await Menu.findOne({
@@ -298,7 +298,7 @@ app.post("/menu",verifyAdmin, async function (req, res) {
 });
 
 
-app.delete("/menu/:name", verifyAdmin,async function (req, res) {
+app.delete("/menu/:name", verifyAdmin, async function (req, res) {
     try {
         const itemName = decodeURIComponent(req.params.name);
 
@@ -326,7 +326,7 @@ app.get("/cart", async function (req, res) {
     try {
         const cart = await Cart.find();
         res.send(
-             cart );
+            cart);
     }
     catch (error) {
         res.status(500).send({
@@ -596,17 +596,17 @@ app.post("/payment/verify", function (req, res) {
 
 
 const ADMIN_ID =
-process.env.ADMIN_ID;
+    process.env.ADMIN_ID;
 
 const ADMIN_PASSWORD =
-process.env.ADMIN_PASSWORD;
+    process.env.ADMIN_PASSWORD;
 
 
-app.post("/admin/login", async (req,res)=>{
+app.post("/admin/login", async (req, res) => {
 
     const adminId = req.body.adminId;
     const password = req.body.password;
-    
+
     // console.log("Frontend:");
     // console.log(adminId);
     // console.log(password);
@@ -615,23 +615,23 @@ app.post("/admin/login", async (req,res)=>{
     // console.log(ADMIN_ID);
     // console.log(ADMIN_PASSWORD);
 
-    if(
+    if (
         adminId === ADMIN_ID &&
         password === ADMIN_PASSWORD
-    ){
-        const token=jwt.sign({
-            role:"admin",
-            adminId:ADMIN_ID
-        },process.env.JWT_SECRET);
+    ) {
+        const token = jwt.sign({
+            role: "admin",
+            adminId: ADMIN_ID
+        }, process.env.JWT_SECRET);
         res.send({
-            message:"Login successful",
-            token:token
+            message: "Login successful",
+            token: token
         });
     }
-    else{
+    else {
         res.send({
-            message:"try again",
-            data:false
+            message: "try again",
+            data: false
         });
     }
 
@@ -688,7 +688,7 @@ app.post("/order", async function (req, res) {
         }
 
         const order = await Order.create({
-            customerId:req.body.customerId,
+            customerId: req.body.customerId,
             orderNumber: nextOrderNumber,
             items: req.body.cart,
             total: total,
@@ -717,7 +717,7 @@ app.post("/order", async function (req, res) {
 // GET ALL ORDERS
 // =====================================================
 
-app.get("/orders",verifyAdmin, async function (req, res) {
+app.get("/orders", verifyAdmin, async function (req, res) {
     try {
         const orders = await Order.find().sort({
             orderNumber: -1
@@ -749,7 +749,7 @@ app.get("/orders",verifyAdmin, async function (req, res) {
 //
 // =====================================================
 
-app.get("/order/search/:query",verifyAdmin, async function (req, res) {
+app.get("/order/search/:query", verifyAdmin, async function (req, res) {
     try {
         const query = req.params.query;
 
@@ -788,43 +788,44 @@ app.get("/order/search/:query",verifyAdmin, async function (req, res) {
 
 
 
-app.get("/order/by-customer",resolveCustomer,async (req,res)=>{
-//     console.log("Route reached");
-// console.log(req.query.customerId);
+app.get("/order/by-customer", resolveCustomer, async (req, res) => {
+    //     console.log("Route reached");
+    // console.log(req.query.customerId);
 
 
- try{
+    try {
         // console.log("1");
-         let customerId=req.customerId;
+        let customerId = req.customerId;
         //  console.log("2");
         //  console.log("Route customer:", req.customerId);
-       
-        const orders= await  Order.find({
 
-              customerId   }).sort({
-                orderNumber:-1
-            });
-            // console.log("3",orders);
-        
-        if(orders.length===0){
+        const orders = await Order.find({
+
+            customerId
+        }).sort({
+            orderNumber: -1
+        });
+        // console.log("3",orders);
+
+        if (orders.length === 0) {
             return res.status(404).send({
-                message:"order for this  customer id is not placed"
+                message: "order for this  customer id is not placed"
             });
         }
         res.send({
-            message:"here are the orders/order of this customer id ",
+            message: "here are the orders/order of this customer id ",
 
-            order:orders
+            order: orders
         })
 
 
     }
-    catch(error){
+    catch (error) {
         console.log(error);
-    console.log(error.message);
-    console.log(error.stack);
+        console.log(error.message);
+        console.log(error.stack);
         res.status(500).send({
-            message:error.message
+            message: error.message
         });
 
     }
@@ -872,10 +873,17 @@ app.get("/order/:order_id", async function (req, res) {
 // UPDATE ORDER STATUS
 // =====================================================
 
-app.post("/order/status/:id", verifyAdmin,async function (req, res) {
+
+
+
+app.post("/order/status/:id/:status", verifyAdmin, async function (req, res) {
+        //     console.log("Route hit");
+        // console.log(req.params);
     try {
         const id = req.params.id;
-        const newStatus = req.body.status;
+        const newStatus = req.params.status;
+
+        
 
         if (!newStatus) {
             return res.status(400).json({
@@ -883,39 +891,84 @@ app.post("/order/status/:id", verifyAdmin,async function (req, res) {
             });
         }
 
+
+
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 message: "Invalid MongoDB order id"
             });
         }
 
+
+
+
+        const currentStatus = await Order.findById(id);
+        // console.log(currentStatus.status);
+
+        
+        if (!currentStatus) {
+            return res.status(404).json({
+                message: "Order not found"
+            });
+        }
+
+         
+
+        const now = new Date();
+
         let updateData = {
             status: newStatus
         };
 
         if (newStatus === "accepted") {
-            updateData.acceptedAt = new Date();
+
+            if (!currentStatus.acceptedAt) {
+                updateData.acceptedAt = now;
+            }
+
         }
 
         if (newStatus === "preparing") {
-            updateData.preparingAt = new Date();
+            if (!currentStatus.acceptedAt) {
+                updateData.acceptedAt = now;
+            }
+
+            updateData.preparingAt = now;
         }
 
         if (newStatus === "completed") {
-            updateData.completedAt = new Date();
+            if (!currentStatus.acceptedAt) {
+                updateData.acceptedAt = now;
+            }
+
+            if (!currentStatus.preparingAt) {
+                updateData.preparingAt = now;
+            }
+            updateData.completedAt = now;
         }
 
         if (newStatus === "cancelled") {
-            updateData.cancelledAt = new Date();
+            updateData.cancelledAt = now;
         }
+           
+        //     console.log("Update Data:", {
+        // ...updateData,
+        // acceptedAt: updateData.acceptedAt?.toLocaleString(),
+        // preparingAt: updateData.preparingAt?.toLocaleString(),
+        // completedAt: updateData.completedAt?.toLocaleString()
+    // });
 
         const updatedOrder = await Order.findByIdAndUpdate(
             id,
             updateData,
             {
-    returnDocument:"after"
-       }
+                returnDocument: "after"
+            }
         );
+
+        console.log(updatedOrder);
+         
+      
 
         if (!updatedOrder) {
             return res.status(404).json({
@@ -940,141 +993,141 @@ app.post("/order/status/:id", verifyAdmin,async function (req, res) {
     }
 });
 
-app.post("/user/signup", async (req,res)=>{
-    try{
+app.post("/user/signup", async (req, res) => {
+    try {
 
         const userName = req.body.name;
         const userPhone = req.body.phoneNo;
         const userPassword = req.body.password;
         const customerId = req.body.customerId;
-        const hashedPassword=await bcrypt.hash(userPassword,10);
-        
+        const hashedPassword = await bcrypt.hash(userPassword, 10);
+
         // console.log("userName:",userName);
         // console.log("userPhone:",userPhone);
         // console.log("customerId:",customerId);
 
         // return res.json({msg:"got the request"});
-// console.log("Recieved customerId:");
-       console.log("checking customerId...");
+        // console.log("Recieved customerId:");
+        console.log("checking customerId...");
         const existingCustomer = await Customer.findOne({
-       customerId
-       });
-// console.log("existingCustomer:", existingCustomer);
+            customerId
+        });
+        // console.log("existingCustomer:", existingCustomer);
 
-if(existingCustomer){
-    return res.status(409).send({
-        message:"Account already exists. Please login."
+        if (existingCustomer) {
+            return res.status(409).send({
+                message: "Account already exists. Please login."
 
-    });
-}
+            });
+        }
 
-console.log("checking customerId...");
+        console.log("checking customerId...");
 
-const existingPhone = await Customer.findOne({
-    phoneNo:userPhone
-});
+        const existingPhone = await Customer.findOne({
+            phoneNo: userPhone
+        });
 
-console.log("existingPhone:", existingPhone);
+        console.log("existingPhone:", existingPhone);
 
-if(existingPhone){
-   return res.status(409).send({
-      message:"phone no is already registered"
-   });
-}
+        if (existingPhone) {
+            return res.status(409).send({
+                message: "phone no is already registered"
+            });
+        }
 
-console.log("checking customerId...");
+        console.log("checking customerId...");
         const customer = await Customer.create({
-            name:userName,
-            phoneNo:userPhone,
-            password:hashedPassword,
-            customerId:customerId
+            name: userName,
+            phoneNo: userPhone,
+            password: hashedPassword,
+            customerId: customerId
         });
 
         const token = jwt.sign(
             {
-                role:"user",
-                customerId:customer.customerId
+                role: "user",
+                customerId: customer.customerId
             },
-            process.env.JWT_SECRET,{
-                expiresIn:"30d"
-            }
+            process.env.JWT_SECRET, {
+            expiresIn: "30d"
+        }
         );
 
         return res.send({
-            message:"Sign up successful",
+            message: "Sign up successful",
             token,
-            customerId:customer.customerId
+            customerId: customer.customerId
         });
 
     }
-    catch(error){
+    catch (error) {
         console.log(error);
-        if(error.code===11000){
-            let errorType=Object.keys(error.keyValue)[0];
-             return res.status(409).send({
-                message:`${errorType} is already present`
+        if (error.code === 11000) {
+            let errorType = Object.keys(error.keyValue)[0];
+            return res.status(409).send({
+                message: `${errorType} is already present`
             })
         }
         return res.status(500).send({
-            message:error.message
+            message: error.message
         });
     }
 });
 
-app.post("/user/login",async (req,res)=>{
+app.post("/user/login", async (req, res) => {
 
-    let phoneNo=req.body.phoneNo;
+    let phoneNo = req.body.phoneNo;
 
-    let password=req.body.password;
+    let password = req.body.password;
 
-    const existingCustomer= await Customer.findOne({
-        
+    const existingCustomer = await Customer.findOne({
+
         phoneNo
-        
+
     })
-    if(!existingCustomer){
+    if (!existingCustomer) {
         console.log(1);
 
         return res.status(401).send({
 
-            message:"Invalid number or password "
+            message: "Invalid number or password "
         });
     }
-     
-    try{
 
-    const matchedPass=await bcrypt.compare(password,existingCustomer.password);
+    try {
 
-    if(matchedPass){
-       const usertoken= jwt.sign({
-            role:"user",
-            customerId:existingCustomer.customerId
+        const matchedPass = await bcrypt.compare(password, existingCustomer.password);
 
-        },process.env.JWT_SECRET,{expiresIn:"30d"})
-       
-        
-        return res.send({
-         usertoken,
-         customerId:existingCustomer.customerId,
-         message:"login successful"
-        })
+        if (matchedPass) {
+            const usertoken = jwt.sign({
+                role: "user",
+                customerId: existingCustomer.customerId
+
+            }, process.env.JWT_SECRET, { expiresIn: "30d" })
+
+
+            return res.send({
+                usertoken,
+                customerId: existingCustomer.customerId,
+                message: "login successful"
+            })
+        }
+        else {
+            // console.log(2);
+            return res.status(401).send({
+                message: "Invalid phone or password"
+            })
+        }
+
     }
-    else{
-        // console.log(2);
-        return res.status(401).send({
-            message:"Invalid phone or password"
-        })
-    }
-
-    }
-    catch(error){
+    catch (error) {
         return res.status(500).send({
-         message:error.message
+            message: error.message
         })
     }
 
 
-    
+
 })
 
 
