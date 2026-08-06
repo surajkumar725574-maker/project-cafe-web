@@ -41,7 +41,7 @@ let menu = [];
 // DOM REFERENCES
 // =====================================================
 
-const orderContainer = document.getElementById("ordered-items");
+const orderContainer = document.getElementById("admin-ordered-items");
 const menuContainer = document.getElementById("admin-menu-items");
 
 const adminHeader=document.getElementById("admin-header");
@@ -430,7 +430,7 @@ function renderOrders() {
         let orderStatus = orders[i].status || "new";
 
         orderContainer.innerHTML += `
-            <div class="cart-items">
+            <div class="admin-cart-items">
 
     <h3>Order No: ${orders[i].orderNumber||"Not  Assigned"}</h3>
 
@@ -492,10 +492,11 @@ function renderItems(order) {
     for (let i = 0; i < order.length; i++) {
 
         html += `
-            <div class="items">
+            <div class="admin-items">
                 <p>${order[i].name}</p>
                 <p>₹${order[i].price}</p>
                 <p>Quantity: ${order[i].quantity}</p>
+                
             </div>
         `;
 
@@ -588,8 +589,9 @@ function fetchMenu() {
     .then(function(data) {
 
         menu = data;
+        console.log(menu);
 
-        renderMenu();
+        renderMenu(menu);
 
         menuVisible = true;
 
@@ -613,7 +615,8 @@ function fetchMenu() {
 // RENDER MENU ITEMS
 // =====================================================
 
-function renderMenu() {
+function renderMenu(menu) {
+
 
     menuContainer.innerHTML = "";
 
@@ -632,7 +635,7 @@ function renderMenu() {
     for (let i = 0; i < menu.length; i++) {
 
         menuContainer.innerHTML += `
-            <div class="menu-items">
+            <div class="Og-menu-items">
 
                 <div class="items">${menu[i].name}</div>
 
@@ -680,7 +683,7 @@ function removeItems(name) {
 
         menu = data;
 
-        renderMenu();
+        renderMenu(menu);
 
     })
     .catch(function(error) {
@@ -692,15 +695,19 @@ function removeItems(name) {
 }
 
 
+
+
 // =====================================================
 // ADD MENU ITEM
 // =====================================================
 
 function addItems() {
 
-    let name = document.getElementById("item-name").value.trim();
-    let price = document.getElementById("item-price").value;
-    let category = document.getElementById("item-category").value.trim();
+    const name = document.getElementById("item-name").value.trim();
+    const price = document.getElementById("item-price").value;
+    const category = document.getElementById("item-category").value.trim();
+    const img=document.getElementById("item-img").files[0];
+console.log(img);
 
     if (name === "" || price === "" || category === "") {
 
@@ -710,20 +717,22 @@ function addItems() {
 
     }
 
+    const formData=new FormData();
+    formData.append("name",name);
+    formData.append("price",price);
+    formData.append("category",category);
+    formData.append("image",img);
+
     fetch(`${API_URL}/menu`, {
 
         method: "POST",
 
       headers: {
     "Authorization":
-        `Bearer ${localStorage.getItem("token")}`,
-    "Content-Type":"application/json"
-},
-        body: JSON.stringify({
-            name: name,
-            price: Number(price),
-            category: category
-        })
+        `Bearer ${localStorage.getItem("token")}`
+         },
+
+     body:formData
 
     })
     .then(function(response) {
@@ -731,11 +740,13 @@ function addItems() {
     })
     .then(function(data) {
 
+        console.log(data);
+
         menu = data.menu;
 
         console.log(data.message);
 
-        renderMenu();
+        renderMenu(menu);
 
         document.getElementById("item-name").value = "";
         document.getElementById("item-price").value = "";
