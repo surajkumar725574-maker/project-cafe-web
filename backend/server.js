@@ -13,7 +13,28 @@ const Razorpay = require("razorpay");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
+const cloudinary=require('cloudinary').v2;
 require("dotenv").config();
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+});
+
+console.log("Cloud name:", cloudinary.config().cloud_name);
+console.log(
+    "API key loaded:",
+    cloudinary.config().api_key ? "YES" : "NO"
+);
+console.log(
+    "API secret loaded:",
+    cloudinary.config().api_secret ? "YES" : "NO"
+);
+
+
 
 const Menu = require("./models/Menu");
 const Cart = require("./models/Cart");
@@ -261,55 +282,67 @@ app.post("/menu", verifyAdmin,
 
         console.log(req.body);
     console.log(req.file);
+
+   
+
         
-    // try {
-    //     if (!req.body.name || !req.body.price || !req.body.category) {
-    //         const menu = await Menu.find();
+    try {
+        
+        if (!req.body.name || !req.body.price || !req.body.category||!req.file) {
+            const menu = await Menu.find();
 
-    //         res.send({
-    //             message: "Please fill all fields",
-    //             menu: menu
-    //         });
+            res.send({
+                message: "Please fill all fields",
+                menu: menu
+            });
 
-    //         return;
-    //     }
+            return;
+        }
 
-    //     const newItem = {
-    //         name: req.body.name.trim(),
-    //         price: Number(req.body.price),
-    //         category: req.body.category.trim(),
-    //         image: req.body.image
-    //     };
+             const result=await cloudinary.uploader.upload(
+                req.file.path
+            );
+            console.log("Cloudinary upload successful");
 
-    //     const existingItem = await Menu.findOne({
-    //         name: new RegExp("^" + newItem.name + "$", "i")
-    //     });
+            console.log("Image URL:", result.secure_url);
 
-    //     if (existingItem) {
-    //         const menu = await Menu.find();
 
-    //         res.send({
-    //             message: "Item already exists",
-    //             menu: menu
-    //         });
+        const newItem = {
+            name: req.body.name.trim(),
+            price: Number(req.body.price),
+            category: req.body.category.trim(),
+            image: result.secure_url
+        };
 
-    //         return;
-    //     }
+        const existingItem = await Menu.findOne({
+            name: new RegExp("^" + newItem.name + "$", "i")
+        });
 
-    //     await Menu.create(newItem);
+        if (existingItem) {
+            const menu = await Menu.find();
 
-    //     const menu = await Menu.find();
+            res.send({
+                message: "Item already exists",
+                menu: menu
+            });
 
-    //     res.send({
-    //         message: "Item added",
-    //         menu: menu
-    //     });
-    // }
-    // catch (error) {
-    //     res.status(500).send({
-    //         message: error.message
-    //     });
-    // }
+            return;
+        }
+
+        await Menu.create(newItem);
+
+        const menu = await Menu.find();
+
+        res.send({
+            message: "Item added",
+            menu: menu
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            message: error.message
+        });
+    }
 });
 
 
